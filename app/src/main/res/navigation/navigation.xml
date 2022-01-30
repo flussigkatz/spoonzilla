@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation"
+    app:startDestination="@id/homeFragment2">
+
+    <fragment
+        android:id="@+id/homeFragment2"
+        android:name="xyz.flussigkatz.spoonzilla.HomeFragment"
+        android:label="fragment_home"
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_homeFragment2_to_settingsFragment2"
+            app:destination="@id/settingsFragment2" />
+        <action
+            android:id="@+id/action_homeFragment2_to_profileFragment2"
+            app:destination="@id/profileFragment2" />
+        <action
+            android:id="@+id/action_homeFragment2_to_recipeDetailsFragment"
+            app:destination="@id/recipeDetailsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/profileFragment2"
+        android:name="xyz.flussigkatz.spoonzilla.ProfileFragment"
+        android:label="fragment_profile"
+        tools:layout="@layout/fragment_profile" >
+        <action
+            android:id="@+id/action_profileFragment2_to_homeFragment2"
+            app:destination="@id/homeFragment2" />
+    </fragment>
+    <fragment
+        android:id="@+id/settingsFragment2"
+        android:name="xyz.flussigkatz.spoonzilla.SettingsFragment"
+        android:label="fragment_settings"
+        tools:layout="@layout/fragment_settings" >
+        <action
+            android:id="@+id/action_settingsFragment2_to_homeFragment2"
+            app:destination="@id/homeFragment2" />
+    </fragment>
+    <fragment
+        android:id="@+id/recipeDetailsFragment"
+        android:name="xyz.flussigkatz.spoonzilla.RecipeDetailsFragment"
+        android:label="RecipeDetailsFragment" >
+        <action
+            android:id="@+id/action_recipeDetailsFragment_to_homeFragment2"
+            app:destination="@id/homeFragment2" />
+        <action
+            android:id="@+id/action_recipeDetailsFragment_to_similarRecipesFragment"
+            app:destination="@id/similarRecipesFragment" />
+        <action
+            android:id="@+id/action_recipeDetailsFragment_to_recipeOverviewFragment"
+            app:destination="@id/recipeOverviewFragment" />
+        <action
+            android:id="@+id/action_recipeDetailsFragment_to_recipeIngredientsFragment"
+            app:destination="@id/recipeIngredientsFragment" />
+        <action
+            android:id="@+id/action_recipeDetailsFragment_to_recipeInstructionsFragment"
+            app:destination="@id/recipeInstructionsFragment" />
+        <action
+            android:id="@+id/action_recipeDetailsFragment_to_recipeNutrientFragment"
+            app:destination="@id/recipeNutrientFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/recipeIngredientsFragment"
+        android:name="xyz.flussigkatz.spoonzilla.RecipeIngredientsFragment"
+        android:label="fragment_recipe_ingredients"
+        tools:layout="@layout/fragment_recipe_ingredients" />
+    <fragment
+        android:id="@+id/recipeInstructionsFragment"
+        android:name="xyz.flussigkatz.spoonzilla.RecipeInstructionsFragment"
+        android:label="fragment_recipe_instructions"
+        tools:layout="@layout/fragment_recipe_instructions" />
+    <fragment
+        android:id="@+id/recipeNutrientFragment"
+        android:name="xyz.flussigkatz.spoonzilla.RecipeNutrientFragment"
+        android:label="fragment_recipe_nutrient"
+        tools:layout="@layout/fragment_recipe_nutrient" />
+    <fragment
+        android:id="@+id/recipeOverviewFragment"
+        android:name="xyz.flussigkatz.spoonzilla.RecipeOverviewFragment"
+        android:label="fragment_recipe_overview"
+        tools:layout="@layout/fragment_recipe_overview" />
+    <fragment
+        android:id="@+id/similarRecipesFragment"
+        android:name="xyz.flussigkatz.spoonzilla.SimilarRecipesFragment"
+        android:label="fragment_similar_recipes"
+        tools:layout="@layout/fragment_similar_recipes" />
+</navigation>

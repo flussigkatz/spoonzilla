@@ -1,3 +1,110 @@
 <resources>
     <string name="app_name">Spoonzilla</string>
+
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <!--    recipe_tabs-->
+    <string name="tab_name_overview">"overview"</string>
+    <string name="tab_name_ingredients">"ingredients"</string>
+    <string name="tab_name_instructions">"instructions"</string>
+    <string name="tab_name_nutrient">"nutrient"</string>
+
+
+    <!--    main_menu-->
+    <string name="menu_title_home">"Home"</string>
+    <string name="menu_title_profile">"Profile"</string>
+    <string name="menu_title_settings">"Settings"</string>
+    <string name="menu_title_log_out">"Log Out"</string>
+
+    <!--    fragment_profile-->
+
+    <string name="profile_create_new_text">Create new</string>
+    <string name="profile_sign_sign_in">Sign int</string>
+    <string name="profile_sign_sign_out">Sign out</string>
+
+    <!--    fragment_settings-->
+
+    <string name="settings_title_diets">Choose your diets</string>
+    <string name="settings_title_cuisine">Choose a cuisines</string>
+    <string name="settings_title_meal_types">Select meal types</string>
+    <string name="settings_title_intolerances">Choose an intolerances</string>
+
+    <!--    dialog_cuisine-->
+
+    <string name="dialog_cuisine_african">African</string>
+    <string name="dialog_cuisine_american">American</string>
+    <string name="dialog_cuisine_british">British</string>
+    <string name="dialog_cuisine_cajun">Cajun</string>
+    <string name="dialog_cuisine_caribbean">Caribbean</string>
+    <string name="dialog_cuisine_chinese">Chinese</string>
+    <string name="dialog_cuisine_eastern_european">Eastern European</string>
+    <string name="dialog_cuisine_european">European</string>
+    <string name="dialog_cuisine_french">French</string>
+    <string name="dialog_cuisine_german">German</string>
+    <string name="dialog_cuisine_greek">Greek</string>
+    <string name="dialog_cuisine_indian">Indian</string>
+    <string name="dialog_cuisine_irish">Irish</string>
+    <string name="dialog_cuisine_italian">Italian</string>
+    <string name="dialog_cuisine_japanese">Japanese</string>
+    <string name="dialog_cuisine_jewish">Jewish</string>
+    <string name="dialog_cuisine_korean">Korean</string>
+    <string name="dialog_cuisine_latin_american">Latin American</string>
+    <string name="dialog_cuisine_mediterranean">Mediterranean</string>
+    <string name="dialog_cuisine_mexican">Mexican</string>
+    <string name="dialog_cuisine_middle_eastern">Middle Eastern</string>
+    <string name="dialog_cuisine_nordic">Nordic</string>
+    <string name="dialog_cuisine_southern">Southern</string>
+    <string name="dialog_cuisine_spanish">Spanish</string>
+    <string name="dialog_cuisine_thai">Thai</string>
+    <string name="dialog_cuisine_vietnamese">Vietnamese</string>
+
+
+    <!--    dialog_meal_types-->
+
+    <string name="meal_type_main_course">main course</string>
+    <string name="meal_type_side_dish">side dish</string>
+    <string name="meal_type_dessert">dessert</string>
+    <string name="meal_type_appetizer">appetizer</string>
+    <string name="meal_type_salad">salad</string>
+    <string name="meal_type_bread">bread</string>
+    <string name="meal_type_breakfast">breakfast</string>
+    <string name="meal_type_soup">soup</string>
+    <string name="meal_type_beverage">beverage</string>
+    <string name="meal_type_sauce">sauce</string>
+    <string name="meal_type_marinade">marinade</string>
+    <string name="meal_type_fingerfood">fingerfood</string>
+    <string name="meal_type_snack">snack</string>
+    <string name="meal_type_drink">drink</string>
+
+    <!--    dialog_intolerances-->
+
+    <string name="intolerance_dairy">Dairy</string>
+    <string name="intolerance_egg">Egg</string>
+    <string name="intolerance_gluten">Gluten</string>
+    <string name="intolerance_grain">Grain</string>
+    <string name="intolerance_peanut">Peanut</string>
+    <string name="intolerance_seafood">Seafood</string>
+    <string name="intolerance_sesame">Sesame</string>
+    <string name="intolerance_shellfish">Shellfish</string>
+    <string name="intolerance_soy">Soy</string>
+    <string name="intolerance_sulfite">Sulfite</string>
+    <string name="intolerance_tree_nut">Tree Nut</string>
+    <string name="intolerance_wheat">Wheat</string>
+
+
+    <!--    dialog_diets-->
+
+    <string name="diet_gluten_free">Gluten Free</string>
+    <string name="diet_ketogenic">Ketogenic</string>
+    <string name="diet_vegetarian">Vegetarian</string>
+    <string name="diet_lacto_vegetarian">Lacto-Vegetar</string>
+    <string name="diet_ovo_vegetarian">Ovo-Vegetaria</string>
+    <string name="diet_vegan">Vegan</string>
+    <string name="diet_pescetarian">Pescetarian</string>
+    <string name="diet_paleo">Paleo</string>
+    <string name="diet_primal">Primal</string>
+    <string name="diet_low_fodmap">Low FODMAP</string>
+    <string name="diet_whole30">Whole30</string>
+
+
 </resources>

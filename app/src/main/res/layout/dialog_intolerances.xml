@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/root_dialog_intolerances"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingStart="@dimen/dialog_padding_start"
+    android:paddingTop="@dimen/dialog_padding_top"
+    android:paddingEnd="@dimen/dialog_padding_end"
+    android:paddingBottom="@dimen/dialog_padding_bottom">
+
+    <CheckBox
+        android:id="@+id/checkbox_intolerance_dairy"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/intolerance_dairy" />
+
+    <CheckBox
+        android:id="@+id/checkbox_intolerance_egg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/intolerance_egg" />
+
+    <CheckBox
+        android:id="@+id/checkbox_intolerance_gluten"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/intolerance_gluten" />
+
+    <CheckBox
+        android:id="@+id/checkbox_intolerance_grain"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/intolerance_grain" />
+
+    <CheckBox
+        android:id="@+id/checkbox_intolerance_peanut"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/intolerance_peanut" />
+
+    <CheckBox
+        android:id="@+id/checkbox_intolerance_seafood"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/intolerance_seafood" />
+
+    <CheckBox
+        android:id="@+id/checkbox_intolerance_sesame"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/intolerance_sesame" />
+
+    <CheckBox
+        android:id="@+id/checkbox_intolerance_shellfish"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/intolerance_shellfish" />
+
+    <CheckBox
+        android:id="@+id/checkbox_intolerance_soy"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/intolerance_soy" />
+
+    <CheckBox
+        android:id="@+id/checkbox_intolerance_sulfite"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/intolerance_sulfite" />
+
+    <CheckBox
+        android:id="@+id/checkbox_intolerance_tree_nut"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/intolerance_tree_nut" />
+
+    <CheckBox
+        android:id="@+id/checkbox_intolerance_wheat"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/intolerance_wheat" />
+
+
+</LinearLayout>

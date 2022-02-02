@@ -1,190 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/root_settings"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".SettingsFragment">
+    tools:context=".view.fragment.SettingsFragment">
 
     <Spinner
-        android:id="@+id/theme_spinner"
+        android:id="@+id/settings_theme_spinner"
         android:layout_width="match_parent"
-        android:layout_height="50dp" />
+        android:gravity="center"
+        android:layout_height="@dimen/settings_menu_item_height" />
 
-    <Spinner
-        android:id="@+id/cuisine"
+    <TextView
+        android:id="@+id/settings_diets"
+        android:text="@string/settings_title_diets"
+        android:gravity="center"
         android:layout_width="match_parent"
-        android:layout_height="50dp" />
+        android:layout_height="@dimen/settings_menu_item_height"/>
 
-    <Spinner
-        android:id="@+id/meal_types"
+    <TextView
+        android:id="@+id/settings_meal_types"
+        android:text="@string/settings_title_meal_types"
         android:layout_width="match_parent"
-        android:layout_height="50dp" />
+        android:gravity="center"
+        android:layout_height="@dimen/settings_menu_item_height"/>
 
-    <RelativeLayout
-        android:id="@+id/intolerances"
+    <TextView
+        android:id="@+id/settings_intolerances"
+        android:text="@string/settings_title_intolerances"
+        android:gravity="center"
         android:layout_width="match_parent"
-        android:orientation="horizontal"
-        android:layout_height="wrap_content" >
-        <CheckBox
-            android:id="@+id/dairy"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentStart="true"
-            android:text="Dairy"/>
-        <CheckBox
-            android:id="@+id/egg"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/dairy"
-            android:layout_alignParentStart="true"
-            android:text="Egg"/>
-        <CheckBox
-            android:id="@+id/gluten"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/egg"
-            android:layout_alignParentStart="true"
-            android:text="Gluten"/>
-        <CheckBox
-            android:id="@+id/grain"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_toEndOf="@+id/dairy"
-            android:text="Grain"/>
-        <CheckBox
-            android:id="@+id/peanut"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/grain"
-            android:layout_toEndOf="@+id/egg"
-            android:text="Peanut"/>
-        <CheckBox
-            android:id="@+id/seafood"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/peanut"
-            android:layout_toEndOf="@+id/gluten"
-            android:text="Seafood"/>
-        <CheckBox
-            android:id="@+id/sesame"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_toEndOf="@+id/grain"
-            android:text="Sesame"/>
-        <CheckBox
-            android:id="@+id/shellfish"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/sesame"
-            android:layout_toEndOf="@+id/peanut"
-            android:text="Shellfish"/>
-        <CheckBox
-            android:id="@+id/soy"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/shellfish"
-            android:layout_toEndOf="@+id/seafood"
-            android:text="Soy"/>
-        <CheckBox
-            android:id="@+id/sulfite"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_below="@id/gluten"
-            android:text="Sulfite"/>
-        <CheckBox
-            android:id="@+id/tree_nut"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/seafood"
-            android:layout_toEndOf="@+id/sulfite"
-            android:text="Tree Nut"/>
-        <CheckBox
-            android:id="@+id/wheat"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/soy"
-            android:layout_toEndOf="@+id/tree_nut"
-            android:text="Wheat"/>
-    </RelativeLayout>
+        android:layout_height="@dimen/settings_menu_item_height"/>
 
-    <RelativeLayout
-        android:id="@+id/diets"
+    <TextView
+        android:id="@+id/settings_cuisine"
+        android:text="@string/settings_title_cuisine"
+        android:gravity="center"
         android:layout_width="match_parent"
-        android:orientation="horizontal"
-        android:layout_height="wrap_content" >
-        <CheckBox
-            android:id="@+id/diet1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentStart="true"
-            android:text="Gluten Free"/>
-        <CheckBox
-            android:id="@+id/diet2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/diet1"
-            android:layout_alignParentStart="true"
-            android:text="Ketogenic"/>
-        <CheckBox
-            android:id="@+id/diet3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/diet2"
-            android:layout_alignParentStart="true"
-            android:text="Vegetarian"/>
-        <CheckBox
-            android:id="@+id/diet4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_toEndOf="@+id/diet1"
-            android:text="Lacto-V"/>
-        <CheckBox
-            android:id="@+id/diet5"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/diet4"
-            android:layout_toEndOf="@+id/diet2"
-            android:text="Ovo-V"/>
-        <CheckBox
-            android:id="@+id/diet6"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/diet5"
-            android:layout_toEndOf="@+id/diet3"
-            android:text="Vegan"/>
-        <CheckBox
-            android:id="@+id/diet7"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_toEndOf="@+id/diet4"
-            android:text="Pescetarian"/>
-        <CheckBox
-            android:id="@+id/diet8"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/diet7"
-            android:layout_toEndOf="@+id/diet5"
-            android:text="Paleo"/>
-        <CheckBox
-            android:id="@+id/diet9"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/diet8"
-            android:layout_toEndOf="@+id/diet6"
-            android:text="Primal"/>
-        <CheckBox
-            android:id="@+id/diet10"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_below="@id/diet3"
-            android:text="Whole30"/>
-    </RelativeLayout>
+        android:layout_height="@dimen/settings_menu_item_height"/>
 
 </LinearLayout>

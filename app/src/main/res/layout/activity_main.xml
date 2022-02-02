@@ -4,10 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".view.MainActivity">
 
     <androidx.drawerlayout.widget.DrawerLayout
-        android:id="@+id/drawerLayout"
+        android:id="@+id/main_drawer_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:openDrawer="start">
@@ -24,19 +24,18 @@
                 android:fitsSystemWindows="true">
 
                 <com.google.android.material.appbar.MaterialToolbar
-                    android:id="@+id/topAppBar"
+                    android:id="@+id/main_top_app_bar"
                     style="@style/Widget.MaterialComponents.Toolbar.PrimarySurface"
                     android:layout_width="match_parent"
                     android:layout_height="?attr/actionBarSize"
                     android:background="@android:color/transparent"
-                    android:elevation="0dp"
-                    app:navigationIcon="@drawable/ic_launcher_foreground"
-                    app:title="top_app_bar" />
+                    android:elevation="@dimen/main_top_app_bar_elevation"
+                    app:navigationIcon="@drawable/ic_launcher_foreground" />
 
             </com.google.android.material.appbar.AppBarLayout>
 
             <fragment
-                android:id="@+id/nav_host_fragment"
+                android:id="@+id/main_nav_host_fragment"
                 android:name="androidx.navigation.fragment.NavHostFragment"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -44,20 +43,14 @@
                 app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
                 app:navGraph="@navigation/navigation" />
 
-            <TextView
-                android:id="@+id/text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center" />
 
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
         <com.google.android.material.navigation.NavigationView
-            android:id="@+id/main_navigation"
+            android:id="@+id/main_navigation_view"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="start"
-            android:background="@color/white"
             app:menu="@menu/main_menu" />
 
     </androidx.drawerlayout.widget.DrawerLayout>

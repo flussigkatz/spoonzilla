@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/cuisine"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingStart="@dimen/dialog_padding_start"
+    android:paddingTop="@dimen/dialog_padding_top"
+    android:paddingEnd="@dimen/dialog_padding_end"
+    android:paddingBottom="@dimen/dialog_padding_bottom">
+
+    <CheckBox
+        android:id="@+id/checkbox_african"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/dialog_cuisine_african" />
+
+    <CheckBox
+        android:id="@+id/checkbox_american"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/dialog_cuisine_american" />
+
+    <CheckBox
+        android:id="@+id/checkbox_british"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/dialog_cuisine_british" />
+
+    <CheckBox
+        android:id="@+id/checkbox_cajun"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/dialog_cuisine_cajun" />
+
+    <CheckBox
+        android:id="@+id/checkbox_caribbean"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/dialog_cuisine_caribbean" />
+
+    <CheckBox
+        android:id="@+id/checkbox_chinese"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/dialog_cuisine_chinese" />
+
+    <CheckBox
+        android:id="@+id/checkbox_eastern_european"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/dialog_cuisine_eastern_european" />
+
+    <CheckBox
+        android:id="@+id/checkbox_european"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/dialog_cuisine_european" />
+
+    <CheckBox
+        android:id="@+id/checkbox_french"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/dialog_cuisine_french" />
+
+    <CheckBox
+        android:id="@+id/checkbox_german"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/dialog_cuisine_german" />
+
+    <CheckBox
+        android:id="@+id/checkbox_greek"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/dialog_cuisine_greek" />
+
+    <CheckBox
+        android:id="@+id/checkbox_indian"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/dialog_cuisine_indian" />
+
+    <CheckBox
+        android:id="@+id/checkbox_irish"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/dialog_cuisine_irish" />
+
+    <CheckBox
+        android:id="@+id/checkbox_italian"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/dialog_cuisine_italian" />
+
+    <CheckBox
+        android:id="@+id/checkbox_japanese"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/dialog_cuisine_japanese" />
+
+    <CheckBox
+        android:id="@+id/checkbox_jewish"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/dialog_cuisine_jewish" />
+
+    <CheckBox
+        android:id="@+id/checkbox_korean"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/dialog_cuisine_korean" />
+
+    <CheckBox
+        android:id="@+id/checkbox_latin_american"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/dialog_cuisine_latin_american" />
+
+    <CheckBox
+        android:id="@+id/checkbox_mediterranean"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/dialog_cuisine_mediterranean" />
+
+    <CheckBox
+        android:id="@+id/checkbox_mexican"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/dialog_cuisine_mexican" />
+
+    <CheckBox
+        android:id="@+id/checkbox_middle_eastern"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/dialog_cuisine_middle_eastern" />
+
+    <CheckBox
+        android:id="@+id/checkbox_nordic"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/dialog_cuisine_nordic" />
+
+    <CheckBox
+        android:id="@+id/checkbox_southern"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/dialog_cuisine_southern" />
+
+    <CheckBox
+        android:id="@+id/checkbox_spanish"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/dialog_cuisine_spanish" />
+
+    <CheckBox
+        android:id="@+id/checkbox_thai"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/dialog_cuisine_thai" />
+
+    <CheckBox
+        android:id="@+id/checkbox_vietnamese"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/dialog_cuisine_vietnamese" />
+</LinearLayout>

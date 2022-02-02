@@ -1,4 +1,4 @@
-package xyz.flussigkatz.spoonzilla
+package xyz.flussigkatz.spoonzilla.view.fragment
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -8,6 +8,8 @@ import android.view.ViewGroup
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
+import xyz.flussigkatz.spoonzilla.R
+import xyz.flussigkatz.spoonzilla.view.RecipeDetailsAdapter
 
 
 class RecipeDetailsFragment : Fragment() {
@@ -25,10 +27,10 @@ class RecipeDetailsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         demoCollectionAdapter = RecipeDetailsAdapter(this)
-        viewPager = view.findViewById(R.id.pager)
+        viewPager = view.findViewById(R.id.recipe_details_viewpager)
         viewPager.adapter = demoCollectionAdapter
 
-        val tabLayout = view.findViewById<TabLayout>(R.id.tab_layout)
+        val tabLayout = view.findViewById<TabLayout>(R.id.recipe_details_tab_layout)
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->
             when (position) {
                 0 -> tab.text = requireContext().getText(R.string.tab_name_overview)

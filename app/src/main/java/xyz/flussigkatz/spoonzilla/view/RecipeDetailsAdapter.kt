@@ -1,7 +1,11 @@
-package xyz.flussigkatz.spoonzilla
+package xyz.flussigkatz.spoonzilla.view
 
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
+import xyz.flussigkatz.spoonzilla.view.fragment.RecipeIngredientsFragment
+import xyz.flussigkatz.spoonzilla.view.fragment.RecipeInstructionsFragment
+import xyz.flussigkatz.spoonzilla.view.fragment.RecipeNutrientFragment
+import xyz.flussigkatz.spoonzilla.view.fragment.RecipeOverviewFragment
 
 class RecipeDetailsAdapter(fragment: Fragment) : FragmentStateAdapter(fragment) {
     override fun getItemCount(): Int = 4

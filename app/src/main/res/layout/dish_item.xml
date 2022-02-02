@@ -16,11 +16,10 @@
         android:id="@+id/dish_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="@dimen/dish_name_margin_top"
         android:background="#4DFFFFFF"
-        android:padding="5dp"
-        android:text="Dish name"
-        android:textColor="@color/black"
-        android:textSize="16sp" />
+        android:padding="@dimen/dish_name_padding"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
+        android:textColor="@color/black" />
 
 </FrameLayout>

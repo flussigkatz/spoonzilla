@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/homeFragment2"
-        android:name="xyz.flussigkatz.spoonzilla.HomeFragment"
+        android:name="xyz.flussigkatz.spoonzilla.view.fragment.HomeFragment"
         android:label="fragment_home"
         tools:layout="@layout/fragment_home" >
         <action
@@ -22,7 +22,7 @@
     </fragment>
     <fragment
         android:id="@+id/profileFragment2"
-        android:name="xyz.flussigkatz.spoonzilla.ProfileFragment"
+        android:name="xyz.flussigkatz.spoonzilla.view.fragment.ProfileFragment"
         android:label="fragment_profile"
         tools:layout="@layout/fragment_profile" >
         <action
@@ -31,7 +31,7 @@
     </fragment>
     <fragment
         android:id="@+id/settingsFragment2"
-        android:name="xyz.flussigkatz.spoonzilla.SettingsFragment"
+        android:name="xyz.flussigkatz.spoonzilla.view.fragment.SettingsFragment"
         android:label="fragment_settings"
         tools:layout="@layout/fragment_settings" >
         <action
@@ -40,7 +40,7 @@
     </fragment>
     <fragment
         android:id="@+id/recipeDetailsFragment"
-        android:name="xyz.flussigkatz.spoonzilla.RecipeDetailsFragment"
+        android:name="xyz.flussigkatz.spoonzilla.view.fragment.RecipeDetailsFragment"
         android:label="RecipeDetailsFragment" >
         <action
             android:id="@+id/action_recipeDetailsFragment_to_homeFragment2"
@@ -63,27 +63,27 @@
     </fragment>
     <fragment
         android:id="@+id/recipeIngredientsFragment"
-        android:name="xyz.flussigkatz.spoonzilla.RecipeIngredientsFragment"
+        android:name="xyz.flussigkatz.spoonzilla.view.fragment.RecipeIngredientsFragment"
         android:label="fragment_recipe_ingredients"
         tools:layout="@layout/fragment_recipe_ingredients" />
     <fragment
         android:id="@+id/recipeInstructionsFragment"
-        android:name="xyz.flussigkatz.spoonzilla.RecipeInstructionsFragment"
+        android:name="xyz.flussigkatz.spoonzilla.view.fragment.RecipeInstructionsFragment"
         android:label="fragment_recipe_instructions"
         tools:layout="@layout/fragment_recipe_instructions" />
     <fragment
         android:id="@+id/recipeNutrientFragment"
-        android:name="xyz.flussigkatz.spoonzilla.RecipeNutrientFragment"
+        android:name="xyz.flussigkatz.spoonzilla.view.fragment.RecipeNutrientFragment"
         android:label="fragment_recipe_nutrient"
         tools:layout="@layout/fragment_recipe_nutrient" />
     <fragment
         android:id="@+id/recipeOverviewFragment"
-        android:name="xyz.flussigkatz.spoonzilla.RecipeOverviewFragment"
+        android:name="xyz.flussigkatz.spoonzilla.view.fragment.RecipeOverviewFragment"
         android:label="fragment_recipe_overview"
         tools:layout="@layout/fragment_recipe_overview" />
     <fragment
         android:id="@+id/similarRecipesFragment"
-        android:name="xyz.flussigkatz.spoonzilla.SimilarRecipesFragment"
+        android:name="xyz.flussigkatz.spoonzilla.view.fragment.SimilarRecipesFragment"
         android:label="fragment_similar_recipes"
         tools:layout="@layout/fragment_similar_recipes" />
 </navigation>

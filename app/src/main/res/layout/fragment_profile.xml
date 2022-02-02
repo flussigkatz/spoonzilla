@@ -3,36 +3,37 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ProfileFragment">
+    tools:context=".view.fragment.ProfileFragment">
 
     <ImageView
-        android:id="@+id/avatar"
+        android:id="@+id/profile_avatar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_cook"
+        android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true"/>
+        android:src="@drawable/ic_cook" />
 
     <TextView
         android:id="@+id/profile_status"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_toEndOf="@id/avatar"/>
+        android:layout_toEndOf="@id/profile_avatar" />
 
     <Button
-        android:id="@+id/new_acc"
-        android:layout_width="150dp"
+        android:id="@+id/profile_create_new"
+        android:layout_width="@dimen/profile_create_new_width"
         android:layout_height="wrap_content"
-        android:text="Create new"
-        android:layout_below="@id/sign"
-        android:layout_centerHorizontal="true"/>
+        android:layout_below="@id/profile_sign"
+        android:layout_centerHorizontal="true"
+        android:text="@string/profile_create_new_text" />
+
     <Button
-        android:id="@+id/sign"
-        android:layout_width="150dp"
+        android:id="@+id/profile_sign"
+        android:layout_width="@dimen/profile_sign_width"
         android:layout_height="wrap_content"
-        android:text="Sign in"
-        android:layout_below="@id/avatar"
-        android:layout_centerHorizontal="true"/>
+        android:layout_below="@id/profile_avatar"
+        android:layout_centerHorizontal="true"
+        android:text="@string/profile_sign_sign_in" />
 
 </RelativeLayout>

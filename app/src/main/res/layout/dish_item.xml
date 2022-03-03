@@ -1,25 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/root_dish_item"
-    android:layout_width="match_parent"
-    android:layout_height="200dp">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <ImageView
-        android:id="@+id/dish_picture"
+    <data>
+
+        <import type="xyz.flussigkatz.spoonzilla.data.entity.Dish" />
+
+        <variable
+            name="dish"
+            type="Dish" />
+
+    </data>
+
+    <FrameLayout
+        android:id="@+id/root_dish_item"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:scaleType="center"
-        tools:src="@tools:sample/backgrounds/scenic" />
+        android:layout_height="@dimen/root_dish_item">
 
-    <TextView
-        android:id="@+id/dish_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/dish_name_margin_top"
-        android:background="#4DFFFFFF"
-        android:padding="@dimen/dish_name_padding"
-        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
-        android:textColor="@color/black" />
+        <ImageView
+            android:id="@+id/dish_image"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/app_color_2"
+            android:contentDescription="@string/dish_image"
+            tools:src="@drawable/ic_food" />
 
-</FrameLayout>
+        <TextView
+            android:id="@+id/dish_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dish_name_margin_top"
+            android:background="#99FFFFFF"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:padding="@dimen/dish_name_padding"
+            android:text="@{dish.title}"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
+            android:textColor="@color/black" />
+
+    </FrameLayout>
+</layout>

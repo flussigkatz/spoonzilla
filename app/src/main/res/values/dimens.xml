@@ -15,6 +15,7 @@
 
     <dimen name="dish_name_margin_top">20dp</dimen>
     <dimen name="dish_name_padding">5dp</dimen>
+    <dimen name="root_dish_item">200dp</dimen>
 
     <!--    fragment_profile-->
 

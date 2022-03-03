@@ -1,10 +1,11 @@
 package xyz.flussigkatz.spoonzilla
 
 import android.app.Application
+import xyz.flussigkatz.remote.DaggerRemoteComponent
 import xyz.flussigkatz.spoonzilla.di.AppComponent
 import xyz.flussigkatz.spoonzilla.di.DaggerAppComponent
 import xyz.flussigkatz.spoonzilla.di.module.ContextModule
-import xyz.flussigkatz.spoonzilla.di.module.DataModule
+import xyz.flussigkatz.spoonzilla.di.module.DomainModule
 
 class App : Application() {
 
@@ -15,8 +16,9 @@ class App : Application() {
         instance = this
 
         dagger = DaggerAppComponent.builder()
+            .remoteProvider(DaggerRemoteComponent.create())
             .contextModule(ContextModule(this))
-            .dataModule(DataModule())
+            .domainModule(DomainModule())
             .build()
     }
 

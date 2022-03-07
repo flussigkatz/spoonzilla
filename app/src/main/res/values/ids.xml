@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="homeFragment" type="id"/>
+    <item name="profileFragment" type="id"/>
+    <item name="settingsFragment" type="id"/>
+    <item name="advancedSearchSettingsFragment" type="id"/>
+    <item name="advancedSearchFragment" type="id"/>
+    <item name="detailsFragment" type="id"/>
+
+
+    <item name="functional" type="id"/>
+    <item name="logOutMenu" type="id"/>
+</resources>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/root_dialog_item"
+    android:layout_width="match_parent"
+    android:layout_height="40dp"
+    android:orientation="horizontal"
+    android:paddingStart="@dimen/dialog_item_padding_start"
+    android:paddingEnd="@dimen/dialog_item_padding_end">
+
+    <com.google.android.material.checkbox.MaterialCheckBox
+        android:id="@+id/checkbox_dialog_item"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/title_dialog_item"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="start|center" />
+
+</LinearLayout>

@@ -3,29 +3,34 @@
 
 
     <item
-        android:id="@+id/homeFragment"
+        android:id="@id/homeFragment"
         android:checkable="true"
-        android:icon="@drawable/ic_launcher_foreground"
+        android:icon="@drawable/ic_home"
         android:title="@string/menu_title_home" />
 
     <item
-        android:id="@+id/profileFragment"
+        android:id="@id/advancedSearchFragment"
         android:checkable="true"
-        android:icon="@drawable/ic_launcher_foreground"
+        android:icon="@drawable/ic_search"
+        android:title="@string/menu_title_search" />
+
+    <item
+        android:id="@id/profileFragment"
+        android:checkable="true"
+        android:icon="@drawable/ic_profile"
         android:title="@string/menu_title_profile" />
 
     <item
-        android:id="@+id/settingsFragment"
+        android:id="@id/settingsFragment"
         android:checkable="true"
-        android:icon="@drawable/ic_launcher_foreground"
+        android:icon="@drawable/ic_settings"
         android:title="@string/menu_title_settings" />
 
-    <group
-        android:id="@+id/functional">
+    <group android:id="@id/functional">
         <item
-            android:id="@+id/logOutMenu"
-            android:icon="@drawable/ic_launcher_foreground"
+            android:id="@id/logOutMenu"
             android:checkable="false"
+            android:icon="@drawable/ic_clear"
             android:title="@string/menu_title_log_out" />
     </group>
 

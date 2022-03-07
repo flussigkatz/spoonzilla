@@ -1,7 +1,16 @@
 <resources>
-    <string name="app_name">Spoonzilla</string>
+    <!--    main_activity-->
+    <string name="app_bar_search_description">Search recipes</string>
+    <string name="app_bar_search_title">Search</string>
+    <string name="exit_message">Press back again to exit</string>
 
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <!--    dish_item-->
+    <string name="dish_image">Dish image</string>
+    <string name="dish_icon_healthy">Healthy</string>
+    <string name="dish_icon_popular">Popular</string>
+    <string name="dish_icon_likes">Likes</string>
+
 
     <!--    recipe_tabs-->
     <string name="tab_name_overview">"overview"</string>
@@ -14,12 +23,16 @@
     <string name="menu_title_home">"Home"</string>
     <string name="menu_title_profile">"Profile"</string>
     <string name="menu_title_settings">"Settings"</string>
+    <string name="menu_title_search">"Search"</string>
     <string name="menu_title_log_out">"Log Out"</string>
+
+    <!--    fragment_home-->
+    <string name="home_search_empty_message">No match</string>
 
     <!--    fragment_profile-->
 
     <string name="profile_create_new_text">Create new</string>
-    <string name="profile_sign_sign_in">Sign int</string>
+    <string name="profile_sign_sign_in">Sign in</string>
     <string name="profile_sign_sign_out">Sign out</string>
 
     <!--    fragment_settings-->
@@ -91,20 +104,34 @@
     <string name="intolerance_tree_nut">Tree Nut</string>
     <string name="intolerance_wheat">Wheat</string>
 
-
     <!--    dialog_diets-->
 
     <string name="diet_gluten_free">Gluten Free</string>
     <string name="diet_ketogenic">Ketogenic</string>
     <string name="diet_vegetarian">Vegetarian</string>
-    <string name="diet_lacto_vegetarian">Lacto-Vegetar</string>
-    <string name="diet_ovo_vegetarian">Ovo-Vegetaria</string>
+    <string name="diet_lacto_vegetarian">Lacto-Vegetarian</string>
+    <string name="diet_ovo_vegetarian">Ovo-Vegetarian</string>
     <string name="diet_vegan">Vegan</string>
     <string name="diet_pescetarian">Pescetarian</string>
     <string name="diet_paleo">Paleo</string>
     <string name="diet_primal">Primal</string>
     <string name="diet_low_fodmap">Low FODMAP</string>
     <string name="diet_whole30">Whole30</string>
+
+    <!--    Common-->
+    <string name="app_name" translatable="false">Spoonzilla</string>
+    <string name="search_hint">Quick search</string>
+    <string name="fragment_home">Home</string>
+    <string name="fragment_profile">Profile</string>
+    <string name="fragment_settings">Settings</string>
+    <string name="fragment_advanced_search">Search</string>
+    <string name="fragment_advanced_search_settings">Search settings</string>
+    <string name="fragment_details">Dish details</string>
+    <string name="fragment_recipe_ingredients">Ingredients</string>
+    <string name="fragment_recipe_instructions">Instructions</string>
+    <string name="fragment_recipe_nutrient">Nutrient</string>
+    <string name="fragment_recipe_overview">Overview</string>
+    <string name="fragment_similar_recipes">Similar</string>
 
 
 </resources>

@@ -3,87 +3,127 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/navigation"
-    app:startDestination="@id/homeFragment2">
+    app:startDestination="@id/homeFragment">
 
     <fragment
-        android:id="@+id/homeFragment2"
+        android:id="@id/homeFragment"
         android:name="xyz.flussigkatz.spoonzilla.view.fragment.HomeFragment"
-        android:label="fragment_home"
+        android:label="@string/fragment_home"
         tools:layout="@layout/fragment_home" >
         <action
-            android:id="@+id/action_homeFragment2_to_settingsFragment2"
-            app:destination="@id/settingsFragment2" />
+            android:id="@+id/action_homeFragment_to_settingsFragment"
+            app:destination="@id/settingsFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:launchSingleTop="true"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
         <action
-            android:id="@+id/action_homeFragment2_to_profileFragment2"
-            app:destination="@id/profileFragment2" />
+            android:id="@+id/action_homeFragment_to_profileFragment"
+            app:destination="@id/profileFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
         <action
-            android:id="@+id/action_homeFragment2_to_recipeDetailsFragment"
-            app:destination="@id/recipeDetailsFragment" />
+            android:id="@+id/action_homeFragment_to_detailsFragment"
+            app:destination="@id/detailsFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
     </fragment>
     <fragment
-        android:id="@+id/profileFragment2"
+        android:id="@id/profileFragment"
         android:name="xyz.flussigkatz.spoonzilla.view.fragment.ProfileFragment"
-        android:label="fragment_profile"
+        android:label="@string/fragment_profile"
         tools:layout="@layout/fragment_profile" >
         <action
-            android:id="@+id/action_profileFragment2_to_homeFragment2"
-            app:destination="@id/homeFragment2" />
+            android:id="@+id/action_profileFragment_to_homeFragment"
+            app:destination="@id/homeFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"
+            app:popUpTo="@id/homeFragment"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_profileFragment_to_settingsFragment"
+            app:destination="@id/settingsFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"
+            app:popUpTo="@id/settingsFragment"
+            app:popUpToInclusive="true" />
     </fragment>
     <fragment
-        android:id="@+id/settingsFragment2"
+        android:id="@id/settingsFragment"
         android:name="xyz.flussigkatz.spoonzilla.view.fragment.SettingsFragment"
-        android:label="fragment_settings"
+        android:label="@string/fragment_settings"
         tools:layout="@layout/fragment_settings" >
         <action
-            android:id="@+id/action_settingsFragment2_to_homeFragment2"
-            app:destination="@id/homeFragment2" />
+            android:id="@+id/action_settingsFragment_to_homeFragment"
+            app:destination="@id/homeFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"
+            app:popUpTo="@id/homeFragment"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_settingsFragment_to_profileFragment"
+            app:destination="@id/profileFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"
+            app:popUpTo="@id/profileFragment"
+            app:popUpToInclusive="true" />
     </fragment>
     <fragment
-        android:id="@+id/recipeDetailsFragment"
-        android:name="xyz.flussigkatz.spoonzilla.view.fragment.RecipeDetailsFragment"
-        android:label="RecipeDetailsFragment" >
+        android:id="@id/detailsFragment"
+        android:name="xyz.flussigkatz.spoonzilla.view.fragment.DetailsFragment"
+        android:label="@string/fragment_details" >
         <action
-            android:id="@+id/action_recipeDetailsFragment_to_homeFragment2"
-            app:destination="@id/homeFragment2" />
-        <action
-            android:id="@+id/action_recipeDetailsFragment_to_similarRecipesFragment"
+            android:id="@+id/action_detailsFragment_to_similarRecipesFragment"
             app:destination="@id/similarRecipesFragment" />
         <action
-            android:id="@+id/action_recipeDetailsFragment_to_recipeOverviewFragment"
+            android:id="@+id/action_detailsFragment_to_recipeOverviewFragment"
             app:destination="@id/recipeOverviewFragment" />
         <action
-            android:id="@+id/action_recipeDetailsFragment_to_recipeIngredientsFragment"
+            android:id="@+id/action_detailsFragment_to_recipeIngredientsFragment"
             app:destination="@id/recipeIngredientsFragment" />
         <action
-            android:id="@+id/action_recipeDetailsFragment_to_recipeInstructionsFragment"
+            android:id="@+id/action_detailsFragment_to_recipeInstructionsFragment"
             app:destination="@id/recipeInstructionsFragment" />
         <action
-            android:id="@+id/action_recipeDetailsFragment_to_recipeNutrientFragment"
+            android:id="@+id/action_detailsFragment_to_recipeNutrientFragment"
             app:destination="@id/recipeNutrientFragment" />
     </fragment>
     <fragment
         android:id="@+id/recipeIngredientsFragment"
-        android:name="xyz.flussigkatz.spoonzilla.view.fragment.RecipeIngredientsFragment"
-        android:label="fragment_recipe_ingredients"
+        android:name="xyz.flussigkatz.spoonzilla.view.fragment.DishIngredientsFragment"
+        android:label="@string/fragment_recipe_ingredients"
         tools:layout="@layout/fragment_recipe_ingredients" />
     <fragment
         android:id="@+id/recipeInstructionsFragment"
-        android:name="xyz.flussigkatz.spoonzilla.view.fragment.RecipeInstructionsFragment"
-        android:label="fragment_recipe_instructions"
+        android:name="xyz.flussigkatz.spoonzilla.view.fragment.DishInstructionsFragment"
+        android:label="@string/fragment_recipe_instructions"
         tools:layout="@layout/fragment_recipe_instructions" />
     <fragment
         android:id="@+id/recipeNutrientFragment"
-        android:name="xyz.flussigkatz.spoonzilla.view.fragment.RecipeNutrientFragment"
-        android:label="fragment_recipe_nutrient"
+        android:name="xyz.flussigkatz.spoonzilla.view.fragment.DishNutrientFragment"
+        android:label="@string/fragment_recipe_nutrient"
         tools:layout="@layout/fragment_recipe_nutrient" />
     <fragment
         android:id="@+id/recipeOverviewFragment"
-        android:name="xyz.flussigkatz.spoonzilla.view.fragment.RecipeOverviewFragment"
-        android:label="fragment_recipe_overview"
+        android:name="xyz.flussigkatz.spoonzilla.view.fragment.DishOverviewFragment"
+        android:label="@string/fragment_recipe_overview"
         tools:layout="@layout/fragment_recipe_overview" />
     <fragment
         android:id="@+id/similarRecipesFragment"
         android:name="xyz.flussigkatz.spoonzilla.view.fragment.SimilarRecipesFragment"
-        android:label="fragment_similar_recipes"
+        android:label="@string/fragment_similar_recipes"
         tools:layout="@layout/fragment_similar_recipes" />
 </navigation>

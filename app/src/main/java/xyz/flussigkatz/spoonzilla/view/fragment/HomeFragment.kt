@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -15,8 +16,6 @@ import io.reactivex.rxjava3.schedulers.Schedulers
 import xyz.flussigkatz.spoonzilla.R
 import xyz.flussigkatz.spoonzilla.databinding.FragmentHomeBinding
 import xyz.flussigkatz.spoonzilla.util.AppConst
-import xyz.flussigkatz.spoonzilla.util.NavigationHelper
-import xyz.flussigkatz.spoonzilla.view.MainActivity
 import xyz.flussigkatz.spoonzilla.view.rv_adapter.DishRecyclerAdapter
 import xyz.flussigkatz.spoonzilla.view.rv_adapter.SpacingItemDecoration
 import xyz.flussigkatz.spoonzilla.viewmodel.HomeFragmentViewModel
@@ -42,24 +41,28 @@ class HomeFragment : Fragment() {
 
         initContent()
 
-        initSearch()
+        initQuickSearch()
 
     }
 
-    private fun initSearch() {
+    private fun initQuickSearch() {
         @Suppress("RECEIVER_NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
         viewModel.searchPublishSubject.subscribeOn(Schedulers.io())
             .debounce(SEARCH_DEBOUNCE_TIME_MILLISECONDS, TimeUnit.MILLISECONDS)
+            .doOnNext { if (it.isNullOrBlank()) initContent()}
             .filter { !it.isNullOrBlank() }
             .map { viewModel.getSearchedRecipes(it!!.lowercase().trim()) }
             .flatMap { it }.observeOn(AndroidSchedulers.mainThread())
             .subscribe(
                 {
-                    dishAdapter.updateData(it)
+                    if (it.isNullOrEmpty()) Toast.makeText(
+                        requireContext(),
+                        resources.getText(R.string.home_search_empty_message),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    else dishAdapter.updateData(it)
                 },
-                {
-                    println("$TAG initSearch onError: ${it.localizedMessage}")
-                }
+                { println("$TAG initSearch onError: ${it.localizedMessage}") }
             )
     }
 
@@ -90,7 +93,8 @@ class HomeFragment : Fragment() {
                 override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                     super.onScrolled(recyclerView, dx, dy)
                     if (dy != CANCEL_FOCUS_ON_SCROLL) {
-                        requireActivity().findViewById<SearchView>(R.id.main_search).clearFocus()
+                        requireActivity().findViewById<SearchView>(R.id.main_quick_search)
+                            .clearFocus()
                     }
                 }
             }
@@ -99,6 +103,23 @@ class HomeFragment : Fragment() {
             layoutManager = LinearLayoutManager(context)
             addOnScrollListener(scrollListener)
             addItemDecoration(SpacingItemDecoration(PADDING_DP))
+        }
+    }
+
+    override fun onStart() {
+        quickSearchSwitcher(true)
+        super.onStart()
+    }
+
+    override fun onStop() {
+        quickSearchSwitcher(false)
+        super.onStop()
+    }
+
+    private fun quickSearchSwitcher(state: Boolean) {
+        requireActivity().findViewById<SearchView>(R.id.main_quick_search).apply {
+            visibility = if (state) View.VISIBLE
+            else View.GONE
         }
     }
 

@@ -6,7 +6,7 @@ import retrofit2.http.Path
 import retrofit2.http.Query
 import xyz.flussigkatz.remote.entity.random.RandomRecipesDto
 import xyz.flussigkatz.remote.entity.seached.SearchedRecipesDto
-import xyz.flussigkatz.remote.entity.searchedbyid.SearchedRecipeByIdDto
+import xyz.flussigkatz.remote.entity.searched_by_id.SearchedRecipeByIdDto
 import xyz.flussigkatz.remote.entity.similar.SimilarRecipesDto
 import xyz.flussigkatz.remote.entity.taste.TasteByIdDto
 
@@ -44,13 +44,21 @@ interface SpoonacularApi {
     @GET("/recipes/complexSearch")
     fun getSearchedRecipes(
         @Query("query") query: String,
+        @Query("offset") offset: Int?,
+        @Query("number") number: Int?,
+        @Query("limitLicense") limitLicense: Boolean,
+        @Query("apiKey") apiKey: String
+    ): Observable<SearchedRecipesDto>
+
+    @GET("/recipes/complexSearch")
+    fun getAdvancedSearchedRecipes(
+        @Query("query") query: String,
         @Query("cuisine") cuisine: String?,
         @Query("excludeCuisine") excludeCuisine: String?,
         @Query("diet") diet: String?,
         @Query("intolerances") intolerances: String?,
         @Query("type") type: String?,
         @Query("instructionsRequired") instructionsRequired: Boolean?,
-        @Query("tags") tags: String?,
         @Query("offset") offset: Int?,
         @Query("number") number: Int?,
         @Query("limitLicense") limitLicense: Boolean,

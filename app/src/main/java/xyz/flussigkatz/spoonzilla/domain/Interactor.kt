@@ -37,7 +37,7 @@ class Interactor(
             apiKey = ApiKey.API_KEY
         ).subscribeOn(Schedulers.io())
             .filter { !it.recipes.isNullOrEmpty() }
-            .map { DishConverter.convertRandomRecipeFromApi(it) }
+            .map {DishConverter.convertRandomRecipeFromApi(it)}
     }
 
     fun getSimilarRecipesFromApi(id: Int) {
@@ -68,31 +68,17 @@ class Interactor(
 
     fun getSearchedRecipesFromApi(
         query: String,
-        cuisine: List<String>,
-        excludeCuisine: List<String>,
-        diet: List<String>,
-        intolerances: List<String>,
-        type: List<String>,
-        instructionsRequired: Boolean,
-        tags: List<String>,
         offset: Int?,
         number: Int?,
     ): Observable<List<Dish>> {
         return retrofitService.getSearchedRecipes(
             query = query,
-            cuisine = cuisine.joinToString(),
-            excludeCuisine = excludeCuisine.joinToString(),
-            diet = diet.joinToString(),
-            intolerances = intolerances.joinToString(),
-            type = type.joinToString(),
-            instructionsRequired = instructionsRequired,
-            tags = tags.joinToString(),
             offset = offset,
             number = number,
             limitLicense = false,
             apiKey = ApiKey.API_KEY
         ).subscribeOn(Schedulers.io())
-            .map { DishConverter.convertSearchedRecipeFromApi(it) }
+            .map { DishConverter.convertSearchedRecipeBasicInfoFromApi(it) }
     }
 
     fun putSearchQuery(query: String?) {
@@ -100,6 +86,12 @@ class Interactor(
     }
 
     fun getSearchPublishSubject() = searchPublishSubject
+
+    fun putCuisineToPreference(cuisine: Set<String>) {
+        preferences.putCuisine(cuisine)
+    }
+
+    fun getCuisineFromPreference(): MutableSet<String>? = preferences.getCuisine()
 
     companion object {
         private const val TAG = "Interactor"

@@ -27,9 +27,10 @@ class DishRecyclerAdapter(
     }
 
     override fun onBindViewHolder(holder: DishViewHolder, position: Int) {
+        val dish = items[position]
         val binding = holder.binding
-        binding.dish = items[position]
-        binding.dish?.image?.let { setDishImage(binding.dish?.image!!, binding.dishImage) }
+        binding.dish = dish
+        setDishImage(dish.image, binding.dishImage)
         binding.rootDishItem.setOnClickListener {
             binding.dish?.id?.let { id -> clickListener.click(id) }
         }
@@ -43,7 +44,7 @@ class DishRecyclerAdapter(
         diffResult.dispatchUpdatesTo(this)
     }
 
-    private fun setDishImage(image: String, dishView: ImageView) {
+    private fun setDishImage(image: String?, dishView: ImageView) {
         val callbackPicasso = object : Callback {
             override fun onSuccess() {
                 dishView.setBackgroundColor(Color.TRANSPARENT)

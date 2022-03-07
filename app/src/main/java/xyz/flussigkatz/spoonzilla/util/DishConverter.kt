@@ -20,7 +20,7 @@ object DishConverter {
         return result
     }
 
-    fun convertSearchedRecipeFromApi(searchedRecipesDto: SearchedRecipesDto): List<Dish> {
+    fun convertSearchedRecipeBasicInfoFromApi(searchedRecipesDto: SearchedRecipesDto): List<Dish> {
         val result = mutableListOf<Dish>()
         searchedRecipesDto.results.forEach {
             result.add(

@@ -2,10 +2,14 @@
     <!--    main_activity-->
     <string name="app_bar_search_description">Search recipes</string>
     <string name="app_bar_search_title">Search</string>
+    <string name="exit_message">Press back again to exit</string>
 
 
     <!--    dish_item-->
     <string name="dish_image">Dish image</string>
+    <string name="dish_icon_healthy">Healthy</string>
+    <string name="dish_icon_popular">Popular</string>
+    <string name="dish_icon_likes">Likes</string>
 
 
     <!--    recipe_tabs-->
@@ -19,7 +23,11 @@
     <string name="menu_title_home">"Home"</string>
     <string name="menu_title_profile">"Profile"</string>
     <string name="menu_title_settings">"Settings"</string>
+    <string name="menu_title_search">"Search"</string>
     <string name="menu_title_log_out">"Log Out"</string>
+
+    <!--    fragment_home-->
+    <string name="home_search_empty_message">No match</string>
 
     <!--    fragment_profile-->
 
@@ -101,8 +109,8 @@
     <string name="diet_gluten_free">Gluten Free</string>
     <string name="diet_ketogenic">Ketogenic</string>
     <string name="diet_vegetarian">Vegetarian</string>
-    <string name="diet_lacto_vegetarian">Lacto-Vegetar</string>
-    <string name="diet_ovo_vegetarian">Ovo-Vegetaria</string>
+    <string name="diet_lacto_vegetarian">Lacto-Vegetarian</string>
+    <string name="diet_ovo_vegetarian">Ovo-Vegetarian</string>
     <string name="diet_vegan">Vegan</string>
     <string name="diet_pescetarian">Pescetarian</string>
     <string name="diet_paleo">Paleo</string>
@@ -112,10 +120,12 @@
 
     <!--    Common-->
     <string name="app_name" translatable="false">Spoonzilla</string>
-    <string name="search_hint">Search</string>
+    <string name="search_hint">Quick search</string>
     <string name="fragment_home">Home</string>
     <string name="fragment_profile">Profile</string>
     <string name="fragment_settings">Settings</string>
+    <string name="fragment_advanced_search">Search</string>
+    <string name="fragment_advanced_search_settings">Search settings</string>
     <string name="fragment_details">Dish details</string>
     <string name="fragment_recipe_ingredients">Ingredients</string>
     <string name="fragment_recipe_instructions">Instructions</string>

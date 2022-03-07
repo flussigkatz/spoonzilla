@@ -24,13 +24,6 @@ class HomeFragmentViewModel : ViewModel() {
     fun getSearchedRecipes(query: String): Observable<List<Dish>> {
         return interactor.getSearchedRecipesFromApi(
             query = query,
-            cuisine = listOf(),
-            excludeCuisine = listOf(),
-            diet = listOf(),
-            intolerances = listOf(),
-            type = listOf(),
-            instructionsRequired = false,
-            tags = listOf(),
             offset = null,
             number = 5
         )

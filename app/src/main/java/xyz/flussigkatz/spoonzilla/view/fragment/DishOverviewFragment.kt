@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import xyz.flussigkatz.spoonzilla.R
+import xyz.flussigkatz.spoonzilla.view.dialog.CuisineDialogFragment
 
 
 class DishOverviewFragment : Fragment() {
@@ -15,6 +16,11 @@ class DishOverviewFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         return inflater.inflate(R.layout.fragment_recipe_overview, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
     }
 
 }

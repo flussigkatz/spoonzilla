@@ -30,7 +30,7 @@
                 app:navigationIcon="@drawable/ic_menu">
 
                 <androidx.appcompat.widget.SearchView
-                    android:id="@+id/main_search"
+                    android:id="@+id/main_quick_search"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="end"

@@ -15,7 +15,7 @@
     <FrameLayout
         android:id="@+id/root_dish_item"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/root_dish_item">
+        android:layout_height="@dimen/root_dish_item_height">
 
         <ImageView
             android:id="@+id/dish_image"
@@ -30,7 +30,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dish_name_margin_top"
-            android:background="#99FFFFFF"
+            android:background="#CCFFFFFF"
             android:ellipsize="end"
             android:maxLines="1"
             android:padding="@dimen/dish_name_padding"

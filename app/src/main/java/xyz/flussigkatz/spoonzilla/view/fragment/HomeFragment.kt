@@ -16,6 +16,8 @@ import io.reactivex.rxjava3.schedulers.Schedulers
 import xyz.flussigkatz.spoonzilla.R
 import xyz.flussigkatz.spoonzilla.databinding.FragmentHomeBinding
 import xyz.flussigkatz.spoonzilla.util.AppConst
+import xyz.flussigkatz.spoonzilla.util.AutoDisposable
+import xyz.flussigkatz.spoonzilla.util.addTo
 import xyz.flussigkatz.spoonzilla.view.rv_adapter.DishRecyclerAdapter
 import xyz.flussigkatz.spoonzilla.view.rv_adapter.SpacingItemDecoration
 import xyz.flussigkatz.spoonzilla.viewmodel.HomeFragmentViewModel
@@ -25,6 +27,7 @@ class HomeFragment : Fragment() {
     private lateinit var dishAdapter: DishRecyclerAdapter
     private lateinit var binding: FragmentHomeBinding
     private val viewModel: HomeFragmentViewModel by activityViewModels()
+    private val autoDisposable = AutoDisposable()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -37,21 +40,39 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        autoDisposable.bindTo(lifecycle)
+
         initDishAdapter()
 
         initContent()
 
         initQuickSearch()
 
+        initRefreshLayout()
+
+    }
+
+    private fun initRefreshLayout() {
+        binding.homeRefreshLayout.setOnRefreshListener {
+            requireActivity().findViewById<SearchView>(R.id.main_quick_search).setQuery("", false)
+            requireActivity().findViewById<SearchView>(R.id.main_quick_search).clearFocus()
+            viewModel.getRandomRecipe(10)
+            viewModel.refreshState.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                    { binding.homeRefreshLayout.isRefreshing = it },
+                    { println("$TAG initRefreshLayout onError: ${it.localizedMessage}") }
+                ).addTo(autoDisposable)
+        }
     }
 
     private fun initQuickSearch() {
         @Suppress("RECEIVER_NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
         viewModel.searchPublishSubject.subscribeOn(Schedulers.io())
             .debounce(SEARCH_DEBOUNCE_TIME_MILLISECONDS, TimeUnit.MILLISECONDS)
-            .doOnNext { if (it.isNullOrBlank()) initContent()}
+            .doOnNext { if (it.isNullOrBlank()) initContent() }
             .filter { !it.isNullOrBlank() }
-            .map { viewModel.getSearchedRecipes(it!!.lowercase().trim()) }
+            .map { viewModel.getSearchedRecipes(it!!.lowercase().trim(), 0, 5) }
             .flatMap { it }.observeOn(AndroidSchedulers.mainThread())
             .subscribe(
                 {
@@ -63,7 +84,7 @@ class HomeFragment : Fragment() {
                     else dishAdapter.updateData(it)
                 },
                 { println("$TAG initSearch onError: ${it.localizedMessage}") }
-            )
+            ).addTo(autoDisposable)
     }
 
     private fun initContent() {
@@ -72,7 +93,7 @@ class HomeFragment : Fragment() {
             .subscribe(
                 { dishAdapter.updateData(it) },
                 { println("$TAG initContent onError: ${it.localizedMessage}") }
-            )
+            ).addTo(autoDisposable)
     }
 
     private fun initDishAdapter() {

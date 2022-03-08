@@ -9,13 +9,12 @@
         android:id="@id/homeFragment"
         android:name="xyz.flussigkatz.spoonzilla.view.fragment.HomeFragment"
         android:label="@string/fragment_home"
-        tools:layout="@layout/fragment_home" >
+        tools:layout="@layout/fragment_home">
         <action
             android:id="@+id/action_homeFragment_to_settingsFragment"
             app:destination="@id/settingsFragment"
             app:enterAnim="@anim/nav_default_enter_anim"
             app:exitAnim="@anim/nav_default_exit_anim"
-            app:launchSingleTop="true"
             app:popEnterAnim="@anim/nav_default_pop_enter_anim"
             app:popExitAnim="@anim/nav_default_pop_exit_anim" />
         <action
@@ -32,12 +31,19 @@
             app:exitAnim="@anim/nav_default_exit_anim"
             app:popEnterAnim="@anim/nav_default_pop_enter_anim"
             app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+        <action
+            android:id="@+id/action_homeFragment_to_advancedSearchSettingsFragment"
+            app:destination="@id/advancedSearchSettingsFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
     </fragment>
     <fragment
         android:id="@id/profileFragment"
         android:name="xyz.flussigkatz.spoonzilla.view.fragment.ProfileFragment"
         android:label="@string/fragment_profile"
-        tools:layout="@layout/fragment_profile" >
+        tools:layout="@layout/fragment_profile">
         <action
             android:id="@+id/action_profileFragment_to_homeFragment"
             app:destination="@id/homeFragment"
@@ -56,12 +62,21 @@
             app:popExitAnim="@anim/nav_default_pop_exit_anim"
             app:popUpTo="@id/settingsFragment"
             app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_profileFragment_to_advancedSearchSettingsFragment"
+            app:destination="@id/advancedSearchSettingsFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"
+            app:popUpTo="@id/advancedSearchSettingsFragment"
+            app:popUpToInclusive="true" />
     </fragment>
     <fragment
         android:id="@id/settingsFragment"
         android:name="xyz.flussigkatz.spoonzilla.view.fragment.SettingsFragment"
         android:label="@string/fragment_settings"
-        tools:layout="@layout/fragment_settings" >
+        tools:layout="@layout/fragment_settings">
         <action
             android:id="@+id/action_settingsFragment_to_homeFragment"
             app:destination="@id/homeFragment"
@@ -80,11 +95,20 @@
             app:popExitAnim="@anim/nav_default_pop_exit_anim"
             app:popUpTo="@id/profileFragment"
             app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_settingsFragment_to_advancedSearchSettingsFragment"
+            app:destination="@id/advancedSearchSettingsFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"
+            app:popUpTo="@id/advancedSearchSettingsFragment"
+            app:popUpToInclusive="true" />
     </fragment>
     <fragment
         android:id="@id/detailsFragment"
         android:name="xyz.flussigkatz.spoonzilla.view.fragment.DetailsFragment"
-        android:label="@string/fragment_details" >
+        android:label="@string/fragment_details">
         <action
             android:id="@+id/action_detailsFragment_to_similarRecipesFragment"
             app:destination="@id/similarRecipesFragment" />
@@ -126,4 +150,49 @@
         android:name="xyz.flussigkatz.spoonzilla.view.fragment.SimilarRecipesFragment"
         android:label="@string/fragment_similar_recipes"
         tools:layout="@layout/fragment_similar_recipes" />
+    <fragment
+        android:id="@id/advancedSearchSettingsFragment"
+        android:name="xyz.flussigkatz.spoonzilla.view.fragment.AdvancedSearchSettingsFragment"
+        android:label="@string/fragment_advanced_search_settings"
+        tools:layout="@layout/fragment_advanced_search_settings">
+        <action
+            android:id="@+id/action_advancedSearchSettingsFragment_to_homeFragment"
+            app:destination="@id/homeFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"
+            app:popUpTo="@id/homeFragment"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_advancedSearchSettingsFragment_to_settingsFragment"
+            app:destination="@id/settingsFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"
+            app:popUpTo="@id/settingsFragment"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_advancedSearchSettingsFragment_to_profileFragment"
+            app:destination="@id/profileFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"
+            app:popUpTo="@id/profileFragment"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_advancedSearchSettingsFragment_to_advancedSearchFragment"
+            app:destination="@id/advancedSearchFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+    </fragment>
+    <fragment
+        android:id="@+id/advancedSearchFragment"
+        android:name="xyz.flussigkatz.spoonzilla.view.fragment.AdvancedSearchFragment"
+        android:label="@string/fragment_advanced_search"
+        tools:layout="@layout/fragment_advanced_search" />
 </navigation>

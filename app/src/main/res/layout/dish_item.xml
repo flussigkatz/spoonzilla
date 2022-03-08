@@ -4,7 +4,7 @@
 
     <data>
 
-        <import type="xyz.flussigkatz.spoonzilla.data.entity.Dish" />
+        <import type="xyz.flussigkatz.core_api.entity.Dish" />
 
         <variable
             name="dish"

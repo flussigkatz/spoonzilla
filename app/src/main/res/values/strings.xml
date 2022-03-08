@@ -13,18 +13,23 @@
 
 
     <!--    recipe_tabs-->
-    <string name="tab_name_overview">"overview"</string>
-    <string name="tab_name_ingredients">"ingredients"</string>
-    <string name="tab_name_instructions">"instructions"</string>
+    <string name="tab_name_overview">overview</string>
+    <string name="tab_name_ingredients">ingredients</string>
+    <string name="tab_name_instructions">instructions</string>
     <string name="tab_name_nutrient">"nutrient"</string>
 
 
     <!--    main_menu-->
-    <string name="menu_title_home">"Home"</string>
-    <string name="menu_title_profile">"Profile"</string>
-    <string name="menu_title_settings">"Settings"</string>
-    <string name="menu_title_search">"Search"</string>
-    <string name="menu_title_log_out">"Log Out"</string>
+    <string name="menu_title_home">Home</string>
+    <string name="menu_title_profile">Profile</string>
+    <string name="menu_title_settings">Settings</string>
+    <string name="menu_title_search">Search</string>
+    <string name="menu_title_log_out">Log Out</string>
+
+    <!--    fragment_advanced_search_settings-->
+    <string name="include_cuisine_button_text">Include cuisine</string>
+    <string name="cuisine_switch_description">Include cuisine</string>
+    <string name="exclude_cuisine_button_text">Exclude cuisine</string>
 
     <!--    fragment_home-->
     <string name="home_search_empty_message">No match</string>

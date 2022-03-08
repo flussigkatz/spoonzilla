@@ -15,3 +15,6 @@ dependencyResolutionManagement {
 rootProject.name = "Spoonzilla"
 include ':app'
 include ':remote'
+include ':core:core_api'
+include ':core:core_impl'
+include ':core:core'

@@ -6,7 +6,7 @@ import xyz.flussigkatz.core_api.entity.Dish
 
 @Dao
 interface DishDao {
-    @Query("SELECT * FROM cashed_dishes")
+    @Query("SELECT * FROM cashed_dishes ORDER BY localId")
     fun getCashedDishes(): Observable<List<Dish>>
 
     @Query("SELECT * FROM cashed_dishes")

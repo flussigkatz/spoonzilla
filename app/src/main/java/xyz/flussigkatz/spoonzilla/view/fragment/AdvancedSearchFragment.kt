@@ -29,36 +29,6 @@ class AdvancedSearchFragment : Fragment() {
     private fun initContent() {
     }
 
-   /* private fun initDishAdapter() {
-        binding.homeRecycler.apply {
-            val clickListener = object : DishRecyclerAdapter.OnItemClickListener {
-                override fun click(dishId: Int) {
-                    val intent = Intent().apply {
-                        action = AppConst.NAVIGATE_TO_DETAILS_ACTION
-                        val bundle = Bundle().apply {
-                            putString(AppConst.DISH_ID_KEY, dishId.toString())
-                        }
-                        putExtra(AppConst.DISH_ID_KEY, bundle)
-                    }
-                    requireActivity().sendBroadcast(intent)
-                }
-            }
-            val scrollListener = object : RecyclerView.OnScrollListener() {
-                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                    super.onScrolled(recyclerView, dx, dy)
-                    if (dy != CANCEL_FOCUS_ON_SCROLL) {
-                        requireActivity().findViewById<SearchView>(R.id.main_search).clearFocus()
-                    }
-                }
-            }
-            dishAdapter = DishRecyclerAdapter(clickListener)
-            adapter = dishAdapter
-            layoutManager = LinearLayoutManager(context)
-            addOnScrollListener(scrollListener)
-            addItemDecoration(SpacingItemDecoration(PADDING_DP))
-        }
-    }*/
-
     companion object {
         private const val TAG = "AdvancedSearchFragment"
         private const val PADDING_DP = 2

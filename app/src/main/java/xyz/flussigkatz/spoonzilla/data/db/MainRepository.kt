@@ -15,8 +15,8 @@ class MainRepository(private val dishDao: DishDao) {
         return dishDao.getCashedDishes()
     }
 
-    fun clearDB(): Int {
+    fun clearDb(): Boolean {
         val films = dishDao.getCashedDishesToList()
-        return dishDao.deleteDishes(films)
+        return dishDao.deleteDishes(films) == 0
     }
 }

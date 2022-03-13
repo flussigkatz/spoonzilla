@@ -8,35 +8,28 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
-import xyz.flussigkatz.spoonzilla.App
 import xyz.flussigkatz.spoonzilla.R
-import xyz.flussigkatz.spoonzilla.data.preferences.PreferenceProvider
 import xyz.flussigkatz.spoonzilla.databinding.ActivityMainBinding
-import xyz.flussigkatz.spoonzilla.domain.Interactor
 import xyz.flussigkatz.spoonzilla.util.AppConst
 import xyz.flussigkatz.spoonzilla.util.NavigationHelper
-import javax.inject.Inject
+import xyz.flussigkatz.spoonzilla.viewmodel.MainActivityViewModel
 
 
 class MainActivity : AppCompatActivity() {
-    @Inject
-    lateinit var preferences: PreferenceProvider
 
-    @Inject
-    lateinit var interactor: Interactor
-
+    private val viewModel by lazy {
+        ViewModelProvider.NewInstanceFactory().create(MainActivityViewModel::class.java)
+    }
     private lateinit var binding: ActivityMainBinding
     lateinit var navController: NavController
     private val receiver = Receiver()
     private var timeOnPressed = 0L
 
-    init {
-        App.instance.dagger.inject(this)
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,12 +47,18 @@ class MainActivity : AppCompatActivity() {
         binding.mainQuickSearch.setOnQueryTextListener(
             object : androidx.appcompat.widget.SearchView.OnQueryTextListener {
                 override fun onQueryTextSubmit(query: String?): Boolean {
-                    if (!binding.mainQuickSearch.isIconified) interactor.putSearchQuery(query)
+                    if (!binding.mainQuickSearch.isIconified) {
+                        if (query != null) viewModel.putSearchQuery(query)
+                            else viewModel.putSearchQuery("")
+                    }
                     return false
                 }
 
                 override fun onQueryTextChange(newText: String?): Boolean {
-                    if (!binding.mainQuickSearch.isIconified) interactor.putSearchQuery(newText)
+                    if (!binding.mainQuickSearch.isIconified) {
+                        if (newText != null) viewModel.putSearchQuery(newText)
+                        else viewModel.putSearchQuery("")
+                    }
                     return false
                 }
 
@@ -127,7 +126,7 @@ class MainActivity : AppCompatActivity() {
             if (intent?.action == AppConst.NAVIGATE_TO_DETAILS_ACTION) {
                 NavigationHelper.navigateToDetailsFragment(
                     navController,
-                    intent.getBundleExtra(AppConst.DISH_ID_KEY)
+                    intent.getBundleExtra(AppConst.KEY_DISH_ID)
                 )
                 binding.mainNavigationView.menu.findItem(R.id.homeFragment).isChecked = false
                 binding.mainAppbar.setExpanded(true)

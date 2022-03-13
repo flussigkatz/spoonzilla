@@ -25,25 +25,25 @@ class DomainModule {
 
     @Provides
     @Singleton
-    fun provideSearchPublishSubject(): PublishSubject<String?> = PublishSubject.create()
+    fun provideSearchPublishSubject(): PublishSubject<String> = PublishSubject.create()
 
     @Provides
     @Singleton
-    fun provideBehaviorSubjectRefreshState(): BehaviorSubject<Boolean> = BehaviorSubject.create()
+    fun provideBehaviorSubjectLoadingState(): BehaviorSubject<Boolean> = BehaviorSubject.create()
 
     @Provides
     @Singleton
     fun provideInteractor(
         repository: MainRepository,
-        searchPublishSubject: PublishSubject<String?>,
-        refreshState: BehaviorSubject<Boolean>,
+        searchPublishSubject: PublishSubject<String>,
+        loadingState: BehaviorSubject<Boolean>,
         preferences: PreferenceProvider,
         retrofitService: SpoonacularApi
 
     ) = Interactor(
         repository = repository,
         searchPublishSubject = searchPublishSubject,
-        refreshState = refreshState,
+        loadingState = loadingState,
         preferences = preferences,
         retrofitService = retrofitService
     )

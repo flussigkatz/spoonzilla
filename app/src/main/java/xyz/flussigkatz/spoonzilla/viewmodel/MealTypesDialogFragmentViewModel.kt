@@ -5,7 +5,7 @@ import xyz.flussigkatz.spoonzilla.App
 import xyz.flussigkatz.spoonzilla.domain.Interactor
 import javax.inject.Inject
 
-class CuisineDialogFragmentViewModel : ViewModel() {
+class MealTypesDialogFragmentViewModel : ViewModel() {
     @Inject
     lateinit var interactor: Interactor
 

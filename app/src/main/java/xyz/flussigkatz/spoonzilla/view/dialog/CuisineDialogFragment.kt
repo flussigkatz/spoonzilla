@@ -4,21 +4,20 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import xyz.flussigkatz.spoonzilla.data.enums.Cuisines
 import xyz.flussigkatz.spoonzilla.databinding.DialogCuisineBinding
+import xyz.flussigkatz.spoonzilla.util.AppConst.KEY_CUISINE
 import xyz.flussigkatz.spoonzilla.view.rv_adapter.DialogItemRecyclerAdapter
 import xyz.flussigkatz.spoonzilla.viewmodel.CuisineDialogFragmentViewModel
-import xyz.flussigkatz.spoonzilla.viewmodel.HomeFragmentViewModel
 
 
 class CuisineDialogFragment : DialogFragment() {
     private lateinit var binding: DialogCuisineBinding
     private val viewModel: CuisineDialogFragmentViewModel by activityViewModels()
-    private lateinit var cuisineAdapter: DialogItemRecyclerAdapter
+    private lateinit var mAdapter: DialogItemRecyclerAdapter
     private lateinit var markedItems: MutableList<String>
     private val allItems = Cuisines.values().map { it.nameCuisine }
 
@@ -35,7 +34,7 @@ class CuisineDialogFragment : DialogFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.recyclerCuisine.apply {
-            viewModel.getCuisine().let {
+            viewModel.getDialogItemsFromPreference(KEY_CUISINE).let {
                 markedItems = if (it.isNullOrEmpty()) mutableListOf()
                 else it.toMutableList()
             }
@@ -45,14 +44,14 @@ class CuisineDialogFragment : DialogFragment() {
                     else markedItems.add(item)
                 }
             }
-            cuisineAdapter = DialogItemRecyclerAdapter(markedItems, allItems, clickListener)
-            adapter = cuisineAdapter
+            mAdapter = DialogItemRecyclerAdapter(markedItems, allItems, clickListener)
+            adapter = mAdapter
             layoutManager = LinearLayoutManager(context)
         }
     }
 
     override fun onStop() {
-        viewModel.putCuisine(markedItems.toSet())
+        viewModel.putDialogItemsToPreference(KEY_CUISINE, markedItems.toSet())
         super.onStop()
     }
 

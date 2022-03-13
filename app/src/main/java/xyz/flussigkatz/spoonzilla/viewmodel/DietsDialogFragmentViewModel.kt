@@ -5,7 +5,7 @@ import xyz.flussigkatz.spoonzilla.App
 import xyz.flussigkatz.spoonzilla.domain.Interactor
 import javax.inject.Inject
 
-class CuisineDialogFragmentViewModel : ViewModel() {
+class DietsDialogFragmentViewModel : ViewModel() {
     @Inject
     lateinit var interactor: Interactor
 
@@ -20,6 +20,4 @@ class CuisineDialogFragmentViewModel : ViewModel() {
     fun getDialogItemsFromPreference(key: String): MutableSet<String>? {
         return interactor.getDialogItemsFromPreference(key)
     }
-
-    fun profileExist() = !interactor.getProfile().isNullOrEmpty()
 }

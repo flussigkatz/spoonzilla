@@ -1,44 +1,84 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
     tools:context=".view.fragment.AdvancedSearchSettingsFragment">
 
-    <androidx.appcompat.widget.SearchView
+    <androidx.appcompat.widget.AppCompatEditText
         android:id="@+id/advanced_search_view"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="60dp"
-        app:iconifiedByDefault="false"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:hint="@string/advanced_search_hint" />
 
 
     <com.google.android.material.switchmaterial.SwitchMaterial
         android:id="@+id/cuisine_switch"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
         android:text="@string/cuisine_switch_description"
-        app:layout_constraintTop_toBottomOf="@id/advanced_search_view"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/include_cuisine_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/include_cuisine_button_text"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/cuisine_switch"/>
+        android:text="@string/include_cuisine_button_text" />
+
+
+    <com.google.android.material.switchmaterial.SwitchMaterial
+        android:id="@+id/diet_switch"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/diet_switch_description"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1" />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/exclude_cuisine_button"
+        android:id="@+id/include_diet_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/exclude_cuisine_button_text"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/include_cuisine_button"/>
+        android:text="@string/include_diet_button_text" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <com.google.android.material.switchmaterial.SwitchMaterial
+        android:id="@+id/intolerances_switch"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/intolerances_switch_description"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/include_intolerances_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/include_intolerances_button_text" />
+
+    <com.google.android.material.switchmaterial.SwitchMaterial
+        android:id="@+id/meal_type_switch"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/meal_type_switch_description"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/include_meal_type_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/include_meal_type_button_text" />
+
+    <com.google.android.material.switchmaterial.SwitchMaterial
+        android:id="@+id/instructions_switch"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/instructions_switch_description"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/advanced_search_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/advanced_search_button"
+        android:layout_gravity="center"/>
+
+
+</androidx.appcompat.widget.LinearLayoutCompat>

@@ -27,9 +27,17 @@
     <string name="menu_title_log_out">Log Out</string>
 
     <!--    fragment_advanced_search_settings-->
-    <string name="include_cuisine_button_text">Include cuisine</string>
-    <string name="cuisine_switch_description">Include cuisine</string>
-    <string name="exclude_cuisine_button_text">Exclude cuisine</string>
+    <string name="cuisine_switch_description">Cuisine from profile</string>
+    <string name="include_cuisine_button_text">Cuisine</string>
+    <string name="diet_switch_description">Diet from profile</string>
+    <string name="include_diet_button_text">Diet</string>
+    <string name="intolerances_switch_description">Intolerances from profile</string>
+    <string name="include_intolerances_button_text">Intolerances</string>
+    <string name="meal_type_switch_description">Meal types from profile</string>
+    <string name="include_meal_type_button_text">Meal types</string>
+    <string name="instructions_switch_description">Recipes must have instructions</string>
+    <string name="advanced_search_hint">Search query</string>
+    <string name="advanced_search_button">Search</string>
 
     <!--    fragment_home-->
     <string name="home_search_empty_message">No match</string>

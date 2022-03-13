@@ -13,9 +13,13 @@ class CuisineDialogFragmentViewModel : ViewModel() {
         App.instance.dagger.inject(this)
     }
 
-    fun putCuisine(cuisine: Set<String>) {
-        interactor.putCuisineToPreference(cuisine)
+    fun putDialogItemsToPreference(key: String, set: Set<String>) {
+        interactor.putDialogItemsToPreference(key, set)
     }
 
-    fun getCuisine(): MutableSet<String>? = interactor.getCuisineFromPreference()
+    fun getDialogItemsFromPreference(key: String): MutableSet<String>? {
+        return interactor.getDialogItemsFromPreference(key)
+    }
+
+    fun profileExist() = !interactor.getProfile().isNullOrEmpty()
 }

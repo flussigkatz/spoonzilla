@@ -2,7 +2,7 @@ package xyz.flussigkatz.spoonzilla.util
 
 import xyz.flussigkatz.remote.entity.random.RandomRecipesDto
 import xyz.flussigkatz.remote.entity.seached.SearchedRecipesDto
-import xyz.flussigkatz.spoonzilla.data.entity.Dish
+import xyz.flussigkatz.core_api.entity.Dish
 
 object DishConverter {
 

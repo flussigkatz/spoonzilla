@@ -1,26 +1,32 @@
 package xyz.flussigkatz.spoonzilla.di
 
-
+import android.app.Application
+import android.content.Context
+import dagger.BindsInstance
 import dagger.Component
-import xyz.flussigkatz.remote.RemoteProvider
-import xyz.flussigkatz.spoonzilla.di.module.ContextModule
-import xyz.flussigkatz.spoonzilla.di.module.DomainModule
-import xyz.flussigkatz.spoonzilla.view.MainActivity
-import xyz.flussigkatz.spoonzilla.viewmodel.CuisineDialogFragmentViewModel
-import xyz.flussigkatz.spoonzilla.viewmodel.HomeFragmentViewModel
+import xyz.flussigkatz.core_api.AppProvider
 import javax.inject.Singleton
 
+
 @Singleton
-@Component(
-    dependencies = [RemoteProvider::class],
-    modules = [ContextModule::class, DomainModule::class]
-)
+@Component
+interface AppComponent : AppProvider {
+    companion object {
+        private var appComponent: AppProvider? = null
+        fun create(application: Application): AppProvider {
+            return appComponent ?: DaggerAppComponent
+                .builder()
+                .application(application.applicationContext)
+                .build().also {
+                    appComponent = it
+                }
+        }
+    }
 
-interface AppComponent {
-
-    fun inject(mainActivity: MainActivity)
-
-    fun inject(homeFragmentViewModel: HomeFragmentViewModel)
-
-    fun inject(cuisineDialogFragmentViewModel: CuisineDialogFragmentViewModel)
+    @Component.Builder
+    interface Builder {
+        @BindsInstance
+        fun application(context: Context): Builder
+        fun build(): AppComponent
+    }
 }

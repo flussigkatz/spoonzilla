@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -16,6 +15,8 @@ import io.reactivex.rxjava3.schedulers.Schedulers
 import xyz.flussigkatz.spoonzilla.R
 import xyz.flussigkatz.spoonzilla.databinding.FragmentHomeBinding
 import xyz.flussigkatz.spoonzilla.util.AppConst
+import xyz.flussigkatz.spoonzilla.util.AutoDisposable
+import xyz.flussigkatz.spoonzilla.util.addTo
 import xyz.flussigkatz.spoonzilla.view.rv_adapter.DishRecyclerAdapter
 import xyz.flussigkatz.spoonzilla.view.rv_adapter.SpacingItemDecoration
 import xyz.flussigkatz.spoonzilla.viewmodel.HomeFragmentViewModel
@@ -25,6 +26,8 @@ class HomeFragment : Fragment() {
     private lateinit var dishAdapter: DishRecyclerAdapter
     private lateinit var binding: FragmentHomeBinding
     private val viewModel: HomeFragmentViewModel by activityViewModels()
+    private val autoDisposable = AutoDisposable()
+    private var isLoadingFromApi = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -37,33 +40,54 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        autoDisposable.bindTo(lifecycle)
+
         initDishAdapter()
 
         initContent()
 
         initQuickSearch()
 
+        initRefreshLayout()
+
+        initLoadingState()
+
+    }
+
+    private fun initLoadingState() {
+        viewModel.loadingState.subscribeOn(Schedulers.io())
+            .subscribe(
+                { isLoadingFromApi = it },
+                { println("$TAG initIsLoading onError: ${it.localizedMessage}") }
+            ).addTo(autoDisposable)
+    }
+
+    private fun initRefreshLayout() {
+        binding.homeRefreshLayout.setOnRefreshListener {
+            requireActivity().findViewById<SearchView>(R.id.main_quick_search).setQuery("", false)
+            requireActivity().findViewById<SearchView>(R.id.main_quick_search).clearFocus()
+            viewModel.getRandomRecipe()
+            viewModel.loadingState.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                    { binding.homeRefreshLayout.isRefreshing = it },
+                    { println("$TAG initRefreshLayout onError: ${it.localizedMessage}") }
+                ).addTo(autoDisposable)
+        }
     }
 
     private fun initQuickSearch() {
-        @Suppress("RECEIVER_NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
         viewModel.searchPublishSubject.subscribeOn(Schedulers.io())
             .debounce(SEARCH_DEBOUNCE_TIME_MILLISECONDS, TimeUnit.MILLISECONDS)
-            .doOnNext { if (it.isNullOrBlank()) initContent()}
-            .filter { !it.isNullOrBlank() }
-            .map { viewModel.getSearchedRecipes(it!!.lowercase().trim()) }
-            .flatMap { it }.observeOn(AndroidSchedulers.mainThread())
+            .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
                 {
-                    if (it.isNullOrEmpty()) Toast.makeText(
-                        requireContext(),
-                        resources.getText(R.string.home_search_empty_message),
-                        Toast.LENGTH_SHORT
-                    ).show()
-                    else dishAdapter.updateData(it)
+                    if (!it.isNullOrBlank())
+                        viewModel.getSearchedRecipes(it.lowercase().trim(), null)
+                    else viewModel.getRandomRecipe()
                 },
-                { println("$TAG initSearch onError: ${it.localizedMessage}") }
-            )
+                { println("$TAG initQuickSearch onError: ${it.localizedMessage}") }
+            ).addTo(autoDisposable)
     }
 
     private fun initContent() {
@@ -72,19 +96,20 @@ class HomeFragment : Fragment() {
             .subscribe(
                 { dishAdapter.updateData(it) },
                 { println("$TAG initContent onError: ${it.localizedMessage}") }
-            )
+            ).addTo(autoDisposable)
     }
 
     private fun initDishAdapter() {
+        val mLayoutManager = LinearLayoutManager(context)
         binding.homeRecycler.apply {
             val clickListener = object : DishRecyclerAdapter.OnItemClickListener {
                 override fun click(dishId: Int) {
                     val intent = Intent().apply {
                         action = AppConst.NAVIGATE_TO_DETAILS_ACTION
                         val bundle = Bundle().apply {
-                            putString(AppConst.DISH_ID_KEY, dishId.toString())
+                            putString(AppConst.KEY_DISH_ID, dishId.toString())
                         }
-                        putExtra(AppConst.DISH_ID_KEY, bundle)
+                        putExtra(AppConst.KEY_DISH_ID, bundle)
                     }
                     requireActivity().sendBroadcast(intent)
                 }
@@ -92,15 +117,22 @@ class HomeFragment : Fragment() {
             val scrollListener = object : RecyclerView.OnScrollListener() {
                 override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                     super.onScrolled(recyclerView, dx, dy)
-                    if (dy != CANCEL_FOCUS_ON_SCROLL) {
+                    if (dy != ZERO) {
                         requireActivity().findViewById<SearchView>(R.id.main_quick_search)
                             .clearFocus()
+                    }
+                    if (dy > ZERO && !isLoadingFromApi) {
+                        paginationCheck(
+                            mLayoutManager.childCount,
+                            mLayoutManager.itemCount,
+                            mLayoutManager.findFirstVisibleItemPosition()
+                        )
                     }
                 }
             }
             dishAdapter = DishRecyclerAdapter(clickListener)
+            layoutManager = mLayoutManager
             adapter = dishAdapter
-            layoutManager = LinearLayoutManager(context)
             addOnScrollListener(scrollListener)
             addItemDecoration(SpacingItemDecoration(PADDING_DP))
         }
@@ -116,6 +148,24 @@ class HomeFragment : Fragment() {
         super.onStop()
     }
 
+    fun paginationCheck(
+        visibleItemCount: Int,
+        totalItemCount: Int,
+        pastVisibleItems: Int
+
+    ) {
+        if (totalItemCount - (visibleItemCount + pastVisibleItems) <= REMAINDER_OF_ELEMENTS) {
+            val mainSearchQuery = requireActivity()
+                .findViewById<SearchView>(R.id.main_quick_search)
+                .query
+            if (mainSearchQuery.isNullOrBlank()) viewModel.doRandomRecipePagination()
+            else viewModel.doSearchedRecipesPagination(
+                mainSearchQuery.toString(),
+                totalItemCount
+            )
+        }
+    }
+
     private fun quickSearchSwitcher(state: Boolean) {
         requireActivity().findViewById<SearchView>(R.id.main_quick_search).apply {
             visibility = if (state) View.VISIBLE
@@ -126,7 +176,8 @@ class HomeFragment : Fragment() {
     companion object {
         private const val TAG = "HomeFragment"
         private const val PADDING_DP = 2
-        private const val CANCEL_FOCUS_ON_SCROLL = 0
+        private const val ZERO = 0
+        private const val REMAINDER_OF_ELEMENTS = 2
         private const val SEARCH_DEBOUNCE_TIME_MILLISECONDS = 1000L
     }
 

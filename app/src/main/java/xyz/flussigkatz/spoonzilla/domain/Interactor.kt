@@ -1,16 +1,21 @@
 package xyz.flussigkatz.spoonzilla.domain
 
+import androidx.core.content.edit
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.schedulers.Schedulers
+import io.reactivex.rxjava3.subjects.BehaviorSubject
 import io.reactivex.rxjava3.subjects.PublishSubject
 import xyz.flussigkatz.remote.SpoonacularApi
 import xyz.flussigkatz.spoonzilla.ApiKey
-import xyz.flussigkatz.spoonzilla.data.entity.Dish
+import xyz.flussigkatz.core_api.entity.Dish
+import xyz.flussigkatz.spoonzilla.data.db.MainRepository
 import xyz.flussigkatz.spoonzilla.data.preferences.PreferenceProvider
 import xyz.flussigkatz.spoonzilla.util.DishConverter
 
 class Interactor(
-    private val searchPublishSubject: PublishSubject<String?>,
+    private val repository: MainRepository,
+    private val searchPublishSubject: PublishSubject<String>,
+    private val loadingState: BehaviorSubject<Boolean>,
     private val preferences: PreferenceProvider,
     private val retrofitService: SpoonacularApi
 ) {
@@ -29,15 +34,33 @@ class Interactor(
             )
     }
 
-    fun getRandomRecipeFromApi(number: Int): Observable<List<Dish>> {
-        return retrofitService.getRandomRecipes(
+    fun getRandomRecipeFromApi(number: Int, clearDb: Boolean) {
+        retrofitService.getRandomRecipes(
             limitLicense = false,
             tags = tags.joinToString(),
             number = number,
             apiKey = ApiKey.API_KEY
         ).subscribeOn(Schedulers.io())
             .filter { !it.recipes.isNullOrEmpty() }
-            .map {DishConverter.convertRandomRecipeFromApi(it)}
+            .map { DishConverter.convertRandomRecipeFromApi(it) }
+            .doOnSubscribe { loadingState.onNext(true) }
+            .doOnComplete { loadingState.onNext(false) }
+            .doOnError { loadingState.onNext(false) }
+            .subscribe(
+                {
+                    if (clearDb) {
+                        var isClear: Boolean
+                        do isClear = repository.clearDb()
+                        while (!isClear)
+                    }
+                    repository.putFilmToDB(it)
+                },
+                { println("$TAG getRandomRecipeFromApi onError: ${it.localizedMessage}") }
+            )
+    }
+
+    fun getRandomRecipeFromDb(): Observable<List<Dish>> {
+        return repository.getAllFilmsFromDB()
     }
 
     fun getSimilarRecipesFromApi(id: Int) {
@@ -70,8 +93,9 @@ class Interactor(
         query: String,
         offset: Int?,
         number: Int?,
-    ): Observable<List<Dish>> {
-        return retrofitService.getSearchedRecipes(
+        clearDb: Boolean
+    ) {
+        retrofitService.getSearchedRecipes(
             query = query,
             offset = offset,
             number = number,
@@ -79,19 +103,75 @@ class Interactor(
             apiKey = ApiKey.API_KEY
         ).subscribeOn(Schedulers.io())
             .map { DishConverter.convertSearchedRecipeBasicInfoFromApi(it) }
+            .doOnSubscribe { loadingState.onNext(true) }
+            .doOnComplete { loadingState.onNext(false) }
+            .doOnError { loadingState.onNext(false) }
+            .subscribe(
+                {
+                    if (clearDb) {
+                        var isClear: Boolean
+                        do isClear = repository.clearDb()
+                        while (!isClear)
+                    }
+                    repository.putFilmToDB(it)
+                },
+                { println("$TAG getSearchedRecipesFromApi onError: ${it.localizedMessage}") }
+            )
     }
 
-    fun putSearchQuery(query: String?) {
+    fun getAdvancedSearchedRecipes(
+        query: String,
+        cuisine: String?,
+        diet: String?,
+        intolerances: String?,
+        type: String?,
+        instructionsRequired: Boolean?,
+        offset: Int?,
+        number: Int?,
+        clearDb: Boolean
+    ) {
+        retrofitService.getAdvancedSearchedRecipes(
+            query = query,
+            cuisine = cuisine,
+            diet = diet,
+            intolerances = intolerances,
+            type = type,
+            instructionsRequired = instructionsRequired,
+            offset = offset,
+            number = number,
+            limitLicense = false,
+            apiKey = ApiKey.API_KEY
+        )
+    }
+
+    fun putSearchQuery(query: String) {
         searchPublishSubject.onNext(query)
     }
 
     fun getSearchPublishSubject() = searchPublishSubject
 
-    fun putCuisineToPreference(cuisine: Set<String>) {
-        preferences.putCuisine(cuisine)
+    fun putDialogItemsToPreference(key: String, set: Set<String>) {
+        preferences.putDialogItems(key, set)
     }
 
-    fun getCuisineFromPreference(): MutableSet<String>? = preferences.getCuisine()
+    fun getDialogItemsFromPreference(key: String): MutableSet<String>? {
+        return preferences.getDialogItems(key)
+    }
+
+    fun getRefreshState() = loadingState
+
+    fun serProfile(profile: String?) {
+        preferences.setProfile(profile)
+    }
+
+    fun getProfile() = preferences.getProfile()
+
+    fun saveAdvancedSearchSwitchState(key: String, state: Boolean) {
+        preferences.saveAdvancedSearchSwitchState(key, state)
+    }
+
+    fun getAdvancedSearchSwitchState(key: String) = preferences.getAdvancedSearchSwitchState(key)
+
 
     companion object {
         private const val TAG = "Interactor"

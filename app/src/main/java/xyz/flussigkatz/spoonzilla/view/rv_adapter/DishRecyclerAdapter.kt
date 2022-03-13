@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 import xyz.flussigkatz.spoonzilla.R
-import xyz.flussigkatz.spoonzilla.data.entity.Dish
+import xyz.flussigkatz.core_api.entity.Dish
 import xyz.flussigkatz.spoonzilla.databinding.DishItemBinding
 import xyz.flussigkatz.spoonzilla.util.DishDiff
 import xyz.flussigkatz.spoonzilla.view.rv_viewholder.DishViewHolder

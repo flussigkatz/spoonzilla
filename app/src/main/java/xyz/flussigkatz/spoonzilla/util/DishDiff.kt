@@ -1,7 +1,7 @@
 package xyz.flussigkatz.spoonzilla.util
 
 import androidx.recyclerview.widget.DiffUtil
-import xyz.flussigkatz.spoonzilla.data.entity.Dish
+import xyz.flussigkatz.core_api.entity.Dish
 
 class DishDiff(
     private var oldList: List<Dish>,

@@ -52,7 +52,7 @@ interface SpoonacularApi {
 
     @GET("/recipes/complexSearch")
     fun getAdvancedSearchedRecipes(
-        @Query("query") query: String,
+        @Query("query") query: String?,
         @Query("cuisine") cuisine: String?,
         @Query("diet") diet: String?,
         @Query("intolerances") intolerances: String?,

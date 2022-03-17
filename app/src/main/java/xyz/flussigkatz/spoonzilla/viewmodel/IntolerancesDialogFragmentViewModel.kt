@@ -18,7 +18,7 @@ class IntolerancesDialogFragmentViewModel : ViewModel() {
     }
 
     fun getDialogItemsFromPreference(key: String): MutableSet<String>? {
-        return interactor.getDialogItemsFromPreference(key)
+        return interactor.getSearchSettings(key)
     }
 
     fun profileExist() = !interactor.getProfile().isNullOrEmpty()

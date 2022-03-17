@@ -1,6 +1,5 @@
 package xyz.flussigkatz.spoonzilla.domain
 
-import androidx.core.content.edit
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.schedulers.Schedulers
 import io.reactivex.rxjava3.subjects.BehaviorSubject
@@ -20,8 +19,6 @@ class Interactor(
     private val retrofitService: SpoonacularApi
 ) {
 
-    private val tags: List<String> = listOf("")
-
     fun getRecipeByIdFromApi(id: Int) {
         retrofitService.getRecipeById(
             id = id,
@@ -34,10 +31,13 @@ class Interactor(
             )
     }
 
-    fun getRandomRecipeFromApi(number: Int, clearDb: Boolean) {
+    fun getRandomRecipeFromApi(
+        number: Int,
+        tags: String,
+        clearDb: Boolean) {
         retrofitService.getRandomRecipes(
             limitLicense = false,
-            tags = tags.joinToString(),
+            tags = tags,
             number = number,
             apiKey = ApiKey.API_KEY
         ).subscribeOn(Schedulers.io())
@@ -59,7 +59,7 @@ class Interactor(
             )
     }
 
-    fun getRandomRecipeFromDb(): Observable<List<Dish>> {
+    fun getRecipeFromDb(): Observable<List<Dish>> {
         return repository.getAllFilmsFromDB()
     }
 
@@ -120,7 +120,7 @@ class Interactor(
     }
 
     fun getAdvancedSearchedRecipes(
-        query: String,
+        query: String?,
         cuisine: String?,
         diet: String?,
         intolerances: String?,
@@ -141,11 +141,26 @@ class Interactor(
             number = number,
             limitLicense = false,
             apiKey = ApiKey.API_KEY
-        )
+        ).subscribeOn(Schedulers.io())
+            .map { DishConverter.convertSearchedRecipeBasicInfoFromApi(it) }
+            .doOnSubscribe { loadingState.onNext(true) }
+            .doOnComplete { loadingState.onNext(false) }
+            .doOnError { loadingState.onNext(false) }
+            .subscribe(
+                {
+                    if (clearDb) {
+                        var isClear: Boolean
+                        do isClear = repository.clearDb()
+                        while (!isClear)
+                    }
+                    repository.putFilmToDB(it)
+                },
+                { println("$TAG getAdvancedSearchedRecipes onError: ${it.localizedMessage}") }
+            )
     }
 
     fun putSearchQuery(query: String) {
-        searchPublishSubject.onNext(query)
+        searchPublishSubject.onNext(query.lowercase().trim())
     }
 
     fun getSearchPublishSubject() = searchPublishSubject
@@ -154,7 +169,7 @@ class Interactor(
         preferences.putDialogItems(key, set)
     }
 
-    fun getDialogItemsFromPreference(key: String): MutableSet<String>? {
+    fun getSearchSettings(key: String): MutableSet<String>? {
         return preferences.getDialogItems(key)
     }
 

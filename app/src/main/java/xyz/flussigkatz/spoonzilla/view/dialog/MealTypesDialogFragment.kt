@@ -9,7 +9,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import xyz.flussigkatz.spoonzilla.data.enums.MealTypes
 import xyz.flussigkatz.spoonzilla.databinding.DialogMealTypesBinding
-import xyz.flussigkatz.spoonzilla.util.AppConst.KEY_MEAT_TYPE
+import xyz.flussigkatz.spoonzilla.util.AppConst.KEY_MEAl_TYPE
 import xyz.flussigkatz.spoonzilla.view.rv_adapter.DialogItemRecyclerAdapter
 import xyz.flussigkatz.spoonzilla.viewmodel.MealTypesDialogFragmentViewModel
 
@@ -32,7 +32,7 @@ class MealTypesDialogFragment : DialogFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.recyclerMealTypes.apply {
-            viewModel.getDialogItemsFromPreference(KEY_MEAT_TYPE).let {
+            viewModel.getDialogItemsFromPreference(KEY_MEAl_TYPE).let {
                 markedItems = if (it.isNullOrEmpty()) mutableListOf()
                 else it.toMutableList()
             }
@@ -49,7 +49,7 @@ class MealTypesDialogFragment : DialogFragment() {
     }
 
     override fun onStop() {
-        viewModel.putDialogItemsToPreference(KEY_MEAT_TYPE, markedItems.toSet())
+        viewModel.putDialogItemsToPreference(KEY_MEAl_TYPE, markedItems.toSet())
         super.onStop()
     }
 

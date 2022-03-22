@@ -11,11 +11,12 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle.State.RESUMED
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.schedulers.Schedulers
 import xyz.flussigkatz.spoonzilla.R
 import xyz.flussigkatz.spoonzilla.databinding.FragmentHomeBinding
-import xyz.flussigkatz.spoonzilla.util.AppConst
+import xyz.flussigkatz.spoonzilla.util.AppConst.KEY_DISH_ID
 import xyz.flussigkatz.spoonzilla.util.AppConst.NAVIGATE_TO_DETAILS_ACTION
 import xyz.flussigkatz.spoonzilla.util.AppConst.PADDING_DP
 import xyz.flussigkatz.spoonzilla.util.AppConst.REMAINDER_OF_ELEMENTS
@@ -110,10 +111,8 @@ class HomeFragment : Fragment() {
             override fun click(dishId: Int) {
                 val intent = Intent().apply {
                     action = NAVIGATE_TO_DETAILS_ACTION
-                    val bundle = Bundle().apply {
-                        putString(AppConst.KEY_DISH_ID, dishId.toString())
-                    }
-                    putExtra(AppConst.KEY_DISH_ID, bundle)
+                    val bundle = Bundle().apply { putInt(KEY_DISH_ID, dishId) }
+                    putExtra(KEY_DISH_ID, bundle)
                 }
                 requireActivity().sendBroadcast(intent)
             }
@@ -135,12 +134,15 @@ class HomeFragment : Fragment() {
             }
         }
         binding.homeRecycler.apply {
-            dishAdapter = DishRecyclerAdapter(clickListener)
+            dishAdapter = DishRecyclerAdapter(clickListener).apply {
+                stateRestorationPolicy = PREVENT_WHEN_EMPTY
+            }
             layoutManager = mLayoutManager
             adapter = dishAdapter
             addOnScrollListener(scrollListener)
             addItemDecoration(SpacingItemDecoration(PADDING_DP))
         }
+
     }
 
     private fun getSearchedRecipes(query: String?) {

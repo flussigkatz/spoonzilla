@@ -9,6 +9,7 @@ import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.core.view.GravityCompat
@@ -29,9 +30,7 @@ import xyz.flussigkatz.spoonzilla.viewmodel.MainActivityViewModel
 
 class MainActivity : AppCompatActivity() {
 
-    private val viewModel by lazy {
-        ViewModelProvider.NewInstanceFactory().create(MainActivityViewModel::class.java)
-    }
+    private val viewModel: MainActivityViewModel by viewModels()
     private lateinit var binding: ActivityMainBinding
     lateinit var navController: NavController
     private val receiver = Receiver()
@@ -42,13 +41,9 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
         initNavigation()
-
         initQuickSearch()
-
         initReceiver()
-
     }
 
     private fun initQuickSearch() {
@@ -144,10 +139,14 @@ class MainActivity : AppCompatActivity() {
         override fun onReceive(context: Context?, intent: Intent?) {
             when (intent?.action) {
                 NAVIGATE_TO_DETAILS_ACTION -> {
-                    NavigationHelper.navigateToDetailsFragment(
-                        navController,
-                        intent.getBundleExtra(KEY_DISH_ID)
-                    )
+                    val onScreenFragmentId = navController.currentDestination?.id
+                    onScreenFragmentId?.let {
+                        NavigationHelper.navigateToDetailsFragment(
+                            navController,
+                            intent.getBundleExtra(KEY_DISH_ID),
+                            onScreenFragmentId
+                        )
+                    }
                     binding.mainAppbar.setExpanded(true)
                 }
                 NAVIGATE_TO_ADVANCED_SEARCH_ACTION -> {

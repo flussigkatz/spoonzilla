@@ -5,11 +5,15 @@ import io.reactivex.rxjava3.schedulers.Schedulers
 import io.reactivex.rxjava3.subjects.BehaviorSubject
 import io.reactivex.rxjava3.subjects.PublishSubject
 import xyz.flussigkatz.remote.SpoonacularApi
-import xyz.flussigkatz.spoonzilla.ApiKey
 import xyz.flussigkatz.core_api.entity.Dish
+import xyz.flussigkatz.spoonzilla.ApiKey.API_KEY
 import xyz.flussigkatz.spoonzilla.data.db.MainRepository
+import xyz.flussigkatz.spoonzilla.data.entity.DishAdvancedInfo
+import xyz.flussigkatz.spoonzilla.data.entity.Equipment
+import xyz.flussigkatz.spoonzilla.data.entity.Ingredient
+import xyz.flussigkatz.spoonzilla.data.entity.instructions.InstructionsItem
 import xyz.flussigkatz.spoonzilla.data.preferences.PreferenceProvider
-import xyz.flussigkatz.spoonzilla.util.DishConverter
+import xyz.flussigkatz.spoonzilla.util.Converter
 
 class Interactor(
     private val repository: MainRepository,
@@ -19,40 +23,53 @@ class Interactor(
     private val retrofitService: SpoonacularApi
 ) {
 
-    fun getRecipeByIdFromApi(id: Int) {
-        retrofitService.getRecipeById(
+    fun getRecipeByIdFromApi(id: Int): Observable<DishAdvancedInfo> {
+        return retrofitService.getRecipeById(
             id = id,
             includeNutrition = true,
-            apiKey = ApiKey.API_KEY
+            apiKey = API_KEY
         ).subscribeOn(Schedulers.io())
-            .subscribe(
-                { println(it.title) },
-                { println("$TAG getRecipeByIdFromApi onError: ${it.localizedMessage}") }
-            )
+            .map { Converter.convertRecipeByIdFromApi(it) }
+    }
+
+    fun getIngredientsById(id: Int): Observable<List<Ingredient>> {
+        val metric = preferences.getMetric()
+        return retrofitService.getIngredientsById(id = id, apiKey = API_KEY)
+            .subscribeOn(Schedulers.io())
+            .map { Converter.convertIngredientsByIdFromApi(it, metric) }
+    }
+
+    fun getEquipmentsById(id: Int): Observable<List<Equipment>> {
+        return retrofitService.getEquipmentsById(id = id, apiKey = API_KEY)
+            .subscribeOn(Schedulers.io())
+            .map { Converter.convertEquipmentsByIdFromApi(it) }
+    }
+
+    fun getInstructionsById(id: Int): Observable<List<InstructionsItem>> {
+        return retrofitService.getInstructionsById(id = id, apiKey = API_KEY)
+            .subscribeOn(Schedulers.io())
+            .map { Converter.convertInstructionsByIdFromApi(it) }
     }
 
     fun getRandomRecipeFromApi(
         number: Int,
         tags: String,
-        clearDb: Boolean) {
+        clearDb: Boolean
+    ) {
         retrofitService.getRandomRecipes(
             limitLicense = false,
             tags = tags,
             number = number,
-            apiKey = ApiKey.API_KEY
+            apiKey = API_KEY
         ).subscribeOn(Schedulers.io())
             .filter { !it.recipes.isNullOrEmpty() }
-            .map { DishConverter.convertRandomRecipeFromApi(it) }
+            .map { Converter.convertRandomRecipeFromApi(it) }
             .doOnSubscribe { loadingState.onNext(true) }
             .doOnComplete { loadingState.onNext(false) }
             .doOnError { loadingState.onNext(false) }
             .subscribe(
                 {
-                    if (clearDb) {
-                        var isClear: Boolean
-                        do isClear = repository.clearDb()
-                        while (!isClear)
-                    }
+                    if (clearDb) repository.clearDb()
                     repository.putFilmToDB(it)
                 },
                 { println("$TAG getRandomRecipeFromApi onError: ${it.localizedMessage}") }
@@ -68,7 +85,7 @@ class Interactor(
             id = id,
             number = 4,
             limitLicense = false,
-            apiKey = ApiKey.API_KEY
+            apiKey = API_KEY
         ).subscribeOn(Schedulers.io())
             .subscribe(
                 { onNext -> onNext.forEach { println(it.title) } },
@@ -80,7 +97,7 @@ class Interactor(
         retrofitService.getRecipeTaste(
             id = id,
             normalize = true,
-            apiKey = ApiKey.API_KEY
+            apiKey = API_KEY
         ).subscribeOn(Schedulers.io())
             .subscribe(
                 { println(it) },
@@ -100,19 +117,15 @@ class Interactor(
             offset = offset,
             number = number,
             limitLicense = false,
-            apiKey = ApiKey.API_KEY
+            apiKey = API_KEY
         ).subscribeOn(Schedulers.io())
-            .map { DishConverter.convertSearchedRecipeBasicInfoFromApi(it) }
+            .map { Converter.convertSearchedRecipeBasicInfoFromApi(it) }
             .doOnSubscribe { loadingState.onNext(true) }
             .doOnComplete { loadingState.onNext(false) }
             .doOnError { loadingState.onNext(false) }
             .subscribe(
                 {
-                    if (clearDb) {
-                        var isClear: Boolean
-                        do isClear = repository.clearDb()
-                        while (!isClear)
-                    }
+                    if (clearDb) repository.clearDb()
                     repository.putFilmToDB(it)
                 },
                 { println("$TAG getSearchedRecipesFromApi onError: ${it.localizedMessage}") }
@@ -140,19 +153,15 @@ class Interactor(
             offset = offset,
             number = number,
             limitLicense = false,
-            apiKey = ApiKey.API_KEY
+            apiKey = API_KEY
         ).subscribeOn(Schedulers.io())
-            .map { DishConverter.convertSearchedRecipeBasicInfoFromApi(it) }
+            .map { Converter.convertSearchedRecipeBasicInfoFromApi(it) }
             .doOnSubscribe { loadingState.onNext(true) }
             .doOnComplete { loadingState.onNext(false) }
             .doOnError { loadingState.onNext(false) }
             .subscribe(
                 {
-                    if (clearDb) {
-                        var isClear: Boolean
-                        do isClear = repository.clearDb()
-                        while (!isClear)
-                    }
+                    if (clearDb) repository.clearDb()
                     repository.putFilmToDB(it)
                 },
                 { println("$TAG getAdvancedSearchedRecipes onError: ${it.localizedMessage}") }

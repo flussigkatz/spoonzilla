@@ -25,21 +25,20 @@ class MealTypesDialogFragment : DialogFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding= DialogMealTypesBinding.inflate(inflater, container, false)
+        binding = DialogMealTypesBinding.inflate(inflater, container, false)
         return binding.root
     }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         binding.recyclerMealTypes.apply {
             viewModel.getDialogItemsFromPreference(KEY_MEAl_TYPE).let {
-                markedItems = if (it.isNullOrEmpty()) mutableListOf()
-                else it.toMutableList()
+                markedItems = it.orEmpty().toMutableList()
             }
             val clickListener = object : DialogItemRecyclerAdapter.OnCheckedChangeListener {
                 override fun checkedChange(item: String, state: Boolean) {
-                    if (state) markedItems.remove(item)
-                    else markedItems.add(item)
+                    if (state) markedItems.remove(item) else markedItems.add(item)
                 }
             }
             mAdapter = DialogItemRecyclerAdapter(markedItems, allItems, clickListener)

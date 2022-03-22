@@ -26,21 +26,20 @@ class IntolerancesDialogFragment : DialogFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding= DialogIntolerancesBinding.inflate(inflater, container, false)
+        binding = DialogIntolerancesBinding.inflate(inflater, container, false)
         return binding.root
     }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         binding.recyclerIntolerances.apply {
             viewModel.getDialogItemsFromPreference(KEY_INTOLERANCE).let {
-                markedItems = if (it.isNullOrEmpty()) mutableListOf()
-                else it.toMutableList()
+                markedItems = it.orEmpty().toMutableList()
             }
             val clickListener = object : DialogItemRecyclerAdapter.OnCheckedChangeListener {
                 override fun checkedChange(item: String, state: Boolean) {
-                    if (state) markedItems.remove(item)
-                    else markedItems.add(item)
+                    if (state) markedItems.remove(item) else markedItems.add(item)
                 }
             }
             mAdapter = DialogItemRecyclerAdapter(markedItems, allItems, clickListener)

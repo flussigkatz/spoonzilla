@@ -4,6 +4,9 @@ import io.reactivex.rxjava3.core.Observable
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
+import xyz.flussigkatz.remote.entity.ingredients_by_id.IngredientsByIdDto
+import xyz.flussigkatz.remote.entity.equipment_by_id.EquipmentByIdDto
+import xyz.flussigkatz.remote.entity.instructions_by_id.InstructionsByIdDto
 import xyz.flussigkatz.remote.entity.random.RandomRecipesDto
 import xyz.flussigkatz.remote.entity.seached.SearchedRecipesDto
 import xyz.flussigkatz.remote.entity.searched_by_id.SearchedRecipeByIdDto
@@ -25,6 +28,24 @@ interface SpoonacularApi {
         @Query("includeNutrition") includeNutrition: Boolean,
         @Query("apiKey") apiKey: String
     ): Observable<SearchedRecipeByIdDto>
+
+    @GET("/recipes/{id}/ingredientWidget.json")
+    fun getIngredientsById(
+        @Path("id") id: Int,
+        @Query("apiKey") apiKey: String
+    ): Observable<IngredientsByIdDto>
+
+    @GET("/recipes/{id}/equipmentWidget.json")
+    fun getEquipmentsById(
+        @Path("id") id: Int,
+        @Query("apiKey") apiKey: String
+    ): Observable<EquipmentByIdDto>
+
+    @GET("/recipes/{id}/analyzedInstructions")
+    fun getInstructionsById(
+        @Path("id") id: Int,
+        @Query("apiKey") apiKey: String
+    ): Observable<InstructionsByIdDto>
 
     @GET("/recipes/{id}/similar")
     fun getSimilarRecipes(

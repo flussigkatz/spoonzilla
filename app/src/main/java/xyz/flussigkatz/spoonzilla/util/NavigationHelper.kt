@@ -73,8 +73,23 @@ object NavigationHelper {
     fun navigateToDetailsFragment(
         navController: NavController,
         bundle: Bundle?,
+        onScreenFragmentId: Int
     ) {
-        navController.navigate(R.id.action_homeFragment_to_detailsFragment, bundle)
+        when (onScreenFragmentId) {
+            R.id.homeFragment -> {
+                navController.navigate(
+                    R.id.action_homeFragment_to_detailsFragment,
+                    bundle
+                )
+            }
+            R.id.advancedSearchFragment -> {
+                navController.navigate(
+                    R.id.action_advancedSearchFragment_to_detailsFragment,
+                    bundle
+                )
+            }
+            else -> throw IllegalArgumentException("Invalid argument: onScreenFragmentId")
+        }
     }
 
     fun navigateToAdvancedSearchFragment(

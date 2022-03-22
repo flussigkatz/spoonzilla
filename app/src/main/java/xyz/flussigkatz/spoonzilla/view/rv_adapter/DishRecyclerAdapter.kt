@@ -51,10 +51,10 @@ class DishRecyclerAdapter(
             }
 
             override fun onError(e: Exception?) {
+                println("$TAG callbackPicasso onError: ${e?.localizedMessage}")
             }
 
         }
-
         Picasso.get()
             .load(image)
             .fit()
@@ -62,10 +62,13 @@ class DishRecyclerAdapter(
             .placeholder(R.drawable.ic_food)
             .error(R.drawable.ic_food)
             .into(dishView, callbackPicasso)
-
     }
 
     interface OnItemClickListener {
         fun click(dishId: Int)
+    }
+
+    companion object {
+        private const val TAG = "DishRecyclerAdapter"
     }
 }

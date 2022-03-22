@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".view.fragment.DishOverviewFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".view.fragment.DishOverviewFragment">
+
+        <ImageView
+            android:id="@+id/recipe_overview_dish_image"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/recipe_overview_dish_image_height"
+            android:contentDescription="@string/dish_image"
+            android:background="@color/app_color_2"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/recipe_overview_dish_link"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/recipe_overview_margin"
+            android:autoLink="web"
+            android:linksClickable="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/recipe_overview_dish_image" />
+
+        <ImageView
+            android:id="@+id/recipe_overview_time_cook"
+            android:layout_width="@dimen/recipe_overview_icon_size"
+            android:layout_height="@dimen/recipe_overview_icon_size"
+            android:layout_marginTop="@dimen/recipe_overview_margin"
+            android:contentDescription="@string/dish_icon_cooking_time_description"
+            android:src="@drawable/ic_cook_time"
+            app:layout_constraintEnd_toStartOf="@id/recipe_overview_likes"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/recipe_overview_dish_link" />
+
+        <ImageView
+            android:id="@+id/recipe_overview_likes"
+            android:layout_width="@dimen/recipe_overview_icon_size"
+            android:layout_height="@dimen/recipe_overview_icon_size"
+            android:layout_marginTop="@dimen/recipe_overview_margin"
+            android:contentDescription="@string/dish_icon_likes_count_description"
+            android:src="@drawable/ic_likes"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
+            app:layout_constraintEnd_toStartOf="@id/recipe_overview_coast"
+            app:layout_constraintStart_toEndOf="@id/recipe_overview_time_cook"
+            app:layout_constraintTop_toBottomOf="@id/recipe_overview_dish_link" />
+
+        <ImageView
+            android:id="@+id/recipe_overview_coast"
+            android:layout_width="@dimen/recipe_overview_icon_size"
+            android:layout_height="@dimen/recipe_overview_icon_size"
+            android:layout_marginTop="@dimen/recipe_overview_margin"
+            android:contentDescription="@string/dish_icon_dish_coast_description"
+            android:src="@drawable/ic_coast"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/recipe_overview_likes"
+            app:layout_constraintTop_toBottomOf="@id/recipe_overview_dish_link" />
+
+        <TextView
+            android:id="@+id/recipe_overview_time_cook_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
+            app:layout_constraintEnd_toEndOf="@id/recipe_overview_time_cook"
+            app:layout_constraintStart_toStartOf="@id/recipe_overview_time_cook"
+            app:layout_constraintTop_toBottomOf="@id/recipe_overview_time_cook" />
+
+        <TextView
+            android:id="@+id/recipe_overview_likes_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
+            app:layout_constraintEnd_toEndOf="@id/recipe_overview_likes"
+            app:layout_constraintStart_toStartOf="@id/recipe_overview_likes"
+            app:layout_constraintTop_toBottomOf="@id/recipe_overview_likes" />
+
+        <TextView
+            android:id="@+id/recipe_overview_coast_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
+            app:layout_constraintEnd_toEndOf="@id/recipe_overview_coast"
+            app:layout_constraintStart_toStartOf="@id/recipe_overview_coast"
+            app:layout_constraintTop_toBottomOf="@id/recipe_overview_coast" />
+
+        <TextView
+            android:id="@+id/recipe_overview_description"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/recipe_overview_margin"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/recipe_overview_likes_text" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.core.widget.NestedScrollView>
+

@@ -8,9 +8,9 @@ import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.Lifecycle.State.RESUMED
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.schedulers.Schedulers
 import xyz.flussigkatz.spoonzilla.R
@@ -54,19 +54,12 @@ class AdvancedSearchFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         autoDisposable.bindTo(lifecycle)
-
         initDishAdapter()
-
         initSearch()
-
         initSearchSettings()
-
         initLoadingState()
-
         initContent()
-
     }
 
     private fun initLoadingState() {
@@ -107,9 +100,7 @@ class AdvancedSearchFragment : Fragment() {
             override fun click(dishId: Int) {
                 val intent = Intent().apply {
                     action = NAVIGATE_TO_DETAILS_ACTION
-                    val bundle = Bundle().apply {
-                        putString(KEY_DISH_ID, dishId.toString())
-                    }
+                    val bundle = Bundle().apply { putInt(KEY_DISH_ID, dishId) }
                     putExtra(KEY_DISH_ID, bundle)
                 }
                 requireActivity().sendBroadcast(intent)
@@ -132,7 +123,9 @@ class AdvancedSearchFragment : Fragment() {
             }
         }
         binding.advancedSearchRecycler.apply {
-            dishAdapter = DishRecyclerAdapter(clickListener)
+            dishAdapter = DishRecyclerAdapter(clickListener).apply {
+                stateRestorationPolicy = PREVENT_WHEN_EMPTY
+            }
             layoutManager = mLayoutManager
             adapter = dishAdapter
             addOnScrollListener(scrollListener)

@@ -33,4 +33,14 @@ interface MainComponent {
 
     fun inject(advancedSearchFragmentViewModel: AdvancedSearchFragmentViewModel)
 
+    fun inject(dishOverviewFragmentViewModel: DishOverviewFragmentViewModel)
+
+    fun inject(dishIngredientsFragmentViewModel: DishIngredientsFragmentViewModel)
+
+    fun inject(dishInstructionsFragmentViewModel: DishInstructionsFragmentViewModel)
+
+    fun inject(dishNutrientFragmentViewModel: DishNutrientFragmentViewModel)
+
+    fun inject(dishEquipmentsFragmentViewModel: DishEquipmentsFragmentViewModel)
+
 }

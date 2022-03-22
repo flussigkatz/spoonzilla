@@ -10,11 +10,15 @@
     <string name="dish_icon_healthy">Healthy</string>
     <string name="dish_icon_popular">Popular</string>
     <string name="dish_icon_likes">Likes</string>
+    <string name="dish_icon_cooking_time_description">Icon cooking time</string>
+    <string name="dish_icon_likes_count_description">Icon likes count</string>
+    <string name="dish_icon_dish_coast_description">Dish coast</string>
 
 
     <!--    recipe_tabs-->
     <string name="tab_name_overview">overview</string>
     <string name="tab_name_ingredients">ingredients</string>
+    <string name="tab_name_equipments">equipments</string>
     <string name="tab_name_instructions">instructions</string>
     <string name="tab_name_nutrient">"nutrient"</string>
 
@@ -47,6 +51,7 @@
     <string name="profile_create_new_text">Create new</string>
     <string name="profile_sign_sign_in">Sign in</string>
     <string name="profile_sign_sign_out">Sign out</string>
+    <string name="profile_avatar_description">Profile avatar</string>
 
     <!--    fragment_settings-->
 

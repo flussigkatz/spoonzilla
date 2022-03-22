@@ -1,44 +1,58 @@
 package xyz.flussigkatz.spoonzilla.view.fragment
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.viewpager2.widget.ViewPager2
-import com.google.android.material.tabs.TabLayout
+import androidx.fragment.app.Fragment
 import com.google.android.material.tabs.TabLayoutMediator
 import xyz.flussigkatz.spoonzilla.R
-import xyz.flussigkatz.spoonzilla.view.DishDetailsAdapter
+import xyz.flussigkatz.spoonzilla.databinding.FragmentDetailsBinding
+import xyz.flussigkatz.spoonzilla.view.DishDetailsStateAdapter
 
 
 class DetailsFragment : Fragment() {
 
-    private lateinit var demoCollectionAdapter: DishDetailsAdapter
-    private lateinit var viewPager: ViewPager2
+    private lateinit var dishDetailsStateAdapter: DishDetailsStateAdapter
+    private lateinit var binding: FragmentDetailsBinding
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_recipe_details, container, false)
+    ): View {
+        binding = FragmentDetailsBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        demoCollectionAdapter = DishDetailsAdapter(this)
-        viewPager = view.findViewById(R.id.recipe_details_viewpager)
-        viewPager.adapter = demoCollectionAdapter
+        initStateAdapter()
+    }
 
-        val tabLayout = view.findViewById<TabLayout>(R.id.recipe_details_tab_layout)
-        TabLayoutMediator(tabLayout, viewPager) { tab, position ->
+    private fun initStateAdapter() {
+        arguments?.let { bundle ->
+            dishDetailsStateAdapter = DishDetailsStateAdapter(this, bundle)
+            binding.recipeDetailsViewpager.adapter = dishDetailsStateAdapter
+            initTabs()
+        }
+    }
+
+    private fun initTabs() {
+        TabLayoutMediator(
+            binding.recipeDetailsTabLayout,
+            binding.recipeDetailsViewpager
+        ) { tab, position ->
             when (position) {
                 0 -> tab.text = requireContext().getText(R.string.tab_name_overview)
                 1 -> tab.text = requireContext().getText(R.string.tab_name_ingredients)
-                2 -> tab.text = requireContext().getText(R.string.tab_name_instructions)
-                3 -> tab.text = requireContext().getText(R.string.tab_name_nutrient)
+                2 -> tab.text = requireContext().getText(R.string.tab_name_equipments)
+                3 -> tab.text = requireContext().getText(R.string.tab_name_instructions)
+                4 -> tab.text = requireContext().getText(R.string.tab_name_nutrient)
             }
         }.attach()
     }
 
+    companion object {
+        private const val TAG = "DetailsFragment"
+    }
 }

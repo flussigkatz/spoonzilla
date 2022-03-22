@@ -129,22 +129,22 @@
         android:id="@+id/recipeIngredientsFragment"
         android:name="xyz.flussigkatz.spoonzilla.view.fragment.DishIngredientsFragment"
         android:label="@string/fragment_recipe_ingredients"
-        tools:layout="@layout/fragment_recipe_ingredients" />
+        tools:layout="@layout/fragment_dish_ingredients" />
     <fragment
         android:id="@+id/recipeInstructionsFragment"
         android:name="xyz.flussigkatz.spoonzilla.view.fragment.DishInstructionsFragment"
         android:label="@string/fragment_recipe_instructions"
-        tools:layout="@layout/fragment_recipe_instructions" />
+        tools:layout="@layout/fragment_dish_instructions" />
     <fragment
         android:id="@+id/recipeNutrientFragment"
         android:name="xyz.flussigkatz.spoonzilla.view.fragment.DishNutrientFragment"
         android:label="@string/fragment_recipe_nutrient"
-        tools:layout="@layout/fragment_recipe_nutrient" />
+        tools:layout="@layout/fragment_dish_nutrient" />
     <fragment
         android:id="@+id/recipeOverviewFragment"
         android:name="xyz.flussigkatz.spoonzilla.view.fragment.DishOverviewFragment"
         android:label="@string/fragment_recipe_overview"
-        tools:layout="@layout/fragment_recipe_overview" />
+        tools:layout="@layout/fragment_dish_overview" />
     <fragment
         android:id="@+id/similarRecipesFragment"
         android:name="xyz.flussigkatz.spoonzilla.view.fragment.SimilarRecipesFragment"
@@ -194,5 +194,13 @@
         android:id="@+id/advancedSearchFragment"
         android:name="xyz.flussigkatz.spoonzilla.view.fragment.AdvancedSearchFragment"
         android:label="@string/fragment_advanced_search"
-        tools:layout="@layout/fragment_advanced_search" />
+        tools:layout="@layout/fragment_advanced_search" >
+        <action
+            android:id="@+id/action_advancedSearchFragment_to_detailsFragment"
+            app:destination="@id/detailsFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+    </fragment>
 </navigation>

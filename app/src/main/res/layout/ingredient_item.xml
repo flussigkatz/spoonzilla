@@ -1,20 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/ingredient_item_root_height">
-    
-    <ImageView
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+
+    <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/ingredient_image"
-        android:layout_width="@dimen/ingredient_item_image_width"
-        android:layout_height="match_parent"
-        android:layout_marginEnd="@dimen/ingredient_item_image_margin_end"
-        android:layout_gravity="center"/>
+        android:layout_width="@dimen/ingredient_item_image_size"
+        android:layout_height="@dimen/ingredient_item_image_size"
+        android:layout_gravity="center"
+        android:layout_marginStart="@dimen/ingredient_item_margin_start"
+        android:src="@drawable/ic_launcher_background" />
 
     <TextView
-        android:id="@+id/ingredient_text"
+        android:id="@+id/ingredient_name"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:layout_gravity="center"/>
+        android:layout_marginStart="@dimen/ingredient_item_margin_start"
+        android:gravity="center|start"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1" />
+
+    <TextView
+        android:id="@+id/ingredient_amount"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginStart="@dimen/ingredient_item_margin_start"
+        android:gravity="center|start"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1" />
 
 </LinearLayout>

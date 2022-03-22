@@ -33,6 +33,12 @@ class PreferenceProvider(context: Context) {
 
     fun getAdvancedInfoState() = preferences.getBoolean(KEY_ADVANCED_INFO_STATE, true)
 
+    fun setMetric(metric: Boolean) {
+        preferences.edit() { putBoolean(KEY_METRIC, metric) }
+    }
+
+    fun getMetric() = preferences.getBoolean(KEY_METRIC, true)
+
     fun setProfile(profile: String?) {
         preferences.edit() { putString(KEY_PROFILE, profile) }
         if (profile.isNullOrEmpty()) {
@@ -55,6 +61,7 @@ class PreferenceProvider(context: Context) {
         private const val KEY_APP_THEME = "key_app_theme"
         private const val KEY_PROFILE = "key_profile"
         private const val KEY_ADVANCED_INFO_STATE = "key_advanced_info_state"
+        private const val KEY_METRIC = "key_metric"
         private const val SETTINGS_FILE_NAME = "settings_spoonzilla"
     }
 }

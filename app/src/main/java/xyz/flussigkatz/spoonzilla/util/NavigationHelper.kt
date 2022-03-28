@@ -20,8 +20,11 @@ object NavigationHelper {
                     R.id.settingsFragment -> {
                         navController.navigate(R.id.action_homeFragment_to_settingsFragment)
                     }
-                    R.id.advancedSearchFragment -> {
+                    R.id.advancedSearchSettingsFragment -> {
                         navController.navigate(R.id.action_homeFragment_to_advancedSearchSettingsFragment)
+                    }
+                    R.id.markedFragment -> {
+                        navController.navigate(R.id.action_homeFragment_to_markedFragment)
                     }
                 }
             }
@@ -33,8 +36,11 @@ object NavigationHelper {
                     R.id.settingsFragment -> {
                         navController.navigate(R.id.action_profileFragment_to_settingsFragment)
                     }
-                    R.id.advancedSearchFragment -> {
+                    R.id.advancedSearchSettingsFragment -> {
                         navController.navigate(R.id.action_profileFragment_to_advancedSearchSettingsFragment)
+                    }
+                    R.id.markedFragment -> {
+                        navController.navigate(R.id.action_profileFragment_to_markedFragment)
                     }
                 }
             }
@@ -46,8 +52,11 @@ object NavigationHelper {
                     R.id.profileFragment -> {
                         navController.navigate(R.id.action_settingsFragment_to_profileFragment)
                     }
-                    R.id.advancedSearchFragment -> {
+                    R.id.advancedSearchSettingsFragment -> {
                         navController.navigate(R.id.action_settingsFragment_to_advancedSearchSettingsFragment)
+                    }
+                    R.id.markedFragment -> {
+                        navController.navigate(R.id.action_settingsFragment_to_markedFragment)
                     }
                 }
             }
@@ -61,6 +70,25 @@ object NavigationHelper {
                     }
                     R.id.settingsFragment -> {
                         navController.navigate(R.id.action_advancedSearchSettingsFragment_to_settingsFragment)
+                    }
+                    R.id.markedFragment -> {
+                        navController.navigate(R.id.action_advancedSearchSettingsFragment_to_markedFragment)
+                    }
+                }
+            }
+            R.id.markedFragment -> {
+                when (menuItemId) {
+                    R.id.homeFragment -> {
+                        navController.navigate(R.id.action_markedFragment_to_homeFragment)
+                    }
+                    R.id.profileFragment -> {
+                        navController.navigate(R.id.action_markedFragment_to_profileFragment)
+                    }
+                    R.id.settingsFragment -> {
+                        navController.navigate(R.id.action_markedFragment_to_settingsFragment)
+                    }
+                    R.id.advancedSearchSettingsFragment -> {
+                        navController.navigate(R.id.action_markedFragment_to_advancedSearchSettingsFragment)
                     }
                 }
             }
@@ -85,6 +113,12 @@ object NavigationHelper {
             R.id.advancedSearchFragment -> {
                 navController.navigate(
                     R.id.action_advancedSearchFragment_to_detailsFragment,
+                    bundle
+                )
+            }
+            R.id.markedFragment -> {
+                navController.navigate(
+                    R.id.action_markedFragment_to_detailsFragment,
                     bundle
                 )
             }

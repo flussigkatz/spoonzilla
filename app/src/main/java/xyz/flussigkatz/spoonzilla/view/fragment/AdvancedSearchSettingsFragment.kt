@@ -37,27 +37,19 @@ class AdvancedSearchSettingsFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        autoDisposable.bindTo(lifecycle)
         binding = FragmentAdvancedSearchSettingsBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        autoDisposable.bindTo(lifecycle)
-
         initCuisines()
-
         initDiets()
-
         initIntolerances()
-
         initMealTypes()
-
         initInstructions()
-
         initSearch()
-
     }
 
     private fun initCuisines() {
@@ -165,11 +157,13 @@ class AdvancedSearchSettingsFragment : Fragment() {
 
     override fun onStart() {
         MainActivity.searchFieldSwitcher(requireActivity(), true)
+        MainActivity.searchRecentlyViewedFab(requireActivity(), true)
         super.onStart()
     }
 
     override fun onStop() {
         MainActivity.searchFieldSwitcher(requireActivity(), false)
+        MainActivity.searchRecentlyViewedFab(requireActivity(), false)
         super.onStop()
     }
 

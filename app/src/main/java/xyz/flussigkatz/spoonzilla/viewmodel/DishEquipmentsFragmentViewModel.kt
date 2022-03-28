@@ -13,5 +13,6 @@ class DishEquipmentsFragmentViewModel : ViewModel() {
         App.instance.dagger.inject(this)
     }
 
-    fun getEquipmentsById(id: Int) = interactor.getEquipmentsById(id)
+    fun getEquipmentsByIdFromDb(id: Int) = interactor.getEquipmentsByIdFromDb(id)
+
 }

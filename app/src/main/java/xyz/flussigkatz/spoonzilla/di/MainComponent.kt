@@ -21,6 +21,8 @@ interface MainComponent {
 
     fun inject(homeFragmentViewModel: HomeFragmentViewModel)
 
+    fun inject(markedFragmentViewModel: MarkedFragmentViewModel)
+
     fun inject(cuisineDialogFragmentViewModel: CuisineDialogFragmentViewModel)
 
     fun inject(dietsDialogFragmentViewModel: DietsDialogFragmentViewModel)
@@ -39,8 +41,8 @@ interface MainComponent {
 
     fun inject(dishInstructionsFragmentViewModel: DishInstructionsFragmentViewModel)
 
-    fun inject(dishNutrientFragmentViewModel: DishNutrientFragmentViewModel)
-
     fun inject(dishEquipmentsFragmentViewModel: DishEquipmentsFragmentViewModel)
+
+    fun inject(dishNutrientFragmentViewModel: DishNutrientFragmentViewModel)
 
 }

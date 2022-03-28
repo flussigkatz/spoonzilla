@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -13,7 +12,11 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.schedulers.Schedulers
-import xyz.flussigkatz.spoonzilla.R
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.launch
+import xyz.flussigkatz.core_api.entity.Dish
 import xyz.flussigkatz.spoonzilla.databinding.FragmentAdvancedSearchBinding
 import xyz.flussigkatz.spoonzilla.util.AppConst.KEY_CUISINE
 import xyz.flussigkatz.spoonzilla.util.AppConst.KEY_DIET
@@ -38,7 +41,8 @@ class AdvancedSearchFragment : Fragment() {
     private lateinit var binding: FragmentAdvancedSearchBinding
     private val autoDisposable = AutoDisposable()
     private var isLoadingFromApi = false
-    private var mquery: String? = null
+    private var mQuery: String? = null
+    private val advancedSearchFragmentScope = CoroutineScope(Dispatchers.IO)
     private lateinit var keyCuisine: String
     private lateinit var keyDiet: String
     private lateinit var keyIntolerance: String
@@ -48,18 +52,19 @@ class AdvancedSearchFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        autoDisposable.bindTo(lifecycle)
         binding = FragmentAdvancedSearchBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        autoDisposable.bindTo(lifecycle)
         initDishAdapter()
         initSearch()
         initSearchSettings()
         initLoadingState()
         initContent()
+        initRefreshLayout()
     }
 
     private fun initLoadingState() {
@@ -70,13 +75,28 @@ class AdvancedSearchFragment : Fragment() {
             ).addTo(autoDisposable)
     }
 
+    private fun initRefreshLayout() {
+        binding.advancedSearchRefreshLayout.setOnRefreshListener {
+            MainActivity.getSearchView(requireActivity())?.apply {
+                clearFocus()
+            }
+            getSearchedRecipes()
+            viewModel.loadingState.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                    { binding.advancedSearchRefreshLayout.isRefreshing = it },
+                    { println("$TAG initRefreshLayout onError: ${it.localizedMessage}") }
+                ).addTo(autoDisposable)
+        }
+    }
+
     private fun initSearch() {
         viewModel.searchPublishSubject.subscribeOn(Schedulers.io())
             .debounce(SEARCH_DEBOUNCE_TIME_MILLISECONDS, TimeUnit.MILLISECONDS)
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
                 {
-                    mquery = it
+                    mQuery = it
                     getSearchedRecipes()
                 },
                 { println("$TAG initSearch onError: ${it.localizedMessage}") }
@@ -106,24 +126,30 @@ class AdvancedSearchFragment : Fragment() {
                 requireActivity().sendBroadcast(intent)
             }
         }
+        val checkedChangeListener = object : DishRecyclerAdapter.OnCheckedChangeListener {
+            override fun checkedChange(dish: Dish, isChecked: Boolean) {
+                if (dish.mark != isChecked) {
+                    dish.mark = isChecked
+                    advancedSearchFragmentScope.launch { viewModel.setDishMark(dish, isChecked) }
+                }
+            }
+        }
         val scrollListener = object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
                 if (dy != 0) {
-                    requireActivity().findViewById<SearchView>(R.id.main_quick_search)
-                        .clearFocus()
+                    MainActivity.getSearchView(requireActivity())?.clearFocus()
+                    (requireActivity() as MainActivity).hideBottomSheet()
                 }
-                if (dy > 0 && !isLoadingFromApi) {
-                    paginationCheck(
-                        mLayoutManager.childCount,
-                        mLayoutManager.itemCount,
-                        mLayoutManager.findFirstVisibleItemPosition()
-                    )
-                }
+                if (dy > 0 && !isLoadingFromApi) paginationCheck(
+                    mLayoutManager.childCount,
+                    mLayoutManager.itemCount,
+                    mLayoutManager.findFirstVisibleItemPosition()
+                )
             }
         }
         binding.advancedSearchRecycler.apply {
-            dishAdapter = DishRecyclerAdapter(clickListener).apply {
+            dishAdapter = DishRecyclerAdapter(clickListener, checkedChangeListener).apply {
                 stateRestorationPolicy = PREVENT_WHEN_EMPTY
             }
             layoutManager = mLayoutManager
@@ -136,7 +162,7 @@ class AdvancedSearchFragment : Fragment() {
     fun paginationCheck(visibleItemCount: Int, totalItemCount: Int, pastVisibleItems: Int) {
         if (totalItemCount - (visibleItemCount + pastVisibleItems) <= REMAINDER_OF_ELEMENTS) {
             viewModel.doSearchedRecipesPagination(
-                query = mquery,
+                query = mQuery,
                 offset = totalItemCount,
                 keyCuisine = keyCuisine,
                 keyDiet = keyDiet,
@@ -156,24 +182,31 @@ class AdvancedSearchFragment : Fragment() {
     }
 
     private fun getSearchedRecipes() {
-            viewModel.getAdvancedSearchedRecipes(
-                query = mquery,
-                keyCuisine = keyCuisine,
-                keyDiet = keyDiet,
-                keyIntolerance = keyIntolerance,
-                keyMeatType = keyMeatType
-            )
-            binding.advancedSearchRecycler.smoothScrollToPosition(FIRST_RECYCLER_POSITION)
+        viewModel.getAdvancedSearchedRecipes(
+            query = mQuery,
+            keyCuisine = keyCuisine,
+            keyDiet = keyDiet,
+            keyIntolerance = keyIntolerance,
+            keyMeatType = keyMeatType
+        )
+        binding.advancedSearchRecycler.smoothScrollToPosition(FIRST_RECYCLER_POSITION)
     }
 
     override fun onStart() {
         MainActivity.searchFieldSwitcher(requireActivity(), true)
+        MainActivity.searchRecentlyViewedFab(requireActivity(), true)
         super.onStart()
     }
 
     override fun onStop() {
         MainActivity.searchFieldSwitcher(requireActivity(), false)
+        MainActivity.searchRecentlyViewedFab(requireActivity(), false)
         super.onStop()
+    }
+
+    override fun onDestroy() {
+        advancedSearchFragmentScope.cancel()
+        super.onDestroy()
     }
 
     companion object {

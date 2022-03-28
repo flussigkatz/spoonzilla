@@ -34,7 +34,8 @@ class DishInstructionsFragment : Fragment() {
 
     private fun getInstructions() {
         arguments?.let { bundle ->
-            viewModel.getInstructionsById(bundle.getInt(KEY_DISH_ID))
+            val dishId = bundle.getInt(KEY_DISH_ID)
+            viewModel.getInstructionsByIdFromDb(dishId)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                     { instructionsAdapter.addItems(it) },

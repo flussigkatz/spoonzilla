@@ -8,7 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
-import xyz.flussigkatz.spoonzilla.data.entity.Equipment
+import xyz.flussigkatz.core_api.entity.equipments.EquipmentItem
 import xyz.flussigkatz.spoonzilla.databinding.FragmentDishEquipmentBinding
 import xyz.flussigkatz.spoonzilla.util.AppConst.KEY_DISH_ID
 import xyz.flussigkatz.spoonzilla.view.rv_adapter.EquipmentRecyclerAdapter
@@ -17,7 +17,7 @@ import xyz.flussigkatz.spoonzilla.viewmodel.DishEquipmentsFragmentViewModel
 class DishEquipmentFragment : Fragment() {
     private lateinit var binding: FragmentDishEquipmentBinding
     private lateinit var equipmentsAdapter: EquipmentRecyclerAdapter
-    private var equipments: List<Equipment>? = null
+    private var equipmentItems: List<EquipmentItem>? = null
     private val viewModel: DishEquipmentsFragmentViewModel by activityViewModels()
 
     override fun onCreateView(
@@ -30,26 +30,24 @@ class DishEquipmentFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         initEquipmentAdapter()
-
         getEquipments()
-
     }
 
     private fun getEquipments() {
         arguments?.let { bundle ->
-            if (equipments.isNullOrEmpty()) {
-                viewModel.getEquipmentsById(bundle.getInt(KEY_DISH_ID))
+            val dishId = bundle.getInt(KEY_DISH_ID)
+            if (equipmentItems.isNullOrEmpty()) {
+                viewModel.getEquipmentsByIdFromDb(dishId)
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(
                         {
-                            equipments = it
+                            equipmentItems = it
                             equipmentsAdapter.addItems(it)
                         },
                         { println("$TAG getEquipments onError: ${it.localizedMessage}") }
                     )
-            } else equipmentsAdapter.addItems(equipments!!)
+            } else equipmentsAdapter.addItems(equipmentItems!!)
         }
     }
 

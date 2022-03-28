@@ -5,14 +5,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import com.google.android.material.tabs.TabLayoutMediator
 import xyz.flussigkatz.spoonzilla.R
 import xyz.flussigkatz.spoonzilla.databinding.FragmentDetailsBinding
 import xyz.flussigkatz.spoonzilla.view.DishDetailsStateAdapter
+import xyz.flussigkatz.spoonzilla.viewmodel.DetailsFragmentViewModel
 
 
 class DetailsFragment : Fragment() {
-
+    private val viewModel: DetailsFragmentViewModel by activityViewModels()
     private lateinit var dishDetailsStateAdapter: DishDetailsStateAdapter
     private lateinit var binding: FragmentDetailsBinding
 

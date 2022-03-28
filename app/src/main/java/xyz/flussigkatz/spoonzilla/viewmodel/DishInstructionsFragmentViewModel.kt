@@ -13,5 +13,6 @@ class DishInstructionsFragmentViewModel : ViewModel() {
         App.instance.dagger.inject(this)
     }
 
-    fun getInstructionsById(id: Int) = interactor.getInstructionsById(id)
+    fun getInstructionsByIdFromDb(id: Int) = interactor.getInstructionsByIdFromDb(id)
+
 }

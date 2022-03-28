@@ -6,13 +6,13 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
-import xyz.flussigkatz.spoonzilla.data.entity.Equipment
+import xyz.flussigkatz.core_api.entity.equipments.EquipmentItem
 import xyz.flussigkatz.spoonzilla.databinding.EquipmentItemBinding
 import xyz.flussigkatz.spoonzilla.view.rv_viewholder.EquipmentViewHolder
 
 class EquipmentRecyclerAdapter : RecyclerView.Adapter<EquipmentViewHolder>() {
 
-    private var items = listOf<Equipment>()
+    private var items = listOf<EquipmentItem>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EquipmentViewHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -31,8 +31,8 @@ class EquipmentRecyclerAdapter : RecyclerView.Adapter<EquipmentViewHolder>() {
     override fun getItemCount() = items.size
 
     @SuppressLint("NotifyDataSetChanged")
-    fun addItems(equipment: List<Equipment>) {
-        items = equipment
+    fun addItems(equipmentItems: List<EquipmentItem>) {
+        items = equipmentItems
         this.notifyDataSetChanged()
     }
 

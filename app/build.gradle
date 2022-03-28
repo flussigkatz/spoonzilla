@@ -70,6 +70,8 @@ dependencies {
 
     implementation "androidx.recyclerview:recyclerview:1.2.1"
 
+    implementation converter_gson
+
     //Picasso
     implementation picasso
 

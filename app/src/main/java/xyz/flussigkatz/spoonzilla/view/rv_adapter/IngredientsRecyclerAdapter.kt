@@ -6,13 +6,13 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
-import xyz.flussigkatz.spoonzilla.data.entity.Ingredient
+import xyz.flussigkatz.core_api.entity.ingredients.IngredientItem
 import xyz.flussigkatz.spoonzilla.databinding.IngredientItemBinding
 import xyz.flussigkatz.spoonzilla.view.rv_viewholder.IngredientViewHolder
 
 class IngredientsRecyclerAdapter : RecyclerView.Adapter<IngredientViewHolder>() {
 
-    private var items = listOf<Ingredient>()
+    private var items = listOf<IngredientItem>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): IngredientViewHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -35,8 +35,8 @@ class IngredientsRecyclerAdapter : RecyclerView.Adapter<IngredientViewHolder>() 
     override fun getItemCount() = items.size
 
     @SuppressLint("NotifyDataSetChanged")
-    fun addItems(ingredients: List<Ingredient>) {
-        items = ingredients
+    fun addItems(ingredientItems: List<IngredientItem>) {
+        items = ingredientItems
         this.notifyDataSetChanged()
     }
 

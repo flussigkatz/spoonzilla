@@ -7,7 +7,7 @@ data class SearchedRecipeByIdDto(
     @SerializedName("aggregateLikes")
     val aggregateLikes: Int,
     @SerializedName("analyzedInstructions")
-    val analyzedInstructions: List<String>,
+    val analyzedInstructions: List<Any>?,
     @SerializedName("cheap")
     val cheap: Boolean,
     @SerializedName("creditsText")
@@ -40,8 +40,6 @@ data class SearchedRecipeByIdDto(
     val license: String,
     @SerializedName("lowFodmap")
     val lowFodmap: Boolean,
-    @SerializedName("nutrition")
-    val nutrition: Nutrition,
     @SerializedName("occasions")
     val occasions: List<Any>,
     @SerializedName("originalId")

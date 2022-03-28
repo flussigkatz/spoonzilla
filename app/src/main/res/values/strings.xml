@@ -3,6 +3,9 @@
     <string name="app_bar_search_description">Search recipes</string>
     <string name="app_bar_search_title">Search</string>
     <string name="exit_message">Press back again to exit</string>
+    <string name="recently_viewed_label_title">Pull me up</string>
+    <string name="recently_viewed_label_title_expanded">Viewed</string>
+    <string name="recently_viewed_fab_description">Press to show recently viewed window label</string>
 
 
     <!--    dish_item-->
@@ -10,11 +13,15 @@
     <string name="dish_icon_healthy">Healthy</string>
     <string name="dish_icon_popular">Popular</string>
     <string name="dish_icon_likes">Likes</string>
+    <string name="dish_icon_cooking_time_description">Icon cooking time</string>
+    <string name="dish_icon_likes_count_description">Icon likes count</string>
+    <string name="dish_icon_dish_coast_description">Dish coast</string>
 
 
     <!--    recipe_tabs-->
     <string name="tab_name_overview">overview</string>
     <string name="tab_name_ingredients">ingredients</string>
+    <string name="tab_name_equipments">equipments</string>
     <string name="tab_name_instructions">instructions</string>
     <string name="tab_name_nutrient">"nutrient"</string>
 
@@ -24,6 +31,7 @@
     <string name="menu_title_profile">Profile</string>
     <string name="menu_title_settings">Settings</string>
     <string name="menu_title_search">Search</string>
+    <string name="menu_title_marked">Marked</string>
     <string name="menu_title_log_out">Log Out</string>
 
     <!--    fragment_advanced_search_settings-->
@@ -37,6 +45,7 @@
     <string name="include_meal_type_button_text">Meal types</string>
     <string name="instructions_switch_description">Recipes must have instructions</string>
     <string name="advanced_search_hint">Search query</string>
+    <string name="marked_search_hint">Marked search</string>
     <string name="advanced_search_button">Search</string>
 
     <!--    fragment_home-->
@@ -47,6 +56,7 @@
     <string name="profile_create_new_text">Create new</string>
     <string name="profile_sign_sign_in">Sign in</string>
     <string name="profile_sign_sign_out">Sign out</string>
+    <string name="profile_avatar_description">Profile avatar</string>
 
     <!--    fragment_settings-->
 
@@ -133,9 +143,11 @@
 
     <!--    Common-->
     <string name="app_name" translatable="false">Spoonzilla</string>
-    <string name="search_hint">Quick search</string>
+    <string name="home_search_hint">Quick search</string>
+    <string name="search_hint">Search</string>
     <string name="fragment_home">Home</string>
     <string name="fragment_profile">Profile</string>
+    <string name="fragment_marked">Marked</string>
     <string name="fragment_settings">Settings</string>
     <string name="fragment_advanced_search">Search</string>
     <string name="fragment_advanced_search_settings">Search settings</string>
@@ -145,6 +157,5 @@
     <string name="fragment_recipe_nutrient">Nutrient</string>
     <string name="fragment_recipe_overview">Overview</string>
     <string name="fragment_similar_recipes">Similar</string>
-
 
 </resources>

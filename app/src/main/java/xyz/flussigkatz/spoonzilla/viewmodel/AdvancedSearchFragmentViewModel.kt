@@ -1,27 +1,44 @@
 package xyz.flussigkatz.spoonzilla.viewmodel
 
 import androidx.lifecycle.ViewModel
+import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.subjects.BehaviorSubject
+import io.reactivex.rxjava3.subjects.PublishSubject
+import xyz.flussigkatz.core_api.entity.Dish
 import xyz.flussigkatz.spoonzilla.App
 import xyz.flussigkatz.spoonzilla.domain.Interactor
-import xyz.flussigkatz.spoonzilla.util.AppConst
+import xyz.flussigkatz.spoonzilla.util.AppConst.KEY_INSTRUCTIONS_SWITCH
+import xyz.flussigkatz.spoonzilla.util.AppConst.PAGINATION_NUMBER_ELEMENTS
+import xyz.flussigkatz.spoonzilla.util.Converter
 import javax.inject.Inject
 
 class AdvancedSearchFragmentViewModel : ViewModel() {
     @Inject
     lateinit var interactor: Interactor
+    val searchPublishSubject: PublishSubject<String>
+    val dishList: Observable<List<Dish>>
+    val loadingState: BehaviorSubject<Boolean>
 
     init {
         App.instance.dagger.inject(this)
+        searchPublishSubject = interactor.getSearchPublishSubject()
+        dishList = interactor.getDishesFromDb()
+        loadingState = interactor.getRefreshState()
     }
 
     fun getAdvancedSearchedRecipes(
-        query: String,
+        query: String?,
+        keyCuisine: String,
+        keyDiet: String,
+        keyIntolerance: String,
+        keyMeatType: String
+
     ) {
-        val cuisine = interactor.getDialogItemsFromPreference(AppConst.KEY_CUISINE)
-        val diet = interactor.getDialogItemsFromPreference(AppConst.KEY_DIET)
-        val intolerances = interactor.getDialogItemsFromPreference(AppConst.KEY_INTOLERANCE)
-        val type = interactor.getDialogItemsFromPreference(AppConst.KEY_MEAT_TYPE)
-        val instructionsRequired = interactor.getAdvancedSearchSwitchState(AppConst.KEY_INSTRUCTIONS_SWITCH)
+        val cuisine = interactor.getSearchSettings(keyCuisine)
+        val diet = interactor.getSearchSettings(keyDiet)
+        val intolerances = interactor.getSearchSettings(keyIntolerance)
+        val type = interactor.getSearchSettings(keyMeatType)
+        val instructionsRequired = interactor.getAdvancedSearchSwitchState(KEY_INSTRUCTIONS_SWITCH)
         interactor.getAdvancedSearchedRecipes(
             query = query,
             cuisine = cuisine?.joinToString(),
@@ -29,9 +46,42 @@ class AdvancedSearchFragmentViewModel : ViewModel() {
             intolerances = intolerances?.joinToString(),
             type = type?.joinToString(),
             instructionsRequired = instructionsRequired,
-            offset = AppConst.DEFAULT_OFFSET,
-            number = AppConst.TOTAL_NUMBER_ELEMENTS,
+            offset = null,
+            number = null,
             clearDb = true
         )
     }
+
+    fun doSearchedRecipesPagination(
+        query: String?,
+        offset: Int,
+        keyCuisine: String,
+        keyDiet: String,
+        keyIntolerance: String,
+        keyMeatType: String
+    ) {
+        val cuisine = interactor.getSearchSettings(keyCuisine)
+        val diet = interactor.getSearchSettings(keyDiet)
+        val intolerances = interactor.getSearchSettings(keyIntolerance)
+        val type = interactor.getSearchSettings(keyMeatType)
+        val instructionsRequired = interactor.getAdvancedSearchSwitchState(KEY_INSTRUCTIONS_SWITCH)
+        interactor.getAdvancedSearchedRecipes(
+            query = query,
+            cuisine = cuisine?.joinToString(),
+            diet = diet?.joinToString(),
+            intolerances = intolerances?.joinToString(),
+            type = type?.joinToString(),
+            instructionsRequired = instructionsRequired,
+            offset = offset,
+            number = PAGINATION_NUMBER_ELEMENTS,
+            clearDb = false
+        )
+    }
+
+    fun setDishMark(dish: Dish, isChecked: Boolean) {
+        if(isChecked) interactor.putMarkedDishToDB(Converter.convertDishToDishMarked(dish))
+        else interactor.deleteMarkedDishFromDb(dish.id)
+        interactor.updateDish(dish)
+    }
+
 }

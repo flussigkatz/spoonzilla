@@ -16,9 +16,9 @@ import xyz.flussigkatz.spoonzilla.view.rv_viewholder.DishViewHolder
 import java.lang.Exception
 
 class DishRecyclerAdapter(
-    private val clickListener: OnItemClickListener
+    private val clickListener: OnItemClickListener,
+    private val checkedChangeListener: OnCheckedChangeListener
 ) : RecyclerView.Adapter<DishViewHolder>() {
-
     private var items = listOf<Dish>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DishViewHolder {
@@ -33,6 +33,12 @@ class DishRecyclerAdapter(
         setDishImage(dish.image, binding.dishImage)
         binding.rootDishItem.setOnClickListener {
             binding.dish?.id?.let { id -> clickListener.click(id) }
+        }
+        binding.dishMarkCheckBox.setOnCheckedChangeListener { _, isChecked ->
+            checkedChangeListener.checkedChange(dish, isChecked)
+        }
+        binding.dishMarkCheckBox.apply {
+            isChecked = dish.mark
         }
     }
 
@@ -51,10 +57,10 @@ class DishRecyclerAdapter(
             }
 
             override fun onError(e: Exception?) {
+                println("$TAG callbackPicasso onError: ${e?.localizedMessage}")
             }
 
         }
-
         Picasso.get()
             .load(image)
             .fit()
@@ -62,10 +68,17 @@ class DishRecyclerAdapter(
             .placeholder(R.drawable.ic_food)
             .error(R.drawable.ic_food)
             .into(dishView, callbackPicasso)
-
     }
 
     interface OnItemClickListener {
         fun click(dishId: Int)
+    }
+
+    interface OnCheckedChangeListener {
+        fun checkedChange(dish: Dish, isChecked: Boolean)
+    }
+
+    companion object {
+        private const val TAG = "DishRecyclerAdapter"
     }
 }

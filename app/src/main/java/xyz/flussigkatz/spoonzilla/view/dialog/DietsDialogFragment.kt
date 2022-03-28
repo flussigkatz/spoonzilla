@@ -31,16 +31,13 @@ class DietsDialogFragment : DialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         binding.recyclerDiets.apply {
             viewModel.getDialogItemsFromPreference(KEY_DIET).let {
-                markedItems = if (it.isNullOrEmpty()) mutableListOf()
-                else it.toMutableList()
+                markedItems = it.orEmpty().toMutableList()
             }
             val clickListener = object : DialogItemRecyclerAdapter.OnCheckedChangeListener {
                 override fun checkedChange(item: String, state: Boolean) {
-                    if (state) markedItems.remove(item)
-                    else markedItems.add(item)
+                    if (state) markedItems.remove(item) else markedItems.add(item)
                 }
             }
             mAdapter = DialogItemRecyclerAdapter(markedItems, allItems, clickListener)

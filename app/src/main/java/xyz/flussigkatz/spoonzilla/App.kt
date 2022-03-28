@@ -9,15 +9,12 @@ import xyz.flussigkatz.spoonzilla.di.MainComponent
 import xyz.flussigkatz.spoonzilla.di.module.DomainModule
 
 class App : Application() {
-
     lateinit var dagger: MainComponent
 
     override fun onCreate() {
         super.onCreate()
         instance = this
-
         initDagger()
-
     }
 
     private fun initDagger() {

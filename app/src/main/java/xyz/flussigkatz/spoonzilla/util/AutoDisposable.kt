@@ -1,6 +1,7 @@
 package xyz.flussigkatz.spoonzilla.util
 
 import androidx.lifecycle.*
+import androidx.lifecycle.Lifecycle.Event.ON_DESTROY
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.disposables.Disposable
 
@@ -21,7 +22,7 @@ class AutoDisposable : LifecycleEventObserver {
     }
 
     override fun onStateChanged(source: LifecycleOwner, event: Lifecycle.Event) {
-        if (event == Lifecycle.Event.ON_DESTROY) compositeDisposable.dispose()
+        if (event == ON_DESTROY) compositeDisposable.dispose()
     }
 
 }

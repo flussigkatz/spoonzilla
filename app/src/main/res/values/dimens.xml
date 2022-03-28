@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <!--    dish_overview-->
+    <dimen name="dish_overview_margin">5dp</dimen>
+    <dimen name="dish_overview_dish_image_height">300dp</dimen>
+    <dimen name="dish_overview_dish_link_margin">10dp</dimen>
+    <dimen name="dish_overview_icon_size">50dp</dimen>
+    <dimen name="dish_overview_mark_check_box_margin">10dp</dimen>
+    <dimen name="dish_overview_mark_check_box_size">30dp</dimen>
+
     <!--    dialog_item-->
     <dimen name="dialog_item_padding_end">10dp</dimen>
     <dimen name="dialog_item_padding_start">5dp</dimen>
@@ -8,10 +16,16 @@
 
     <!--    activity_main-->
     <dimen name="main_top_app_bar_elevation">0dp</dimen>
+    <dimen name="main_recently_viewed_peek_height">75dp</dimen>
+    <dimen name="recently_viewed_label_text_size">16sp</dimen>
+    <dimen name="recently_viewed_label_height">90dp</dimen>
+    <dimen name="main_recently_viewed_height">700dp</dimen>
 
     <!--    dish_item-->
 
     <dimen name="dish_name_margin_top">20dp</dimen>
+    <dimen name="dish_mark_check_box_margin">10dp</dimen>
+    <dimen name="dish_mark_check_box_size">30dp</dimen>
     <dimen name="dish_name_padding">5dp</dimen>
     <dimen name="root_dish_item_height">200dp</dimen>
     <dimen name="root_dish_item_advanced_height">150dp</dimen>
@@ -23,19 +37,27 @@
     <dimen name="profile_create_new_width">150dp</dimen>
     <dimen name="profile_sign_width">150dp</dimen>
 
-    <!--    fragment_recipe_overview-->
-
-    <dimen name="recipe_overview_dish_image_height">300dp</dimen>
-    <dimen name="recipe_overview_dish_link_margin">10dp</dimen>
-    <dimen name="recipe_overview_icon_size">50dp</dimen>
-
     <!--    fragment_settings-->
 
     <dimen name="settings_menu_item_height">50dp</dimen>
 
     <!--    ingredient_item-->
 
-    <dimen name="ingredient_item_root_height">35dp</dimen>
-    <dimen name="ingredient_item_image_width">60dp</dimen>
-    <dimen name="ingredient_item_image_margin_end">10dp</dimen>
+    <dimen name="ingredient_item_root_height">100dp</dimen>
+    <dimen name="ingredient_item_image_size">100dp</dimen>
+    <dimen name="ingredient_item_margin_start">5dp</dimen>
+
+    <!--    equipment_item-->
+    <dimen name="equipment_item_root_height">100dp</dimen>
+    <dimen name="equipment_item_image_size">100dp</dimen>
+    <dimen name="equipment_item_margin_start">5dp</dimen>
+
+    <!--    step_item-->
+    <dimen name="step_item_margin">5dp</dimen>
+
+<!--    instructions_item-->
+    <dimen name="instructions_item_margin">5dp</dimen>
+    <dimen name="list_item_spacing">16dp</dimen>
+    <dimen name="list_item_spacing_half">8dp</dimen>
+
 </resources>

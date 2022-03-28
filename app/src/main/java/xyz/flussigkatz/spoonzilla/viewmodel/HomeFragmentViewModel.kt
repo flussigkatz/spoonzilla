@@ -1,6 +1,5 @@
 package xyz.flussigkatz.spoonzilla.viewmodel
 
-import androidx.annotation.Nullable
 import androidx.lifecycle.ViewModel
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.subjects.BehaviorSubject
@@ -8,31 +7,34 @@ import io.reactivex.rxjava3.subjects.PublishSubject
 import xyz.flussigkatz.spoonzilla.App
 import xyz.flussigkatz.core_api.entity.Dish
 import xyz.flussigkatz.spoonzilla.domain.Interactor
+import xyz.flussigkatz.spoonzilla.util.AppConst.KEY_CUISINE_FROM_PROFILE
+import xyz.flussigkatz.spoonzilla.util.AppConst.KEY_DIET_FROM_PROFILE
+import xyz.flussigkatz.spoonzilla.util.AppConst.KEY_INTOLERANCE_FROM_PROFILE
 import xyz.flussigkatz.spoonzilla.util.AppConst.PAGINATION_NUMBER_ELEMENTS
 import xyz.flussigkatz.spoonzilla.util.AppConst.TOTAL_NUMBER_ELEMENTS
+import xyz.flussigkatz.spoonzilla.util.Converter
 import javax.inject.Inject
 
 class HomeFragmentViewModel : ViewModel() {
+    @Inject
+    lateinit var interactor: Interactor
     val dishList: Observable<List<Dish>>
     val searchPublishSubject: PublishSubject<String>
     val loadingState: BehaviorSubject<Boolean>
 
-    @Inject
-    lateinit var interactor: Interactor
-
     init {
         App.instance.dagger.inject(this)
         getRandomRecipe()
-        dishList = interactor.getRandomRecipeFromDb()
+        dishList = interactor.getDishesFromDb()
         loadingState = interactor.getRefreshState()
         searchPublishSubject = interactor.getSearchPublishSubject()
     }
 
-    fun getSearchedRecipes(query: String, offset: Int?) {
+    fun getSearchedRecipes(query: String) {
         interactor.getSearchedRecipesFromApi(
             query = query,
-            offset = offset,
-            number = TOTAL_NUMBER_ELEMENTS,
+            offset = null,
+            number = null,
             true
         )
     }
@@ -47,11 +49,31 @@ class HomeFragmentViewModel : ViewModel() {
     }
 
     fun getRandomRecipe() {
-        interactor.getRandomRecipeFromApi(TOTAL_NUMBER_ELEMENTS, true)
+        val cuisine =
+            interactor.getSearchSettings(KEY_CUISINE_FROM_PROFILE)?.joinToString().orEmpty()
+        val diet =
+            interactor.getSearchSettings(KEY_DIET_FROM_PROFILE)?.joinToString().orEmpty()
+        val intolerances =
+            interactor.getSearchSettings(KEY_INTOLERANCE_FROM_PROFILE)?.joinToString().orEmpty()
+        val tags = cuisine + diet + intolerances
+        interactor.getRandomRecipeFromApi(TOTAL_NUMBER_ELEMENTS, tags, true)
     }
 
     fun doRandomRecipePagination() {
-        interactor.getRandomRecipeFromApi(PAGINATION_NUMBER_ELEMENTS, false)
+        val cuisine =
+            interactor.getSearchSettings(KEY_CUISINE_FROM_PROFILE)?.joinToString().orEmpty()
+        val diet =
+            interactor.getSearchSettings(KEY_DIET_FROM_PROFILE)?.joinToString().orEmpty()
+        val intolerances =
+            interactor.getSearchSettings(KEY_INTOLERANCE_FROM_PROFILE)?.joinToString().orEmpty()
+        val tags = cuisine + diet + intolerances
+        interactor.getRandomRecipeFromApi(PAGINATION_NUMBER_ELEMENTS, tags, false)
+    }
+
+    fun setDishMark(dish: Dish, isChecked: Boolean) {
+        if (isChecked) interactor.putMarkedDishToDB(Converter.convertDishToDishMarked(dish))
+        else interactor.deleteMarkedDishFromDb(dish.id)
+        interactor.updateDish(dish)
     }
 
 }

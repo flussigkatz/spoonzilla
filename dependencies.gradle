@@ -2,7 +2,9 @@ ext {
     //Dagger2
     dagger2_version = '2.38.1'
     dagger2 = "com.google.dagger:dagger:$dagger2_version"
+    dagger2_android_support = "com.google.dagger:dagger-android-support:$dagger2_version"
     dagger2_compiler = "com.google.dagger:dagger-compiler:$dagger2_version"
+    dagger2_processor = "com.google.dagger:dagger-android-processor:$dagger2_version"
 
     //Retrofit
     retrofit =  "com.squareup.retrofit2:retrofit:2.9.0"

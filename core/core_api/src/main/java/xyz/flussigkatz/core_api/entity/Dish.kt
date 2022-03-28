@@ -8,10 +8,11 @@ import androidx.room.PrimaryKey
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-@Entity(tableName = "cashed_dishes", indices = [Index(value = ["title"], unique = false)])
+@Entity(tableName = "cashed_dishes", indices = [Index(value = ["id"], unique = true)])
 data class Dish(
     @PrimaryKey(autoGenerate = true)  val localId: Int = 0,
     @ColumnInfo(name = "id")val id: Int,
     @ColumnInfo(name = "title")val title: String,
-    @ColumnInfo(name = "image")val image: String?
+    @ColumnInfo(name = "image")val image: String?,
+    @ColumnInfo(name = "mark")var mark: Boolean
 ) : Parcelable

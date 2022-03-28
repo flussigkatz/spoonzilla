@@ -44,4 +44,5 @@ class AdvancedSearchSettingsFragmentViewModel : ViewModel() {
 
     fun getAdvancedSearchSwitchState(key: String) = interactor.getAdvancedSearchSwitchState(key)
 
+    fun existProfile() = !interactor.getProfile().isNullOrEmpty()
 }

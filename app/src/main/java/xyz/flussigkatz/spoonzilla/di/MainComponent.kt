@@ -21,6 +21,8 @@ interface MainComponent {
 
     fun inject(homeFragmentViewModel: HomeFragmentViewModel)
 
+    fun inject(markedFragmentViewModel: MarkedFragmentViewModel)
+
     fun inject(cuisineDialogFragmentViewModel: CuisineDialogFragmentViewModel)
 
     fun inject(dietsDialogFragmentViewModel: DietsDialogFragmentViewModel)
@@ -32,5 +34,15 @@ interface MainComponent {
     fun inject(advancedSearchSettingsFragmentViewModel: AdvancedSearchSettingsFragmentViewModel)
 
     fun inject(advancedSearchFragmentViewModel: AdvancedSearchFragmentViewModel)
+
+    fun inject(dishOverviewFragmentViewModel: DishOverviewFragmentViewModel)
+
+    fun inject(dishIngredientsFragmentViewModel: DishIngredientsFragmentViewModel)
+
+    fun inject(dishInstructionsFragmentViewModel: DishInstructionsFragmentViewModel)
+
+    fun inject(dishEquipmentsFragmentViewModel: DishEquipmentsFragmentViewModel)
+
+    fun inject(dishNutrientFragmentViewModel: DishNutrientFragmentViewModel)
 
 }

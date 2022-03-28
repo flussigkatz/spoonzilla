@@ -21,7 +21,7 @@
             android:id="@+id/dish_image"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/app_color_2"
+            android:background="@color/app_color_4"
             android:contentDescription="@string/dish_image"
             tools:src="@drawable/ic_food" />
 
@@ -37,6 +37,16 @@
             android:text="@{dish.title}"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
             android:textColor="@color/black" />
+
+        <com.google.android.material.checkbox.MaterialCheckBox
+            android:id="@+id/dish_mark_check_box"
+            android:layout_width="@dimen/dish_mark_check_box_size"
+            android:layout_height="@dimen/dish_mark_check_box_size"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="@dimen/dish_mark_check_box_margin"
+            android:background="@drawable/marked_selector"
+            android:button="@null"
+            android:checked="@{dish.mark}" />
 
     </FrameLayout>
 </layout>

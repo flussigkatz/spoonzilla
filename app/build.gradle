@@ -59,12 +59,18 @@ dependencies {
 
     //Dagger2
     implementation dagger2
+    implementation dagger2_android_support
     kapt dagger2_compiler
+    kapt dagger2_processor
 
     //RxJava
     implementation rxandroid
     implementation rxjava
     implementation rxkotlin
+
+    implementation "androidx.recyclerview:recyclerview:1.2.1"
+
+    implementation converter_gson
 
     //Picasso
     implementation picasso

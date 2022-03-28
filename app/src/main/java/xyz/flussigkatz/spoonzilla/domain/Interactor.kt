@@ -1,16 +1,19 @@
 package xyz.flussigkatz.spoonzilla.domain
 
-import androidx.core.content.edit
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.schedulers.Schedulers
 import io.reactivex.rxjava3.subjects.BehaviorSubject
 import io.reactivex.rxjava3.subjects.PublishSubject
-import xyz.flussigkatz.remote.SpoonacularApi
-import xyz.flussigkatz.spoonzilla.ApiKey
 import xyz.flussigkatz.core_api.entity.Dish
+import xyz.flussigkatz.core_api.entity.DishMarked
+import xyz.flussigkatz.core_api.entity.equipments.EquipmentItem
+import xyz.flussigkatz.core_api.entity.ingredients.IngredientItem
+import xyz.flussigkatz.core_api.entity.instructions.InstructionsItem
+import xyz.flussigkatz.remote.SpoonacularApi
+import xyz.flussigkatz.spoonzilla.ApiKey.API_KEY
 import xyz.flussigkatz.spoonzilla.data.db.MainRepository
 import xyz.flussigkatz.spoonzilla.data.preferences.PreferenceProvider
-import xyz.flussigkatz.spoonzilla.util.DishConverter
+import xyz.flussigkatz.spoonzilla.util.Converter
 
 class Interactor(
     private val repository: MainRepository,
@@ -20,47 +23,116 @@ class Interactor(
     private val retrofitService: SpoonacularApi
 ) {
 
-    private val tags: List<String> = listOf("")
-
     fun getRecipeByIdFromApi(id: Int) {
         retrofitService.getRecipeById(
             id = id,
             includeNutrition = true,
-            apiKey = ApiKey.API_KEY
+            apiKey = API_KEY
         ).subscribeOn(Schedulers.io())
-            .subscribe(
-                { println(it.title) },
+            .map {
+                val markedIds = repository.getIdsMarkedDishesFromDbToList()
+                Converter.convertRecipeByIdFromApi(it, markedIds)
+            }.subscribe(
+                { repository.putAdvancedInfoDishToDb(it) },
                 { println("$TAG getRecipeByIdFromApi onError: ${it.localizedMessage}") }
             )
     }
 
-    fun getRandomRecipeFromApi(number: Int, clearDb: Boolean) {
+    fun getRecentlyViewedDishes() = repository.getRecentlyViewedDishes()
+
+    fun getIngredientsByIdFromDb(id: Int): Observable<List<IngredientItem>> {
+        return repository.getIngredients(id)
+            .subscribeOn(Schedulers.io())
+            .map { Converter.convertIngredientsFromDb(it) }
+    }
+
+    fun getIngredientsByIdFromApi(id: Int) {
+        val metric = preferences.getMetric()
+        retrofitService.getIngredientsById(id = id, apiKey = API_KEY)
+            .subscribeOn(Schedulers.io())
+            .map { Converter.convertIngredientsFromApi(it, metric, id) }
+            .subscribe(
+                { repository.putIngredients(it) },
+                { println("$TAG getIngredientsByIdFromApi onError: ${it.localizedMessage}") }
+            )
+    }
+
+    fun getEquipmentsByIdFromDb(id: Int): Observable<List<EquipmentItem>> {
+        return repository.getEquipments(id)
+            .subscribeOn(Schedulers.io())
+            .map { Converter.convertEquipmentsByIdFromDb(it) }
+    }
+
+    fun getEquipmentsByIdFromApi(id: Int) {
+        retrofitService.getEquipmentsById(id = id, apiKey = API_KEY)
+            .subscribeOn(Schedulers.io())
+            .map { Converter.convertEquipmentsFromApi(it, id) }
+            .subscribe(
+                { repository.putEquipments(it) },
+                { println("$TAG getEquipmentsByIdFromApi onError: ${it.localizedMessage}") }
+            )
+    }
+
+    fun getInstructionsByIdFromDb(id: Int): Observable<List<InstructionsItem>> {
+        return repository.getInstructions(id)
+            .subscribeOn(Schedulers.io())
+            .map { Converter.convertInstructionsByIdFromDb(it) }
+    }
+
+    fun getInstructionsByIdFromApi(id: Int) {
+        retrofitService.getInstructionsById(id = id, apiKey = API_KEY)
+            .subscribeOn(Schedulers.io())
+            .map { Converter.convertInstructionsByIdFromApi(it, id) }
+            .subscribe(
+                { repository.putInstructions(it) },
+                { println("$TAG getInstructionsByIdFromApi onError: ${it.localizedMessage}") }
+            )
+    }
+
+    fun getRandomRecipeFromApi(
+        number: Int,
+        tags: String,
+        clearDb: Boolean
+    ) {
         retrofitService.getRandomRecipes(
             limitLicense = false,
-            tags = tags.joinToString(),
+            tags = tags,
             number = number,
-            apiKey = ApiKey.API_KEY
+            apiKey = API_KEY
         ).subscribeOn(Schedulers.io())
             .filter { !it.recipes.isNullOrEmpty() }
-            .map { DishConverter.convertRandomRecipeFromApi(it) }
+            .map {
+                val markedIds = repository.getIdsMarkedDishesFromDbToList()
+                Converter.convertRandomRecipeFromApi(it, markedIds)
+            }
             .doOnSubscribe { loadingState.onNext(true) }
             .doOnComplete { loadingState.onNext(false) }
             .doOnError { loadingState.onNext(false) }
             .subscribe(
                 {
-                    if (clearDb) {
-                        var isClear: Boolean
-                        do isClear = repository.clearDb()
-                        while (!isClear)
-                    }
-                    repository.putFilmToDB(it)
+                    if (clearDb) repository.clearDishTable()
+                    repository.putDishesToDb(it)
                 },
                 { println("$TAG getRandomRecipeFromApi onError: ${it.localizedMessage}") }
             )
     }
 
-    fun getRandomRecipeFromDb(): Observable<List<Dish>> {
-        return repository.getAllFilmsFromDB()
+    fun getDishesFromDb() = repository.getAllDishesFromDb()
+
+    fun updateDish(dish: Dish) {
+        repository.updateDish(dish)
+    }
+
+    fun getMarkedDishesFromDb(query: String): Observable<List<DishMarked>> {
+        return repository.getAllMarkedDishesFromDb(query)
+    }
+
+    fun putMarkedDishToDB(dish: DishMarked) {
+        repository.putMarkedDishToDb(dish)
+    }
+
+    fun deleteMarkedDishFromDb(dishId: Int) {
+        repository.deleteMarkedDishFromDb(dishId)
     }
 
     fun getSimilarRecipesFromApi(id: Int) {
@@ -68,7 +140,7 @@ class Interactor(
             id = id,
             number = 4,
             limitLicense = false,
-            apiKey = ApiKey.API_KEY
+            apiKey = API_KEY
         ).subscribeOn(Schedulers.io())
             .subscribe(
                 { onNext -> onNext.forEach { println(it.title) } },
@@ -80,7 +152,7 @@ class Interactor(
         retrofitService.getRecipeTaste(
             id = id,
             normalize = true,
-            apiKey = ApiKey.API_KEY
+            apiKey = API_KEY
         ).subscribeOn(Schedulers.io())
             .subscribe(
                 { println(it) },
@@ -100,27 +172,26 @@ class Interactor(
             offset = offset,
             number = number,
             limitLicense = false,
-            apiKey = ApiKey.API_KEY
+            apiKey = API_KEY
         ).subscribeOn(Schedulers.io())
-            .map { DishConverter.convertSearchedRecipeBasicInfoFromApi(it) }
+            .map {
+                val markedIds = repository.getIdsMarkedDishesFromDbToList()
+                Converter.convertSearchedRecipeBasicInfoFromApi(it, markedIds)
+            }
             .doOnSubscribe { loadingState.onNext(true) }
             .doOnComplete { loadingState.onNext(false) }
             .doOnError { loadingState.onNext(false) }
             .subscribe(
                 {
-                    if (clearDb) {
-                        var isClear: Boolean
-                        do isClear = repository.clearDb()
-                        while (!isClear)
-                    }
-                    repository.putFilmToDB(it)
+                    if (clearDb) repository.clearDishTable()
+                    repository.putDishesToDb(it)
                 },
                 { println("$TAG getSearchedRecipesFromApi onError: ${it.localizedMessage}") }
             )
     }
 
     fun getAdvancedSearchedRecipes(
-        query: String,
+        query: String?,
         cuisine: String?,
         diet: String?,
         intolerances: String?,
@@ -140,12 +211,32 @@ class Interactor(
             offset = offset,
             number = number,
             limitLicense = false,
-            apiKey = ApiKey.API_KEY
-        )
+            apiKey = API_KEY
+        ).subscribeOn(Schedulers.io())
+            .map {
+                val markedIds = repository.getIdsMarkedDishesFromDbToList()
+                Converter.convertSearchedRecipeBasicInfoFromApi(it, markedIds)
+            }
+            .doOnSubscribe { loadingState.onNext(true) }
+            .doOnComplete { loadingState.onNext(false) }
+            .doOnError { loadingState.onNext(false) }
+            .subscribe(
+                {
+                    if (clearDb) repository.clearDishTable()
+                    repository.putDishesToDb(it)
+                },
+                { println("$TAG getAdvancedSearchedRecipes onError: ${it.localizedMessage}") }
+            )
+    }
+
+    fun getDishAdvancedInfoFromDb(dishId: Int) = repository.getAdvancedInfoDishFromDb(dishId)
+
+    fun deleteAdvancedInfoDishFromDb(dishId: Int) {
+        repository.deleteAdvancedInfoDishFromDb(dishId)
     }
 
     fun putSearchQuery(query: String) {
-        searchPublishSubject.onNext(query)
+        searchPublishSubject.onNext(query.lowercase().trim())
     }
 
     fun getSearchPublishSubject() = searchPublishSubject
@@ -154,7 +245,7 @@ class Interactor(
         preferences.putDialogItems(key, set)
     }
 
-    fun getDialogItemsFromPreference(key: String): MutableSet<String>? {
+    fun getSearchSettings(key: String): MutableSet<String>? {
         return preferences.getDialogItems(key)
     }
 

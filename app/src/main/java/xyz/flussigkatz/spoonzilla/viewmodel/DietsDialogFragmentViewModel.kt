@@ -18,6 +18,6 @@ class DietsDialogFragmentViewModel : ViewModel() {
     }
 
     fun getDialogItemsFromPreference(key: String): MutableSet<String>? {
-        return interactor.getDialogItemsFromPreference(key)
+        return interactor.getSearchSettings(key)
     }
 }

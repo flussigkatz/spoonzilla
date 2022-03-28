@@ -9,9 +9,9 @@
     tools:context=".view.MainActivity"
     tools:openDrawer="start">
 
-        <androidx.coordinatorlayout.widget.CoordinatorLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/main_appbar"
@@ -33,10 +33,8 @@
                     android:id="@+id/main_quick_search"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="end"
                     app:iconifiedByDefault="false"
                     app:queryHint="@string/search_hint"
-                    app:searchHintIcon="@null"
                     app:searchIcon="@null" />
             </com.google.android.material.appbar.MaterialToolbar>
 
@@ -50,7 +48,63 @@
             app:defaultNavHost="true"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
             app:navGraph="@navigation/navigation" />
-        </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+        <FrameLayout
+            android:id="@+id/main_tint"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:alpha="0"
+            android:background="?attr/colorOnPrimary" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/main_recently_viewed"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/main_recently_viewed_height"
+            android:orientation="vertical"
+            app:behavior_hideable="true"
+            app:behavior_peekHeight="@dimen/main_recently_viewed_peek_height"
+            app:layout_behavior="@string/bottom_sheet_behavior"
+            tools:context=".view.dialog.RecentlyViewedDialogFragment">
+
+            <TextView
+                android:id="@+id/recently_viewed_label"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/recently_viewed_label_height"
+                android:layout_gravity="center"
+                android:background="@drawable/ic_cloche"
+                android:gravity="center"
+                android:text="@string/recently_viewed_label_title"
+                android:textColor="@color/white"
+                android:textSize="@dimen/recently_viewed_label_text_size"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recently_viewed_recycler"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:context=".view.fragment.HomeFragment"
+                tools:listitem="@layout/dish_item"
+                app:layout_constraintTop_toBottomOf="@id/recently_viewed_label"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/recently_viewed_fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:contentDescription="@string/recently_viewed_fab_description"
+            android:src="@drawable/ic_history"
+            android:visibility="gone"
+            app:layout_anchor="@id/main_recently_viewed"
+            app:layout_anchorGravity="top|end" />
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/main_navigation_view"

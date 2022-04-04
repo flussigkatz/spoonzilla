@@ -23,6 +23,7 @@ class DishDiff(
 
     override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
         return oldList[oldItemPosition].title == newList[newItemPosition].title &&
-                oldList[oldItemPosition].image == newList[newItemPosition].image
+                oldList[oldItemPosition].image == newList[newItemPosition].image &&
+                oldList[oldItemPosition].mark == newList[newItemPosition].mark
     }
 }

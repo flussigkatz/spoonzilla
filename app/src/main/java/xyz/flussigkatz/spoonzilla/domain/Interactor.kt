@@ -5,15 +5,19 @@ import io.reactivex.rxjava3.schedulers.Schedulers
 import io.reactivex.rxjava3.subjects.BehaviorSubject
 import io.reactivex.rxjava3.subjects.PublishSubject
 import xyz.flussigkatz.core_api.entity.Dish
+import xyz.flussigkatz.core_api.entity.DishAdvancedInfo
 import xyz.flussigkatz.core_api.entity.DishMarked
 import xyz.flussigkatz.core_api.entity.equipments.EquipmentItem
 import xyz.flussigkatz.core_api.entity.ingredients.IngredientItem
 import xyz.flussigkatz.core_api.entity.instructions.InstructionsItem
+import xyz.flussigkatz.core_api.entity.nutrient.NutrientItem
+import xyz.flussigkatz.core_api.entity.nutrient.Nutrients
 import xyz.flussigkatz.remote.SpoonacularApi
 import xyz.flussigkatz.spoonzilla.ApiKey.API_KEY
 import xyz.flussigkatz.spoonzilla.data.db.MainRepository
 import xyz.flussigkatz.spoonzilla.data.preferences.PreferenceProvider
 import xyz.flussigkatz.spoonzilla.util.Converter
+import java.lang.Exception
 
 class Interactor(
     private val repository: MainRepository,
@@ -38,8 +42,9 @@ class Interactor(
             )
     }
 
-    fun getRecentlyViewedDishes() = repository.getRecentlyViewedDishes()
-
+    fun getRecentlyViewedDishes(): Observable<List<Dish>> {
+        return repository.getRecentlyViewedDishes()
+    }
     fun getIngredientsByIdFromDb(id: Int): Observable<List<IngredientItem>> {
         return repository.getIngredients(id)
             .subscribeOn(Schedulers.io())
@@ -89,6 +94,21 @@ class Interactor(
             )
     }
 
+    fun getNutrientByIdFromDb(id: Int): Observable<List<NutrientItem>> {
+        return repository.getNutrients(id).subscribeOn(Schedulers.io())
+            .map { Converter.convertNutrientsByIdFromDb(it) }
+    }
+
+    fun getNutrientByIdFromApi(id: Int) {
+        retrofitService.getNutrientById(id = id, apiKey = API_KEY)
+            .subscribeOn(Schedulers.io())
+            .map { Converter.convertNutrientsFromApi(it, id) }
+            .subscribe(
+                { repository.putNutrients(it) },
+                { println("$TAG getNutrientByIdFromApi onError: ${it.localizedMessage}") }
+            )
+    }
+
     fun getRandomRecipeFromApi(
         number: Int,
         tags: String,
@@ -119,20 +139,23 @@ class Interactor(
 
     fun getDishesFromDb() = repository.getAllDishesFromDb()
 
-    fun updateDish(dish: Dish) {
-        repository.updateDish(dish)
-    }
-
     fun getMarkedDishesFromDb(query: String): Observable<List<DishMarked>> {
         return repository.getAllMarkedDishesFromDb(query)
     }
 
-    fun putMarkedDishToDB(dish: DishMarked) {
-        repository.putMarkedDishToDb(dish)
-    }
-
-    fun deleteMarkedDishFromDb(dishId: Int) {
-        repository.deleteMarkedDishFromDb(dishId)
+    fun setDishMark(dish: Dish) {
+        try {
+            if (dish.mark) repository.putMarkedDishToDb(Converter.convertDishToDishMarked(dish))
+            else repository.deleteMarkedDishFromDb(dish.id)
+            val cashedDish = repository.getDishFromDb(dish.id)
+            cashedDish.mark = dish.mark
+            repository.updateDish(cashedDish)
+            val dishAdvancedInfo = repository.getAdvancedInfoDishFromDbToList(dish.id)
+            dishAdvancedInfo.map { it.mark = dish.mark }
+            if (dishAdvancedInfo.isNotEmpty()) repository.updateAdvancedInfoDish(dishAdvancedInfo.first())
+        } catch (e: Exception) {
+            println("$TAG ${e.localizedMessage}")
+        }
     }
 
     fun getSimilarRecipesFromApi(id: Int) {
@@ -263,9 +286,7 @@ class Interactor(
 
     fun getAdvancedSearchSwitchState(key: String) = preferences.getAdvancedSearchSwitchState(key)
 
-
     companion object {
         private const val TAG = "Interactor"
     }
-
 }

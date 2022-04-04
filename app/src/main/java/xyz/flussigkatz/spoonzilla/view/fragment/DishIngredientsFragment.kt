@@ -59,7 +59,6 @@ class DishIngredientsFragment : Fragment() {
             adapter = ingredientsAdapter
             layoutManager = LinearLayoutManager(context)
         }
-
     }
 
     companion object {

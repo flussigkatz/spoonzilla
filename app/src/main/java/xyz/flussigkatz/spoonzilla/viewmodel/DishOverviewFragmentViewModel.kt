@@ -31,12 +31,13 @@ class DishOverviewFragmentViewModel : ViewModel() {
         interactor.getInstructionsByIdFromApi(id)
     }
 
+    fun getNutrientByIdFromApi(id: Int) {
+        interactor.getNutrientByIdFromApi(id)
+    }
+
     fun getDishAdvancedInfoFromDb(id: Int) = interactor.getDishAdvancedInfoFromDb(id)
 
-    fun setDishMark(dishAdvancedInfo: DishAdvancedInfo, isChecked: Boolean) {
-        if (isChecked) interactor.putMarkedDishToDB(
-            Converter.convertDishAdvancedInfoToDishMarked(dishAdvancedInfo)
-        )
-        else interactor.deleteMarkedDishFromDb(dishAdvancedInfo.id)
+    fun setDishMark(dishAdvancedInfo: DishAdvancedInfo) {
+        interactor.setDishMark(Converter.convertDishAdvancedInfoToDish(dishAdvancedInfo))
     }
 }

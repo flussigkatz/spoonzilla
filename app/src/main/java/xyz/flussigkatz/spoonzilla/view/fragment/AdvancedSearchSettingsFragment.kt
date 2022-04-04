@@ -20,7 +20,6 @@ import xyz.flussigkatz.spoonzilla.util.AppConst.KEY_MEAT_TYPE_FROM_PROFILE
 import xyz.flussigkatz.spoonzilla.util.AppConst.KEY_MEAl_TYPE
 import xyz.flussigkatz.spoonzilla.util.AppConst.NAVIGATE_TO_ADVANCED_SEARCH_ACTION
 import xyz.flussigkatz.spoonzilla.util.AutoDisposable
-import xyz.flussigkatz.spoonzilla.view.MainActivity
 import xyz.flussigkatz.spoonzilla.viewmodel.AdvancedSearchSettingsFragmentViewModel
 
 class AdvancedSearchSettingsFragment : Fragment() {
@@ -154,20 +153,6 @@ class AdvancedSearchSettingsFragment : Fragment() {
             requireActivity().sendBroadcast(intent)
         }
     }
-
-    override fun onStart() {
-        MainActivity.searchFieldSwitcher(requireActivity(), true)
-        MainActivity.searchRecentlyViewedFab(requireActivity(), true)
-        super.onStart()
-    }
-
-    override fun onStop() {
-        MainActivity.searchFieldSwitcher(requireActivity(), false)
-        MainActivity.searchRecentlyViewedFab(requireActivity(), false)
-        super.onStop()
-    }
-
-
     companion object {
         private const val KEY_CUISINES_DIALOG = "key_cuisines_dialog"
         private const val KEY_DIETS_DIALOG = "key_diets_dialog"

@@ -77,9 +77,7 @@ class AdvancedSearchFragment : Fragment() {
 
     private fun initRefreshLayout() {
         binding.advancedSearchRefreshLayout.setOnRefreshListener {
-            MainActivity.getSearchView(requireActivity())?.apply {
-                clearFocus()
-            }
+            (requireActivity() as MainActivity).mainSearchViewClearFocus()
             getSearchedRecipes()
             viewModel.loadingState.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -130,7 +128,7 @@ class AdvancedSearchFragment : Fragment() {
             override fun checkedChange(dish: Dish, isChecked: Boolean) {
                 if (dish.mark != isChecked) {
                     dish.mark = isChecked
-                    advancedSearchFragmentScope.launch { viewModel.setDishMark(dish, isChecked) }
+                    advancedSearchFragmentScope.launch { viewModel.setDishMark(dish) }
                 }
             }
         }
@@ -138,8 +136,10 @@ class AdvancedSearchFragment : Fragment() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
                 if (dy != 0) {
-                    MainActivity.getSearchView(requireActivity())?.clearFocus()
-                    (requireActivity() as MainActivity).hideBottomSheet()
+                    (requireActivity() as MainActivity).apply {
+                        hideBottomSheet()
+                        mainSearchViewClearFocus()
+                    }
                 }
                 if (dy > 0 && !isLoadingFromApi) paginationCheck(
                     mLayoutManager.childCount,
@@ -190,18 +190,6 @@ class AdvancedSearchFragment : Fragment() {
             keyMeatType = keyMeatType
         )
         binding.advancedSearchRecycler.smoothScrollToPosition(FIRST_RECYCLER_POSITION)
-    }
-
-    override fun onStart() {
-        MainActivity.searchFieldSwitcher(requireActivity(), true)
-        MainActivity.searchRecentlyViewedFab(requireActivity(), true)
-        super.onStart()
-    }
-
-    override fun onStop() {
-        MainActivity.searchFieldSwitcher(requireActivity(), false)
-        MainActivity.searchRecentlyViewedFab(requireActivity(), false)
-        super.onStop()
     }
 
     override fun onDestroy() {

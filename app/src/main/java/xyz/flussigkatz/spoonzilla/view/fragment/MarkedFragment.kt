@@ -70,8 +70,10 @@ class MarkedFragment : Fragment() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
                 if (dy != 0) {
-                    MainActivity.getSearchView(requireActivity())?.clearFocus()
-                    (requireActivity() as MainActivity).hideBottomSheet()
+                    (requireActivity() as MainActivity).apply{
+                        hideBottomSheet()
+                        mainSearchViewClearFocus()
+                    }
                 }
             }
         }
@@ -89,7 +91,7 @@ class MarkedFragment : Fragment() {
             override fun checkedChange(dish: Dish, isChecked: Boolean) {
                 if (dish.mark != isChecked) {
                     dish.mark = isChecked
-                    markedFragmentScope.launch { viewModel.setDishMark(dish, isChecked) }
+                    markedFragmentScope.launch { viewModel.setDishMark(dish) }
                 }
             }
         }
@@ -116,18 +118,6 @@ class MarkedFragment : Fragment() {
                 },
                 { println("$TAG initMarkedSearch onError: ${it.localizedMessage}") }
             ).addTo(autoDisposable)
-    }
-
-    override fun onStart() {
-        MainActivity.searchFieldSwitcher(requireActivity(), true)
-        MainActivity.searchRecentlyViewedFab(requireActivity(), true)
-        super.onStart()
-    }
-
-    override fun onStop() {
-        MainActivity.searchFieldSwitcher(requireActivity(), false)
-        MainActivity.searchRecentlyViewedFab(requireActivity(), false)
-        super.onStop()
     }
 
     override fun onDestroy() {

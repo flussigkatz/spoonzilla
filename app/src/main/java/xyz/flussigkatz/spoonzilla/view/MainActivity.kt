@@ -1,6 +1,5 @@
 package xyz.flussigkatz.spoonzilla.view
 
-import android.app.Activity
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
@@ -15,13 +14,13 @@ import androidx.appcompat.widget.SearchView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.GravityCompat
 import androidx.navigation.NavController
+import androidx.navigation.NavDestination
 import androidx.navigation.Navigation
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetBehavior
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.schedulers.Schedulers
 import kotlinx.coroutines.*
@@ -46,6 +45,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     lateinit var navController: NavController
     private val receiver = Receiver()
+    private var adapterIsNotEmpty = false
     private lateinit var recentlyViewedAdapter: DishRecyclerAdapter
     private lateinit var recentlyViewedBottomSheet: BottomSheetBehavior<ConstraintLayout>
     private val autoDisposable = AutoDisposable()
@@ -78,15 +78,15 @@ class MainActivity : AppCompatActivity() {
                         BottomSheetBehavior.STATE_EXPANDED -> {
                             text = resources.getText(R.string.recently_viewed_label_title_expanded)
                             binding.recentlyViewedFab.animate()
-                                .scaleX(0F)
-                                .scaleY(0F)
+                                .scaleX(0f)
+                                .scaleY(0f)
                                 .setDuration(RECENTLY_VIEWED_FAB_ANIM_DURATION)
                                 .start()
                         }
                         BottomSheetBehavior.STATE_COLLAPSED, BottomSheetBehavior.STATE_HIDDEN -> {
                             binding.recentlyViewedFab.animate()
-                                .scaleX(1F)
-                                .scaleY(1F)
+                                .scaleX(1f)
+                                .scaleY(1f)
                                 .setDuration(RECENTLY_VIEWED_FAB_ANIM_DURATION)
                                 .start()
                             binding.mainTint.animate()
@@ -101,11 +101,12 @@ class MainActivity : AppCompatActivity() {
             }
         }
         recentlyViewedBottomSheet = BottomSheetBehavior.from(binding.mainRecentlyViewed).apply {
+            maxHeight = resources.getDimension(R.dimen.main_recently_viewed_height).toInt()
             state = BottomSheetBehavior.STATE_HIDDEN
             addBottomSheetCallback(bottomSheetCallback)
         }
         binding.recentlyViewedFab.setOnClickListener {
-            binding.mainQuickSearch.clearFocus()
+            mainSearchViewClearFocus()
             recentlyViewedBottomSheet.state = BottomSheetBehavior.STATE_COLLAPSED
         }
     }
@@ -151,22 +152,54 @@ class MainActivity : AppCompatActivity() {
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration)
 
         binding.mainNavigationView.setNavigationItemSelectedListener { menuItem ->
-            binding.mainQuickSearch.apply {
-                queryHint = when (menuItem.itemId) {
-                    R.id.homeFragment -> getText(R.string.home_search_hint)
-                    R.id.advancedSearchFragment, R.id.advancedSearchSettingsFragment ->
-                        getText(R.string.advanced_search_hint)
-                    R.id.markedFragment -> getText(R.string.marked_search_hint)
-                    else -> null
-                }
-            }
             binding.mainDrawerLayout.closeDrawers()
             val onScreenFragmentId = navController.currentDestination?.id
             if (onScreenFragmentId != menuItem.itemId) {
-                binding.mainQuickSearch.setQuery(null, false)
                 NavigationHelper.navigate(navController, menuItem.itemId, onScreenFragmentId)
             }
             true
+        }
+
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            binding.mainQuickSearch.apply {
+                setQuery(null, false)
+                clearFocus()
+            }
+            when (destination.id) {
+                R.id.homeFragment -> {
+                    binding.mainQuickSearch.queryHint = getText(R.string.home_search_hint)
+                    showMainQuickSearch(true)
+                    showRecentlyViewedFab(true)
+                }
+                R.id.profileFragment -> {
+                    showMainQuickSearch(false)
+                    showRecentlyViewedFab(false)
+                }
+                R.id.settingsFragment -> {
+                    showMainQuickSearch(false)
+                    showRecentlyViewedFab(false)
+                }
+                R.id.advancedSearchSettingsFragment -> {
+                    binding.mainQuickSearch.queryHint = getText(R.string.advanced_search_hint)
+                    showMainQuickSearch(true)
+                    showRecentlyViewedFab(false)
+                }
+                R.id.advancedSearchFragment -> {
+                    binding.mainQuickSearch.queryHint = getText(R.string.advanced_search_hint)
+                    showMainQuickSearch(true)
+                    showRecentlyViewedFab(true)
+                }
+                R.id.markedFragment -> {
+                    binding.mainQuickSearch.queryHint = getText(R.string.marked_search_hint)
+                    showMainQuickSearch(true)
+                    showRecentlyViewedFab(true)
+                }
+                R.id.detailsFragment -> {
+                    showMainQuickSearch(false)
+                    showRecentlyViewedFab(false)
+                }
+                else -> throw IllegalArgumentException("Wrong NavDestination Id")
+            }
         }
 
     }
@@ -181,7 +214,7 @@ class MainActivity : AppCompatActivity() {
         ) {
             navController.popBackStack()
         } else {
-            binding.mainQuickSearch.clearFocus()
+            mainSearchViewClearFocus()
             binding.mainDrawerLayout.openDrawer(GravityCompat.START)
         }
         return super.onOptionsItemSelected(item)
@@ -211,14 +244,14 @@ class MainActivity : AppCompatActivity() {
             override fun checkedChange(dish: Dish, isChecked: Boolean) {
                 if (dish.mark != isChecked) {
                     dish.mark = isChecked
-                    mainActivityFragmentScope.launch { viewModel.setDishMark(dish, isChecked) }
+                    mainActivityFragmentScope.launch { viewModel.setDishMark(dish) }
                 }
             }
         }
         val scrollListener = object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
-                if (dy != 0) binding.mainQuickSearch.clearFocus()
+                if (dy != 0) mainSearchViewClearFocus()
             }
         }
         binding.recentlyViewedRecycler.apply {
@@ -232,7 +265,6 @@ class MainActivity : AppCompatActivity() {
             addOnScrollListener(scrollListener)
             addItemDecoration(SpacingItemDecoration(AppConst.PADDING_DP))
         }
-
     }
 
     private fun initContent() {
@@ -243,6 +275,7 @@ class MainActivity : AppCompatActivity() {
                 {
                     recentlyViewedAdapter.updateData(it)
                     binding.recentlyViewedRecycler.smoothScrollToPosition(0)
+                    adapterIsNotEmpty = it.isNotEmpty()
                 },
                 { println("$TAG initContent onError: ${it.localizedMessage}") }
             ).addTo(autoDisposable)
@@ -250,6 +283,20 @@ class MainActivity : AppCompatActivity() {
 
     fun hideBottomSheet() {
         recentlyViewedBottomSheet.state = BottomSheetBehavior.STATE_HIDDEN
+    }
+
+    fun mainSearchViewClearFocus() {
+        binding.mainQuickSearch.clearFocus()
+    }
+
+    private fun showRecentlyViewedFab(state: Boolean) {
+        binding.recentlyViewedFab.visibility = if (state && adapterIsNotEmpty) View.VISIBLE
+        else View.GONE
+    }
+
+    private fun showMainQuickSearch(state: Boolean) {
+        binding.mainQuickSearch.visibility = if (state) View.VISIBLE
+        else View.GONE
     }
 
     override fun onBackPressed() {
@@ -299,22 +346,5 @@ class MainActivity : AppCompatActivity() {
         private const val MAIN_TINT_ANIM_DURATION = 200L
         private const val RECENTLY_VIEWED_FAB_ANIM_DURATION = 200L
         private const val MAIN_TINT_ALPHA_RATIO = 1.1F
-
-        fun searchFieldSwitcher(activity: Activity, state: Boolean) {
-            activity.findViewById<SearchView>(R.id.main_quick_search)?.apply {
-                visibility = if (state) View.VISIBLE
-                else View.GONE
-            }
-        }
-
-        fun searchRecentlyViewedFab(activity: Activity, state: Boolean) {
-            activity.findViewById<FloatingActionButton>(R.id.recently_viewed_fab)?.apply {
-                visibility = if (state) View.VISIBLE else View.GONE
-            }
-        }
-
-        fun getSearchView(activity: Activity): SearchView? {
-            return activity.findViewById(R.id.main_quick_search)
-        }
     }
 }

@@ -3,7 +3,7 @@
     <item android:state_checked="true"
         android:drawable="@drawable/ic_marked"/>
     <item android:state_checked="false"
-        android:drawable="@drawable/ic_unmaked"
+        android:drawable="@drawable/ic_unmarked"
         />
 
 </selector>

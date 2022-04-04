@@ -9,6 +9,7 @@ import xyz.flussigkatz.core_api.entity.DishMarked
 import xyz.flussigkatz.core_api.entity.equipments.Equipments
 import xyz.flussigkatz.core_api.entity.ingredients.Ingredients
 import xyz.flussigkatz.core_api.entity.instructions.Instructions
+import xyz.flussigkatz.core_api.entity.nutrient.Nutrients
 
 @Database(
     entities = [
@@ -17,7 +18,8 @@ import xyz.flussigkatz.core_api.entity.instructions.Instructions
         DishAdvancedInfo::class,
         Ingredients::class,
         Equipments::class,
-        Instructions::class
+        Instructions::class,
+        Nutrients::class
     ],
     version = 1
 )

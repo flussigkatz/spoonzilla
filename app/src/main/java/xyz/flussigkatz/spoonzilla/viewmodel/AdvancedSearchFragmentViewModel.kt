@@ -9,7 +9,6 @@ import xyz.flussigkatz.spoonzilla.App
 import xyz.flussigkatz.spoonzilla.domain.Interactor
 import xyz.flussigkatz.spoonzilla.util.AppConst.KEY_INSTRUCTIONS_SWITCH
 import xyz.flussigkatz.spoonzilla.util.AppConst.PAGINATION_NUMBER_ELEMENTS
-import xyz.flussigkatz.spoonzilla.util.Converter
 import javax.inject.Inject
 
 class AdvancedSearchFragmentViewModel : ViewModel() {
@@ -78,10 +77,8 @@ class AdvancedSearchFragmentViewModel : ViewModel() {
         )
     }
 
-    fun setDishMark(dish: Dish, isChecked: Boolean) {
-        if(isChecked) interactor.putMarkedDishToDB(Converter.convertDishToDishMarked(dish))
-        else interactor.deleteMarkedDishFromDb(dish.id)
-        interactor.updateDish(dish)
+    fun setDishMark(dish: Dish) {
+        interactor.setDishMark(dish)
     }
 
 }

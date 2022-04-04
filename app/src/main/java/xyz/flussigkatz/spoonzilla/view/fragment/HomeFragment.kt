@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle.State.RESUMED
@@ -18,6 +19,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 import xyz.flussigkatz.core_api.entity.Dish
+import xyz.flussigkatz.spoonzilla.R
 import xyz.flussigkatz.spoonzilla.databinding.FragmentHomeBinding
 import xyz.flussigkatz.spoonzilla.util.AppConst.KEY_DISH_ID
 import xyz.flussigkatz.spoonzilla.util.AppConst.NAVIGATE_TO_DETAILS_ACTION
@@ -68,10 +70,7 @@ class HomeFragment : Fragment() {
 
     private fun initRefreshLayout() {
         binding.homeRefreshLayout.setOnRefreshListener {
-            MainActivity.getSearchView(requireActivity())?.apply {
-                setQuery(null, false)
-                clearFocus()
-            }
+            (requireActivity() as MainActivity).mainSearchViewClearFocus()
             viewModel.getRandomRecipe()
             viewModel.loadingState.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -118,7 +117,7 @@ class HomeFragment : Fragment() {
             override fun checkedChange(dish: Dish, isChecked: Boolean) {
                 if (dish.mark != isChecked) {
                     dish.mark = isChecked
-                    homeFragmentScope.launch { viewModel.setDishMark(dish, isChecked) }
+                    homeFragmentScope.launch { viewModel.setDishMark(dish) }
                 }
             }
         }
@@ -126,8 +125,10 @@ class HomeFragment : Fragment() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
                 if (dy != 0) {
-                    MainActivity.getSearchView(requireActivity())?.clearFocus()
-                    (requireActivity() as MainActivity).hideBottomSheet()
+                    (requireActivity() as MainActivity).apply {
+                        mainSearchViewClearFocus()
+                        hideBottomSheet()
+                    }
                 }
                 if (dy > 0 && !isLoadingFromApi) paginationCheck(
                     mLayoutManager.childCount,
@@ -156,18 +157,6 @@ class HomeFragment : Fragment() {
         }
     }
 
-    override fun onStart() {
-        MainActivity.searchFieldSwitcher(requireActivity(), true)
-        MainActivity.searchRecentlyViewedFab(requireActivity(), true)
-        super.onStart()
-    }
-
-    override fun onStop() {
-        MainActivity.searchFieldSwitcher(requireActivity(), false)
-        MainActivity.searchRecentlyViewedFab(requireActivity(), false)
-        super.onStop()
-    }
-
     override fun onDestroy() {
         homeFragmentScope.cancel()
         super.onDestroy()
@@ -175,7 +164,7 @@ class HomeFragment : Fragment() {
 
     fun paginationCheck(visibleItemCount: Int, totalItemCount: Int, pastVisibleItems: Int) {
         if (totalItemCount - (visibleItemCount + pastVisibleItems) <= REMAINDER_OF_ELEMENTS) {
-            MainActivity.getSearchView(requireActivity())?.query.let {
+            (requireActivity().findViewById<SearchView>(R.id.main_quick_search))?.query.let {
                 if (it.isNullOrBlank()) viewModel.doRandomRecipePagination()
                 else viewModel.doSearchedRecipesPagination(it.toString(), totalItemCount)
             }

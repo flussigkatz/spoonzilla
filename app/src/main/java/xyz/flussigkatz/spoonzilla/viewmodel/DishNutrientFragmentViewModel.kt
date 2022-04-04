@@ -12,4 +12,6 @@ class DishNutrientFragmentViewModel : ViewModel() {
     init {
         App.instance.dagger.inject(this)
     }
+
+    fun getNutrientByIdFromDb(dishId: Int) = interactor.getNutrientByIdFromDb(dishId)
 }

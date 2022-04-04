@@ -12,7 +12,6 @@ import xyz.flussigkatz.spoonzilla.util.AppConst.KEY_DIET_FROM_PROFILE
 import xyz.flussigkatz.spoonzilla.util.AppConst.KEY_INTOLERANCE_FROM_PROFILE
 import xyz.flussigkatz.spoonzilla.util.AppConst.PAGINATION_NUMBER_ELEMENTS
 import xyz.flussigkatz.spoonzilla.util.AppConst.TOTAL_NUMBER_ELEMENTS
-import xyz.flussigkatz.spoonzilla.util.Converter
 import javax.inject.Inject
 
 class HomeFragmentViewModel : ViewModel() {
@@ -70,10 +69,8 @@ class HomeFragmentViewModel : ViewModel() {
         interactor.getRandomRecipeFromApi(PAGINATION_NUMBER_ELEMENTS, tags, false)
     }
 
-    fun setDishMark(dish: Dish, isChecked: Boolean) {
-        if (isChecked) interactor.putMarkedDishToDB(Converter.convertDishToDishMarked(dish))
-        else interactor.deleteMarkedDishFromDb(dish.id)
-        interactor.updateDish(dish)
+    fun setDishMark(dish: Dish) {
+        interactor.setDishMark(dish)
     }
 
 }

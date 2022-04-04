@@ -15,22 +15,11 @@
             android:id="@+id/recipe_overview_dish_image"
             android:layout_width="0dp"
             android:layout_height="@dimen/dish_overview_dish_image_height"
-            android:contentDescription="@string/dish_image"
             android:background="@color/app_color_4"
+            android:contentDescription="@string/dish_image"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
-
-        <com.google.android.material.checkbox.MaterialCheckBox
-            android:id="@+id/overview_mark_check_box"
-            android:layout_width="@dimen/dish_overview_mark_check_box_size"
-            android:layout_height="@dimen/dish_overview_mark_check_box_size"
-            android:layout_gravity="bottom|end"
-            android:layout_margin="@dimen/dish_overview_mark_check_box_size"
-            android:background="@drawable/marked_selector"
-            android:button="@null"
-            app:layout_constraintBottom_toBottomOf="@id/recipe_overview_dish_image"
-            app:layout_constraintEnd_toEndOf="@id/recipe_overview_dish_image"/>
 
         <ImageView
             android:id="@+id/recipe_overview_time_cook"
@@ -121,9 +110,31 @@
             android:layout_margin="@dimen/dish_overview_margin"
             android:autoLink="web"
             android:linksClickable="true"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent" />
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/overview_mark_fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/overview_fab_margin"
+            android:src="@drawable/ic_unmarked_fab"
+            app:layout_constraintEnd_toEndOf="@id/recipe_overview_dish_image"
+            app:layout_constraintTop_toTopOf="@id/recipe_overview_dish_image"
+            android:contentDescription="@string/overview_mark_fab_description" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/overview_share_fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/overview_fab_margin"
+            android:contentDescription="@string/overview_share_fab_description"
+            android:src="@drawable/ic_share"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="@id/recipe_overview_dish_image"
+            app:layout_constraintTop_toBottomOf="@id/overview_mark_fab" />
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

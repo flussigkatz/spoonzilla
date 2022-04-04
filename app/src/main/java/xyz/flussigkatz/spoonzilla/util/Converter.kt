@@ -14,9 +14,12 @@ import xyz.flussigkatz.core_api.entity.ingredients.Ingredients
 import xyz.flussigkatz.core_api.entity.instructions.Instructions
 import xyz.flussigkatz.core_api.entity.instructions.InstructionsItem
 import xyz.flussigkatz.core_api.entity.instructions.Step
+import xyz.flussigkatz.core_api.entity.nutrient.NutrientItem
+import xyz.flussigkatz.core_api.entity.nutrient.Nutrients
 import xyz.flussigkatz.remote.entity.ingredients_by_id.IngredientsByIdDto
 import xyz.flussigkatz.remote.entity.equipment_by_id.EquipmentByIdDto
 import xyz.flussigkatz.remote.entity.instructions_by_id.InstructionsByIdDto
+import xyz.flussigkatz.remote.entity.nutrient_by_id.NutrientByIdDto
 import xyz.flussigkatz.remote.entity.searched_by_id.SearchedRecipeByIdDto
 import java.math.BigDecimal
 import java.math.RoundingMode
@@ -77,8 +80,8 @@ object Converter {
         )
     }
 
-    fun convertDishAdvancedInfoToDishMarked(dishAdvancedInfo: DishAdvancedInfo): DishMarked {
-        return DishMarked(
+    fun convertDishAdvancedInfoToDish(dishAdvancedInfo: DishAdvancedInfo): Dish {
+        return Dish(
             id = dishAdvancedInfo.id,
             title = dishAdvancedInfo.title,
             image = dishAdvancedInfo.image,
@@ -102,16 +105,6 @@ object Converter {
             image = dishMarked.image,
             mark = dishMarked.mark
         )
-    }
-
-    fun convertDishAdvancedInfoToDish(list: List<DishAdvancedInfo>, ids: List<Int>): List<Dish> {
-        return list.map {
-            Dish(
-            id = it.id,
-            title = it.title,
-            image = it.image,
-            mark = it.mark
-        ) }
     }
 
     fun convertIngredientsFromDb(
@@ -195,5 +188,39 @@ object Converter {
             )
         }
         return Instructions(dishId = id, instructionsItems = gson.toJson(instructionsItems))
+    }
+
+    fun convertNutrientsByIdFromDb(
+        nutrients: Nutrients
+    ): List<NutrientItem> {
+        val type = object : TypeToken<List<NutrientItem>>() {}.type
+        return gson.fromJson(nutrients.nutrientItems, type)
+    }
+
+    fun convertNutrientsFromApi(
+        nutrientByIdDto: NutrientByIdDto,
+        id: Int
+    ): Nutrients {
+        val nutrient = mutableListOf<NutrientItem>()
+        nutrient.addAll(nutrientByIdDto.bad.map {
+            NutrientItem(
+                amount = it.amount,
+                percentOfDailyNeeds = it.percentOfDailyNeeds,
+                title = it.title,
+                good = false
+            )
+        })
+        nutrient.addAll(nutrientByIdDto.good.map {
+            NutrientItem(
+                amount = it.amount,
+                percentOfDailyNeeds = it.percentOfDailyNeeds,
+                title = it.title,
+                good = true
+            )
+        })
+        return Nutrients(
+            dishId = id,
+            nutrientItems = gson.toJson(nutrient),
+        )
     }
 }

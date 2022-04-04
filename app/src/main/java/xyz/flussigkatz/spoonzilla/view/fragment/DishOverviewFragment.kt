@@ -1,5 +1,6 @@
 package xyz.flussigkatz.spoonzilla.view.fragment
 
+import android.content.Intent
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
@@ -52,39 +53,71 @@ class DishOverviewFragment : Fragment() {
         arguments?.let { bundle ->
             val dishId = bundle.getInt(KEY_DISH_ID)
             if (dishAdvancedInfo == null) {
-                    viewModel.getDishAdvancedInfoFromDb(dishId).subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(
-                            {
-                                if (it.isNotEmpty()) {
-                                    dishAdvancedInfo = it.first()
-                                    bind(it.first())
-                                    viewModel.getIngredientsByIdFromApi(dishId)
-                                    viewModel.getEquipmentsByIdFromApi(dishId)
-                                    viewModel.getInstructionsByIdFromApi(dishId)
-                                }
-                                else {
-                                    viewModel.getRecipeByIdFromApi(dishId)
-                                }
-                            },
-                            { println("$TAG getDish onError: ${it.localizedMessage}") }
-                        )
-            } else bind(dishAdvancedInfo!!)
+                viewModel.getDishAdvancedInfoFromDb(dishId).subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(
+                        {
+                            if (it.isNotEmpty()) {
+                                dishAdvancedInfo = it.first()
+                                bindData(it.first())
+                                viewModel.getIngredientsByIdFromApi(dishId)
+                                viewModel.getEquipmentsByIdFromApi(dishId)
+                                viewModel.getInstructionsByIdFromApi(dishId)
+                                viewModel.getNutrientByIdFromApi(dishId)
+                            } else {
+                                viewModel.getRecipeByIdFromApi(dishId)
+                            }
+                        },
+                        { println("$TAG getDish onError: ${it.localizedMessage}") }
+                    )
+            } else bindData(dishAdvancedInfo!!)
         }
     }
 
-    private fun bind(dishAdvancedInfo: DishAdvancedInfo) {
+    private fun bindData(dishAdvancedInfo: DishAdvancedInfo) {
+        val coast = "${dishAdvancedInfo.pricePerServing}$"
+        val cookingTime = "${dishAdvancedInfo.readyInMinutes}min"
         binding.recipeOverviewTitle.text = dishAdvancedInfo.title
         binding.recipeOverviewDishLink.text = dishAdvancedInfo.sourceUrl
-        binding.recipeOverviewCoastText.text = dishAdvancedInfo.pricePerServing.toString()
+        binding.recipeOverviewCoastText.text = coast
         binding.recipeOverviewLikesText.text = dishAdvancedInfo.aggregateLikes.toString()
-        binding.recipeOverviewTimeCookText.text = dishAdvancedInfo.readyInMinutes.toString()
-        binding.overviewMarkCheckBox.apply {
-            isChecked = dishAdvancedInfo.mark
-            setOnCheckedChangeListener { _, isChecked ->
-                if (dishAdvancedInfo.mark != isChecked) {
-                    dishOverviewScope.launch { viewModel.setDishMark(dishAdvancedInfo, isChecked) }
-                    dishAdvancedInfo.mark = isChecked
+        binding.recipeOverviewTimeCookText.text = cookingTime
+        binding.overviewShareFab.apply {
+            show()
+            setOnClickListener {
+                val sendIntent: Intent = Intent().apply {
+                    action = Intent.ACTION_SEND
+                    putExtra(
+                        Intent.EXTRA_TEXT,
+                        "Check out this recipe I found on the Spoonzilla app. " +
+                                "${dishAdvancedInfo.title}. " +
+                                "Source link: ${dishAdvancedInfo.sourceUrl}"
+                    )
+                    type = "text/plain"
+                }
+
+                val shareIntent = Intent.createChooser(sendIntent, null)
+                startActivity(shareIntent)
+            }
+        }
+        binding.overviewMarkFab.apply {
+            if (dishAdvancedInfo.mark) setImageResource(R.drawable.ic_marked)
+            show()
+            setOnClickListener {
+                dishAdvancedInfo.mark = !dishAdvancedInfo.mark
+                if (dishAdvancedInfo.mark) setImageResource(R.drawable.ic_marked)
+                else setImageResource(R.drawable.ic_unmarked_fab)
+                dishOverviewScope.launch { viewModel.setDishMark(dishAdvancedInfo) }
+            }
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            binding.root.setOnScrollChangeListener { _, _, scrollY, _, _ ->
+                if (scrollY != 0) {
+                    binding.overviewShareFab.hide()
+                    binding.overviewMarkFab.hide()
+                } else {
+                    binding.overviewShareFab.show()
+                    binding.overviewMarkFab.show()
                 }
             }
         }

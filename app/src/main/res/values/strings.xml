@@ -16,6 +16,8 @@
     <string name="dish_icon_cooking_time_description">Icon cooking time</string>
     <string name="dish_icon_likes_count_description">Icon likes count</string>
     <string name="dish_icon_dish_coast_description">Dish coast</string>
+    <string name="overview_mark_fab_description">Press to marked</string>
+    <string name="overview_share_fab_description">Share button</string>
 
 
     <!--    recipe_tabs-->
@@ -93,7 +95,6 @@
     <string name="dialog_cuisine_spanish">Spanish</string>
     <string name="dialog_cuisine_thai">Thai</string>
     <string name="dialog_cuisine_vietnamese">Vietnamese</string>
-
 
     <!--    dialog_meal_types-->
 

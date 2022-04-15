@@ -26,6 +26,9 @@ object NavigationHelper {
                     R.id.markedFragment -> {
                         navController.navigate(R.id.action_homeFragment_to_markedFragment)
                     }
+                    R.id.dishRemindsFragment -> {
+                        navController.navigate(R.id.action_homeFragment_to_dishRemindsFragment)
+                    }
                 }
             }
             R.id.profileFragment -> {
@@ -41,6 +44,9 @@ object NavigationHelper {
                     }
                     R.id.markedFragment -> {
                         navController.navigate(R.id.action_profileFragment_to_markedFragment)
+                    }
+                    R.id.dishRemindsFragment -> {
+                        navController.navigate(R.id.action_profileFragment_to_dishRemindsFragment)
                     }
                 }
             }
@@ -58,6 +64,9 @@ object NavigationHelper {
                     R.id.markedFragment -> {
                         navController.navigate(R.id.action_settingsFragment_to_markedFragment)
                     }
+                    R.id.dishRemindsFragment -> {
+                        navController.navigate(R.id.action_settingsFragment_to_dishRemindsFragment)
+                    }
                 }
             }
             R.id.advancedSearchSettingsFragment -> {
@@ -73,6 +82,9 @@ object NavigationHelper {
                     }
                     R.id.markedFragment -> {
                         navController.navigate(R.id.action_advancedSearchSettingsFragment_to_markedFragment)
+                    }
+                    R.id.dishRemindsFragment -> {
+                        navController.navigate(R.id.action_advancedSearchSettingsFragment_to_dishRemindsFragment)
                     }
                 }
             }
@@ -90,6 +102,28 @@ object NavigationHelper {
                     R.id.advancedSearchSettingsFragment -> {
                         navController.navigate(R.id.action_markedFragment_to_advancedSearchSettingsFragment)
                     }
+                    R.id.dishRemindsFragment -> {
+                        navController.navigate(R.id.action_markedFragment_to_dishRemindsFragment)
+                    }
+                }
+            }
+            R.id.dishRemindsFragment -> {
+                when (menuItemId) {
+                    R.id.homeFragment -> {
+                        navController.navigate(R.id.action_dishRemindsFragment_to_homeFragment)
+                    }
+                    R.id.markedFragment -> {
+                        navController.navigate(R.id.action_dishRemindsFragment_to_markedFragment)
+                    }
+                    R.id.profileFragment -> {
+                        navController.navigate(R.id.action_dishRemindsFragment_to_profileFragment)
+                    }
+                    R.id.settingsFragment -> {
+                        navController.navigate(R.id.action_dishRemindsFragment_to_settingsFragment)
+                    }
+                    R.id.advancedSearchSettingsFragment -> {
+                        navController.navigate(R.id.action_dishRemindsFragment_to_advancedSearchSettingsFragment)
+                    }
                 }
             }
             else -> throw IllegalArgumentException("Invalid argument: onScreenFragmentId")
@@ -97,11 +131,10 @@ object NavigationHelper {
 
     }
 
-
     fun navigateToDetailsFragment(
         navController: NavController,
         bundle: Bundle?,
-        onScreenFragmentId: Int
+        onScreenFragmentId: Int?
     ) {
         when (onScreenFragmentId) {
             R.id.homeFragment -> {
@@ -122,7 +155,16 @@ object NavigationHelper {
                     bundle
                 )
             }
-            else -> throw IllegalArgumentException("Invalid argument: onScreenFragmentId")
+            R.id.dishRemindsFragment -> {
+                navController.navigate(
+                    R.id.action_dishRemindsFragment_to_detailsFragment,
+                    bundle
+                )
+            }
+            else -> navController.navigate(
+                R.id.action_global_detailsFragment,
+                bundle
+            )
         }
     }
 

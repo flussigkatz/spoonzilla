@@ -30,13 +30,13 @@ import xyz.flussigkatz.spoonzilla.util.AutoDisposable
 import xyz.flussigkatz.spoonzilla.util.addTo
 import xyz.flussigkatz.spoonzilla.view.MainActivity
 import xyz.flussigkatz.spoonzilla.view.rv_adapter.DishRecyclerAdapter
-import xyz.flussigkatz.spoonzilla.view.rv_adapter.SpacingItemDecoration
+import xyz.flussigkatz.spoonzilla.view.rv_adapter.rv_decoration.SpacingItemDecoration
 import xyz.flussigkatz.spoonzilla.viewmodel.HomeFragmentViewModel
 import java.util.concurrent.TimeUnit
 
 class HomeFragment : Fragment() {
     private val viewModel: HomeFragmentViewModel by activityViewModels()
-    private lateinit var dishAdapter: DishRecyclerAdapter
+    private lateinit var mAdapter: DishRecyclerAdapter
     private lateinit var binding: FragmentHomeBinding
     private val autoDisposable = AutoDisposable()
     private val homeFragmentScope = CoroutineScope(Dispatchers.IO)
@@ -53,7 +53,7 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initDishAdapter()
+        initAdapter()
         initContent()
         initQuickSearch()
         initRefreshLayout()
@@ -96,12 +96,12 @@ class HomeFragment : Fragment() {
             .filter { !it.isNullOrEmpty() }
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
-                { dishAdapter.updateData(it) },
+                { mAdapter.updateData(it) },
                 { println("$TAG initContent onError: ${it.localizedMessage}") }
             ).addTo(autoDisposable)
     }
 
-    private fun initDishAdapter() {
+    private fun initAdapter() {
         val mLayoutManager = LinearLayoutManager(context)
         val clickListener = object : DishRecyclerAdapter.OnItemClickListener {
             override fun click(dishId: Int) {
@@ -124,13 +124,13 @@ class HomeFragment : Fragment() {
         val scrollListener = object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
-                if (dy != 0) {
+                if (dy != IS_SCROLL_FLAG) {
                     (requireActivity() as MainActivity).apply {
                         mainSearchViewClearFocus()
                         hideBottomSheet()
                     }
                 }
-                if (dy > 0 && !isLoadingFromApi) paginationCheck(
+                if (dy > IS_SCROLL_FLAG && !isLoadingFromApi) paginationCheck(
                     mLayoutManager.childCount,
                     mLayoutManager.itemCount,
                     mLayoutManager.findFirstVisibleItemPosition()
@@ -138,11 +138,11 @@ class HomeFragment : Fragment() {
             }
         }
         binding.homeRecycler.apply {
-            dishAdapter = DishRecyclerAdapter(clickListener, checkedChangeListener).apply {
+            mAdapter = DishRecyclerAdapter(clickListener, checkedChangeListener).apply {
                 stateRestorationPolicy = PREVENT_WHEN_EMPTY
             }
             layoutManager = mLayoutManager
-            adapter = dishAdapter
+            adapter = mAdapter
             addOnScrollListener(scrollListener)
             addItemDecoration(SpacingItemDecoration(PADDING_DP))
         }
@@ -173,6 +173,8 @@ class HomeFragment : Fragment() {
 
     companion object {
         private const val TAG = "HomeFragment"
+        private const val IS_SCROLL_FLAG = 0
+
     }
 
 }

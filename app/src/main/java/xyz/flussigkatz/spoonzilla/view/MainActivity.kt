@@ -13,8 +13,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.GravityCompat
+import androidx.lifecycle.Lifecycle.State.RESUMED
 import androidx.navigation.NavController
-import androidx.navigation.NavDestination
 import androidx.navigation.Navigation
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
@@ -23,20 +23,25 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.schedulers.Schedulers
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.launch
 import xyz.flussigkatz.core_api.entity.Dish
 import xyz.flussigkatz.spoonzilla.R
 import xyz.flussigkatz.spoonzilla.databinding.ActivityMainBinding
 import xyz.flussigkatz.spoonzilla.util.AppConst
 import xyz.flussigkatz.spoonzilla.util.AppConst.KEY_ADVANCED_SEARCH_SETTINGS
 import xyz.flussigkatz.spoonzilla.util.AppConst.KEY_DISH_ID
+import xyz.flussigkatz.spoonzilla.util.AppConst.KEY_REMINDER_NOTIFICATION_DISH
 import xyz.flussigkatz.spoonzilla.util.AppConst.NAVIGATE_TO_ADVANCED_SEARCH_ACTION
 import xyz.flussigkatz.spoonzilla.util.AppConst.NAVIGATE_TO_DETAILS_ACTION
+import xyz.flussigkatz.spoonzilla.util.AppConst.REMINDER_NOTIFICATION_DISH_ACTION
 import xyz.flussigkatz.spoonzilla.util.AutoDisposable
 import xyz.flussigkatz.spoonzilla.util.NavigationHelper
 import xyz.flussigkatz.spoonzilla.util.addTo
 import xyz.flussigkatz.spoonzilla.view.rv_adapter.DishRecyclerAdapter
-import xyz.flussigkatz.spoonzilla.view.rv_adapter.SpacingItemDecoration
+import xyz.flussigkatz.spoonzilla.view.rv_adapter.rv_decoration.SpacingItemDecoration
 import xyz.flussigkatz.spoonzilla.viewmodel.MainActivityViewModel
 
 
@@ -144,6 +149,7 @@ class MainActivity : AppCompatActivity() {
                 R.id.homeFragment,
                 R.id.advancedSearchSettingsFragment,
                 R.id.markedFragment,
+                R.id.dishRemindsFragment,
                 R.id.profileFragment,
                 R.id.settingsFragment
             ),
@@ -194,6 +200,10 @@ class MainActivity : AppCompatActivity() {
                     showMainQuickSearch(true)
                     showRecentlyViewedFab(true)
                 }
+                R.id.dishRemindsFragment -> {
+                    showMainQuickSearch(false)
+                    showRecentlyViewedFab(false)
+                }
                 R.id.detailsFragment -> {
                     showMainQuickSearch(false)
                     showRecentlyViewedFab(false)
@@ -224,6 +234,7 @@ class MainActivity : AppCompatActivity() {
         val filter = IntentFilter().also {
             it.addAction(NAVIGATE_TO_DETAILS_ACTION)
             it.addAction(NAVIGATE_TO_ADVANCED_SEARCH_ACTION)
+            it.addAction(REMINDER_NOTIFICATION_DISH_ACTION)
         }
         registerReceiver(receiver, filter)
     }
@@ -300,6 +311,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
+        hideBottomSheet()
         if (
             timeOnPressed + EXIT_TIME_INTERVAL < System.currentTimeMillis() &&
             navController.currentDestination?.id == R.id.homeFragment
@@ -316,13 +328,11 @@ class MainActivity : AppCompatActivity() {
             when (intent?.action) {
                 NAVIGATE_TO_DETAILS_ACTION -> {
                     val onScreenFragmentId = navController.currentDestination?.id
-                    onScreenFragmentId?.let {
-                        NavigationHelper.navigateToDetailsFragment(
-                            navController,
-                            intent.getBundleExtra(KEY_DISH_ID),
-                            onScreenFragmentId
-                        )
-                    }
+                    NavigationHelper.navigateToDetailsFragment(
+                        navController,
+                        intent.getBundleExtra(KEY_DISH_ID),
+                        onScreenFragmentId
+                    )
                     binding.mainAppbar.setExpanded(true)
                 }
                 NAVIGATE_TO_ADVANCED_SEARCH_ACTION -> {
@@ -331,8 +341,41 @@ class MainActivity : AppCompatActivity() {
                         intent.getBundleExtra(KEY_ADVANCED_SEARCH_SETTINGS)
                     )
                 }
+
+                REMINDER_NOTIFICATION_DISH_ACTION -> {
+                    val bundle = intent.getBundleExtra(KEY_REMINDER_NOTIFICATION_DISH)
+                    val activityStartIntent = Intent(context, MainActivity::class.java)
+                    bundle?.let { activityStartIntent.putExtras(bundle) }
+                    this@MainActivity.intent.putExtra(KEY_REMINDER_NOTIFICATION_DISH, bundle)
+                    when (this@MainActivity.lifecycle.currentState) {
+                        RESUMED -> startDishReminderDetailsFragment(intent)
+                        else -> startActivity(activityStartIntent)
+                    }
+                }
             }
         }
+    }
+
+    private fun startDishReminderDetailsFragment(intent: Intent?) {
+        val bundle = intent?.getBundleExtra(KEY_REMINDER_NOTIFICATION_DISH)
+        val onScreenFragmentId = navController.currentDestination?.id
+        bundle?.let {
+            NavigationHelper.navigateToDetailsFragment(
+                navController,
+                bundle,
+                onScreenFragmentId
+            )
+        }
+    }
+
+    override fun onNewIntent(intent: Intent?) {
+        startDishReminderDetailsFragment(intent)
+        super.onNewIntent(intent)
+    }
+
+    override fun onStart() {
+        super.onStart()
+        startDishReminderDetailsFragment(intent)
     }
 
     override fun onDestroy() {

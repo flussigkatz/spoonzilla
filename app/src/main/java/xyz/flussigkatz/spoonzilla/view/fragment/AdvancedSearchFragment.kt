@@ -31,7 +31,7 @@ import xyz.flussigkatz.spoonzilla.util.AutoDisposable
 import xyz.flussigkatz.spoonzilla.util.addTo
 import xyz.flussigkatz.spoonzilla.view.MainActivity
 import xyz.flussigkatz.spoonzilla.view.rv_adapter.DishRecyclerAdapter
-import xyz.flussigkatz.spoonzilla.view.rv_adapter.SpacingItemDecoration
+import xyz.flussigkatz.spoonzilla.view.rv_adapter.rv_decoration.SpacingItemDecoration
 import xyz.flussigkatz.spoonzilla.viewmodel.AdvancedSearchFragmentViewModel
 import java.util.concurrent.TimeUnit
 
@@ -135,13 +135,13 @@ class AdvancedSearchFragment : Fragment() {
         val scrollListener = object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
-                if (dy != 0) {
+                if (dy != IS_SCROLL_FLAG) {
                     (requireActivity() as MainActivity).apply {
                         hideBottomSheet()
                         mainSearchViewClearFocus()
                     }
                 }
-                if (dy > 0 && !isLoadingFromApi) paginationCheck(
+                if (dy > IS_SCROLL_FLAG && !isLoadingFromApi) paginationCheck(
                     mLayoutManager.childCount,
                     mLayoutManager.itemCount,
                     mLayoutManager.findFirstVisibleItemPosition()
@@ -189,7 +189,7 @@ class AdvancedSearchFragment : Fragment() {
             keyIntolerance = keyIntolerance,
             keyMeatType = keyMeatType
         )
-        binding.advancedSearchRecycler.smoothScrollToPosition(FIRST_RECYCLER_POSITION)
+        binding.advancedSearchRecycler.smoothScrollToPosition(FIRST_POSITION)
     }
 
     override fun onDestroy() {
@@ -199,7 +199,9 @@ class AdvancedSearchFragment : Fragment() {
 
     companion object {
         private const val TAG = "AdvancedSearchFragment"
-        private const val FIRST_RECYCLER_POSITION = 0
+        private const val FIRST_POSITION = 0
+        private const val IS_SCROLL_FLAG = 0
+
     }
 
 }

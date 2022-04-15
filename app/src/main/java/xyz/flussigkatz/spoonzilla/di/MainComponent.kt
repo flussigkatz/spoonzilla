@@ -45,4 +45,6 @@ interface MainComponent {
 
     fun inject(dishNutrientFragmentViewModel: DishNutrientFragmentViewModel)
 
+    fun inject(dishAlarmFragmentViewModel: DishAlarmFragmentViewModel)
+
 }

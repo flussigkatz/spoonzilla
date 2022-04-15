@@ -7,6 +7,8 @@
     <string name="recently_viewed_label_title_expanded">Viewed</string>
     <string name="recently_viewed_fab_description">Press to show recently viewed window label</string>
 
+    <!--    dish_alarm_item-->
+    <string name="alarm_icon">Alarm icon</string>
 
     <!--    dish_item-->
     <string name="dish_image">Dish image</string>
@@ -16,9 +18,6 @@
     <string name="dish_icon_cooking_time_description">Icon cooking time</string>
     <string name="dish_icon_likes_count_description">Icon likes count</string>
     <string name="dish_icon_dish_coast_description">Dish coast</string>
-    <string name="overview_mark_fab_description">Press to marked</string>
-    <string name="overview_share_fab_description">Share button</string>
-
 
     <!--    recipe_tabs-->
     <string name="tab_name_overview">overview</string>
@@ -27,14 +26,24 @@
     <string name="tab_name_instructions">instructions</string>
     <string name="tab_name_nutrient">"nutrient"</string>
 
-
     <!--    main_menu-->
     <string name="menu_title_home">Home</string>
     <string name="menu_title_profile">Profile</string>
     <string name="menu_title_settings">Settings</string>
     <string name="menu_title_search">Search</string>
     <string name="menu_title_marked">Marked</string>
+    <string name="menu_title_dish_reminds">Dish Reminds</string>
     <string name="menu_title_log_out">Log Out</string>
+
+    <!--    fragment_dish_overview-->
+    <string name="overview_mark_fab_description">Press to marked</string>
+    <string name="overview_share_fab_description">Share button</string>
+    <string name="time_picker_text">Select time</string>
+    <string name="time_picker_text_past_time">The selected time is in the past</string>
+    <string name="date_picker_text">Select date</string>
+    <string name="share_message">"Check out this recipe I found on the Spoonzilla app: "</string>
+    <string name="share_message_source_link">"Source link: "</string>
+    <string name="time_cooking_measure">min</string>
 
     <!--    fragment_advanced_search_settings-->
     <string name="cuisine_switch_description">Cuisine from profile</string>
@@ -54,21 +63,18 @@
     <string name="home_search_empty_message">No match</string>
 
     <!--    fragment_profile-->
-
     <string name="profile_create_new_text">Create new</string>
     <string name="profile_sign_sign_in">Sign in</string>
     <string name="profile_sign_sign_out">Sign out</string>
     <string name="profile_avatar_description">Profile avatar</string>
 
     <!--    fragment_settings-->
-
     <string name="settings_title_diets">Choose your diets</string>
     <string name="settings_title_cuisine">Choose a cuisines</string>
     <string name="settings_title_meal_types">Select meal types</string>
     <string name="settings_title_intolerances">Choose an intolerances</string>
 
     <!--    dialog_cuisine-->
-
     <string name="dialog_cuisine_african">African</string>
     <string name="dialog_cuisine_american">American</string>
     <string name="dialog_cuisine_british">British</string>
@@ -97,7 +103,6 @@
     <string name="dialog_cuisine_vietnamese">Vietnamese</string>
 
     <!--    dialog_meal_types-->
-
     <string name="meal_type_main_course">main course</string>
     <string name="meal_type_side_dish">side dish</string>
     <string name="meal_type_dessert">dessert</string>
@@ -114,7 +119,6 @@
     <string name="meal_type_drink">drink</string>
 
     <!--    dialog_intolerances-->
-
     <string name="intolerance_dairy">Dairy</string>
     <string name="intolerance_egg">Egg</string>
     <string name="intolerance_gluten">Gluten</string>
@@ -129,7 +133,6 @@
     <string name="intolerance_wheat">Wheat</string>
 
     <!--    dialog_diets-->
-
     <string name="diet_gluten_free">Gluten Free</string>
     <string name="diet_ketogenic">Ketogenic</string>
     <string name="diet_vegetarian">Vegetarian</string>
@@ -149,6 +152,7 @@
     <string name="fragment_home">Home</string>
     <string name="fragment_profile">Profile</string>
     <string name="fragment_marked">Marked</string>
+    <string name="fragment_dish_reminds">Dish reminds</string>
     <string name="fragment_settings">Settings</string>
     <string name="fragment_advanced_search">Search</string>
     <string name="fragment_advanced_search_settings">Search settings</string>
@@ -158,5 +162,7 @@
     <string name="fragment_recipe_nutrient">Nutrient</string>
     <string name="fragment_recipe_overview">Overview</string>
     <string name="fragment_similar_recipes">Similar</string>
+    <string name="dish_reminder_title">Eat me!</string>
+    <string name="dish_reminder_text">"Don't forget to cook "</string>
 
 </resources>

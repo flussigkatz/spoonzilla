@@ -12,6 +12,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Spoonzilla">
+        <receiver
+            android:name=".SpoonzillaReceiver"
+            android:enabled="true"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="xyz.flussigkatz.spoonzilla.dish_reminder_alarm" />
+            </intent-filter>
+        </receiver>
 
         <activity
             android:name=".view.MainActivity"

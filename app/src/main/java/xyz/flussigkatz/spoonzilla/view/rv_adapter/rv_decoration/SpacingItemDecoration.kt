@@ -1,4 +1,4 @@
-package xyz.flussigkatz.spoonzilla.view.rv_adapter
+package xyz.flussigkatz.spoonzilla.view.rv_adapter.rv_decoration
 
 import android.content.res.Resources
 import android.graphics.Rect

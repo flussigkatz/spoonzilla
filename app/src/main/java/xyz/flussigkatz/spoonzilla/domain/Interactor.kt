@@ -5,13 +5,12 @@ import io.reactivex.rxjava3.schedulers.Schedulers
 import io.reactivex.rxjava3.subjects.BehaviorSubject
 import io.reactivex.rxjava3.subjects.PublishSubject
 import xyz.flussigkatz.core_api.entity.Dish
-import xyz.flussigkatz.core_api.entity.DishAdvancedInfo
+import xyz.flussigkatz.core_api.entity.DishAlarm
 import xyz.flussigkatz.core_api.entity.DishMarked
 import xyz.flussigkatz.core_api.entity.equipments.EquipmentItem
 import xyz.flussigkatz.core_api.entity.ingredients.IngredientItem
 import xyz.flussigkatz.core_api.entity.instructions.InstructionsItem
 import xyz.flussigkatz.core_api.entity.nutrient.NutrientItem
-import xyz.flussigkatz.core_api.entity.nutrient.Nutrients
 import xyz.flussigkatz.remote.SpoonacularApi
 import xyz.flussigkatz.spoonzilla.ApiKey.API_KEY
 import xyz.flussigkatz.spoonzilla.data.db.MainRepository
@@ -45,6 +44,7 @@ class Interactor(
     fun getRecentlyViewedDishes(): Observable<List<Dish>> {
         return repository.getRecentlyViewedDishes()
     }
+
     fun getIngredientsByIdFromDb(id: Int): Observable<List<IngredientItem>> {
         return repository.getIngredients(id)
             .subscribeOn(Schedulers.io())
@@ -139,6 +139,20 @@ class Interactor(
 
     fun getDishesFromDb() = repository.getAllDishesFromDb()
 
+    //    DishAlarm
+    fun getDishAlarmsFromDb() = repository.getAllDishAlarmsFromDb()
+
+    fun putDishAlarmToDb(dishAlarm: DishAlarm) {
+        repository.putDishAlarmToDb(dishAlarm)
+    }
+
+    fun updateDishAlarm(dishAlarm: DishAlarm) {
+        repository.updateDishAlarm(dishAlarm)
+    }
+    fun deleteDishAlarm(localId: Int) {
+        repository.deleteDishAlarm(localId)
+    }
+
     fun getMarkedDishesFromDb(query: String): Observable<List<DishMarked>> {
         return repository.getAllMarkedDishesFromDb(query)
     }
@@ -154,7 +168,7 @@ class Interactor(
             dishAdvancedInfo.map { it.mark = dish.mark }
             if (dishAdvancedInfo.isNotEmpty()) repository.updateAdvancedInfoDish(dishAdvancedInfo.first())
         } catch (e: Exception) {
-            println("$TAG ${e.localizedMessage}")
+            println("$TAG setDishMark ${e.localizedMessage}")
         }
     }
 

@@ -45,6 +45,13 @@
             app:exitAnim="@anim/nav_default_exit_anim"
             app:popEnterAnim="@anim/nav_default_pop_enter_anim"
             app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+        <action
+            android:id="@+id/action_homeFragment_to_dishRemindsFragment"
+            app:destination="@id/dishRemindsFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
     </fragment>
     <fragment
         android:id="@id/profileFragment"
@@ -87,6 +94,15 @@
             app:popExitAnim="@anim/nav_default_pop_exit_anim"
             app:popUpTo="@id/markedFragment"
             app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_profileFragment_to_dishRemindsFragment"
+            app:destination="@id/dishRemindsFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"
+            app:popUpTo="@id/dishRemindsFragment"
+            app:popUpToInclusive="true" />
     </fragment>
     <fragment
         android:id="@id/settingsFragment"
@@ -128,6 +144,15 @@
             app:popEnterAnim="@anim/nav_default_pop_enter_anim"
             app:popExitAnim="@anim/nav_default_pop_exit_anim"
             app:popUpTo="@id/markedFragment"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_settingsFragment_to_dishRemindsFragment"
+            app:destination="@id/dishRemindsFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"
+            app:popUpTo="@id/dishRemindsFragment"
             app:popUpToInclusive="true" />
     </fragment>
     <fragment
@@ -223,12 +248,21 @@
             app:popExitAnim="@anim/nav_default_pop_exit_anim"
             app:popUpTo="@id/markedFragment"
             app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_advancedSearchSettingsFragment_to_dishRemindsFragment"
+            app:destination="@id/dishRemindsFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"
+            app:popUpTo="@id/dishRemindsFragment"
+            app:popUpToInclusive="true" />
     </fragment>
     <fragment
         android:id="@id/advancedSearchFragment"
         android:name="xyz.flussigkatz.spoonzilla.view.fragment.AdvancedSearchFragment"
         android:label="@string/fragment_advanced_search"
-        tools:layout="@layout/fragment_advanced_search" >
+        tools:layout="@layout/fragment_advanced_search">
         <action
             android:id="@+id/action_advancedSearchFragment_to_detailsFragment"
             app:destination="@id/detailsFragment"
@@ -241,7 +275,7 @@
         android:id="@id/markedFragment"
         android:name="xyz.flussigkatz.spoonzilla.view.fragment.MarkedFragment"
         android:label="@string/fragment_marked"
-        tools:layout="@layout/fragment_marked" >
+        tools:layout="@layout/fragment_marked">
         <action
             android:id="@+id/action_markedFragment_to_profileFragment"
             app:destination="@id/profileFragment"
@@ -285,5 +319,79 @@
             app:popExitAnim="@anim/nav_default_pop_exit_anim"
             app:popUpTo="@id/homeFragment"
             app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_markedFragment_to_dishRemindsFragment"
+            app:destination="@id/dishRemindsFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"
+            app:popUpTo="@id/dishRemindsFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+    <action
+        android:id="@+id/action_global_detailsFragment"
+        app:destination="@id/detailsFragment"
+        app:enterAnim="@anim/nav_default_enter_anim"
+        app:exitAnim="@anim/nav_default_exit_anim"
+        app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+        app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+    <fragment
+        android:id="@id/dishRemindsFragment"
+        android:name="xyz.flussigkatz.spoonzilla.view.fragment.DishRemindsFragment"
+        android:label="@string/fragment_dish_reminds"
+        tools:layout="@layout/fragment_dish_reminds">
+        <action
+            android:id="@+id/action_dishRemindsFragment_to_markedFragment"
+            app:destination="@id/markedFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"
+            app:popUpTo="@id/markedFragment"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_dishRemindsFragment_to_profileFragment"
+            app:destination="@id/profileFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"
+            app:popUpTo="@id/profileFragment"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_dishRemindsFragment_to_settingsFragment"
+            app:destination="@id/settingsFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"
+            app:popUpTo="@id/settingsFragment"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_dishRemindsFragment_to_advancedSearchSettingsFragment"
+            app:destination="@id/advancedSearchSettingsFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"
+            app:popUpTo="@id/advancedSearchSettingsFragment"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_dishRemindsFragment_to_homeFragment"
+            app:destination="@id/homeFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"
+            app:popUpTo="@id/homeFragment"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_dishRemindsFragment_to_detailsFragment"
+            app:destination="@id/detailsFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
     </fragment>
 </navigation>

@@ -5,7 +5,7 @@
     <dimen name="dish_overview_margin">5dp</dimen>
     <dimen name="dish_overview_dish_image_height">300dp</dimen>
     <dimen name="dish_overview_dish_link_margin">10dp</dimen>
-    <dimen name="dish_overview_icon_size">50dp</dimen>
+    <dimen name="dish_overview_icon_size">40dp</dimen>
     <dimen name="dish_overview_mark_check_box_margin">10dp</dimen>
     <dimen name="dish_overview_mark_check_box_size">30dp</dimen>
     <dimen name="overview_fab_margin">10dp</dimen>
@@ -23,6 +23,10 @@
     <dimen name="main_recently_viewed_height">700dp</dimen>
     <dimen name="recently_viewed_fab">10dp</dimen>
 
+    <!--    dish_alarm_item-->
+    <dimen name="dish_alarm_padding">5dp</dimen>
+    <dimen name="alarm_text_size">16sp</dimen>
+    <dimen name="alarm_icon_size">20dp</dimen>
     <!--    dish_item-->
 
     <dimen name="dish_name_margin_bottom">20dp</dimen>

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/root_dish_alarm_item"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/root_dish_item_height">
+
+    <ImageView
+        android:id="@+id/dish_alarm_image"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/app_color_4"
+        android:contentDescription="@string/dish_image"
+        tools:src="@drawable/ic_food" />
+
+    <LinearLayout
+        android:id="@+id/dish_alarm_container"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|end"
+        android:background="@color/white_alpha_80"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:padding="@dimen/dish_alarm_padding">
+
+        <TextView
+            android:id="@+id/dish_alarm_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+            android:textColor="@color/black"
+            android:textSize="@dimen/alarm_text_size" />
+
+        <ImageView
+            android:id="@+id/alarm_icon"
+            android:layout_width="@dimen/alarm_icon_size"
+            android:layout_height="@dimen/alarm_icon_size"
+            android:contentDescription="@string/alarm_icon"
+            android:src="@drawable/ic_alarm"
+            app:tint="@color/black" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/dish_alarm_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_marginBottom="@dimen/dish_name_margin_bottom"
+        android:background="@color/white_alpha_80"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:padding="@dimen/dish_name_padding"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
+        android:textColor="@color/black" />
+
+</FrameLayout>

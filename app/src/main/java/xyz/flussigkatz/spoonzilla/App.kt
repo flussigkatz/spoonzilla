@@ -3,6 +3,7 @@ package xyz.flussigkatz.spoonzilla
 import android.app.Application
 import xyz.flussigkatz.core.CoreProvidersFactory
 import xyz.flussigkatz.remote.DaggerRemoteComponent
+import xyz.flussigkatz.searchmovie.view.notification.NotificationHelper
 import xyz.flussigkatz.spoonzilla.di.AppComponent
 import xyz.flussigkatz.spoonzilla.di.DaggerMainComponent
 import xyz.flussigkatz.spoonzilla.di.MainComponent
@@ -15,6 +16,7 @@ class App : Application() {
         super.onCreate()
         instance = this
         initDagger()
+        NotificationHelper.initNotification(this)
     }
 
     private fun initDagger() {

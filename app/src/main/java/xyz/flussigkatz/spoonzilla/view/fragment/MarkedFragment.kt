@@ -27,7 +27,7 @@ import xyz.flussigkatz.spoonzilla.util.Converter
 import xyz.flussigkatz.spoonzilla.util.addTo
 import xyz.flussigkatz.spoonzilla.view.MainActivity
 import xyz.flussigkatz.spoonzilla.view.rv_adapter.DishRecyclerAdapter
-import xyz.flussigkatz.spoonzilla.view.rv_adapter.SpacingItemDecoration
+import xyz.flussigkatz.spoonzilla.view.rv_adapter.rv_decoration.SpacingItemDecoration
 import xyz.flussigkatz.spoonzilla.viewmodel.MarkedFragmentViewModel
 import java.util.concurrent.TimeUnit
 
@@ -69,7 +69,7 @@ class MarkedFragment : Fragment() {
         val scrollListener = object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
-                if (dy != 0) {
+                if (dy != IS_SCROLL_FLAG) {
                     (requireActivity() as MainActivity).apply{
                         hideBottomSheet()
                         mainSearchViewClearFocus()
@@ -113,7 +113,7 @@ class MarkedFragment : Fragment() {
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
                 {
-                    if (it.isEmpty()) binding.markedRecycler.smoothScrollToPosition(0)
+                    if (it.isEmpty()) binding.markedRecycler.smoothScrollToPosition(FIRST_POSITION)
                     getMarkedDishes(viewModel.getMarkedDishesFromDb(it))
                 },
                 { println("$TAG initMarkedSearch onError: ${it.localizedMessage}") }
@@ -127,5 +127,8 @@ class MarkedFragment : Fragment() {
 
     companion object {
         private const val TAG = "MarkedFragment"
+        private const val IS_SCROLL_FLAG = 0
+        private const val FIRST_POSITION = 0
+
     }
 }

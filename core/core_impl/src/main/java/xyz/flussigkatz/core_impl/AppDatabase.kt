@@ -5,6 +5,7 @@ import androidx.room.RoomDatabase
 import xyz.flussigkatz.core_api.db.DatabaseContract
 import xyz.flussigkatz.core_api.entity.Dish
 import xyz.flussigkatz.core_api.entity.DishAdvancedInfo
+import xyz.flussigkatz.core_api.entity.DishAlarm
 import xyz.flussigkatz.core_api.entity.DishMarked
 import xyz.flussigkatz.core_api.entity.equipments.Equipments
 import xyz.flussigkatz.core_api.entity.ingredients.Ingredients
@@ -16,6 +17,7 @@ import xyz.flussigkatz.core_api.entity.nutrient.Nutrients
         Dish::class,
         DishMarked::class,
         DishAdvancedInfo::class,
+        DishAlarm::class,
         Ingredients::class,
         Equipments::class,
         Instructions::class,

@@ -6,6 +6,7 @@
     <item name="advancedSearchSettingsFragment" type="id"/>
     <item name="advancedSearchFragment" type="id"/>
     <item name="markedFragment" type="id"/>
+    <item name="dishRemindsFragment" type="id"/>
     <item name="detailsFragment" type="id"/>
 
 

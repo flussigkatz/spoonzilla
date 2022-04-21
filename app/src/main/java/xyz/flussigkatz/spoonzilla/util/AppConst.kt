@@ -1,11 +1,12 @@
 package xyz.flussigkatz.spoonzilla.util
 
 object AppConst {
-    const val NAVIGATE_TO_DETAILS_ACTION = "xyz.flussigkatz.spoonzilla.navigate_to_details"
-    const val NAVIGATE_TO_ADVANCED_SEARCH_ACTION = "xyz.flussigkatz.spoonzilla.navigate_to_advanced_search"
-    const val DISH_REMINDER_NOTIFICATION_ALARM = "xyz.flussigkatz.spoonzilla.dish_reminder_alarm"
-    const val REMINDER_NOTIFICATION_DISH_ACTION = "xyz.flussigkatz.spoonzilla.reminder_notification_dish_action"
+    const val NAVIGATE_TO_DETAILS = "xyz.flussigkatz.spoonzilla.NAVIGATE_TO_DETAILS"
+    const val NAVIGATE_TO_ADVANCED_SEARCH = "xyz.flussigkatz.spoonzilla.NAVIGATE_TO_ADVANCED_SEARCH"
+    const val DISH_REMINDER_ALARM = "xyz.flussigkatz.spoonzilla.DISH_REMINDER_ALARM"
+    const val REMINDER_NOTIFICATION = "xyz.flussigkatz.spoonzilla.REMINDER_NOTIFICATION"
     const val KEY_DISH_ID = "key_dish_id"
+    const val KEY_DISH_LOCAL_ID = "key_dish_local_id"
     const val KEY_ADVANCED_SEARCH_SETTINGS = "key_advanced_search_settings"
     const val KEY_CUISINE = "key_cuisine"
     const val KEY_DIET = "key_diet"
@@ -25,5 +26,4 @@ object AppConst {
     const val KEY_DISH = "key_dish"
     const val NOTIFICATION_CHANNEL_ID = "notification_channel_1"
     const val KEY_REMINDER_NOTIFICATION_DISH = "key_reminder_notification_dish"
-    const val DISH_REMINDER_NOTIFICATION_ID = 753
 }

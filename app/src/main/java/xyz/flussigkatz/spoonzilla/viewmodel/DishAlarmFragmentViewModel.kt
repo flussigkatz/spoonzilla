@@ -21,7 +21,7 @@ class DishAlarmFragmentViewModel : ViewModel() {
         interactor.updateDishAlarm(dishAlarm)
     }
 
-    fun deleteDishAlarm(localId: Int) {
-        interactor.deleteDishAlarm(localId)
+    fun deleteDishAlarmFromDb(localId: Int) {
+        interactor.deleteDishAlarmFromDb(localId)
     }
 }

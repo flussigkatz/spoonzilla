@@ -36,6 +36,9 @@ interface DishDao {
     @Query("SELECT * FROM dishes_alarms ORDER BY localId")
     fun getDishAlarms(): Observable<List<DishAlarm>>
 
+    @Query("SELECT * FROM dishes_alarms ORDER BY localId")
+    fun getDishAlarmsToList(): List<DishAlarm>
+
     @Query("SELECT * FROM dishes_alarms WHERE localId LIKE :localId")
     fun getDishAlarm(localId: Int): DishAlarm
 
@@ -78,7 +81,7 @@ interface DishDao {
     fun getCashedObservableAdvancedInfoDishToList(id: Int): List<DishAdvancedInfo>
 
     @Query("SELECT * FROM cashed_dishes_advanced_info WHERE id LIKE :id")
-    fun getCashedAdvancedInfoDish(id: Int): DishAdvancedInfo
+    fun getSingleCashedAdvancedInfoDish(id: Int): DishAdvancedInfo
 
     @Update
     fun updateAdvancedInfoDish(dishAdvancedInfo: DishAdvancedInfo)

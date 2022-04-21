@@ -75,6 +75,9 @@ dependencies {
     //Picasso
     implementation picasso
 
+    //Timber
+    implementation timber
+
     implementation project(':remote')
 
     implementation project(':core:core')

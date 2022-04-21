@@ -18,7 +18,7 @@ import xyz.flussigkatz.spoonzilla.util.AppConst.KEY_INTOLERANCE
 import xyz.flussigkatz.spoonzilla.util.AppConst.KEY_INTOLERANCE_FROM_PROFILE
 import xyz.flussigkatz.spoonzilla.util.AppConst.KEY_MEAT_TYPE_FROM_PROFILE
 import xyz.flussigkatz.spoonzilla.util.AppConst.KEY_MEAl_TYPE
-import xyz.flussigkatz.spoonzilla.util.AppConst.NAVIGATE_TO_ADVANCED_SEARCH_ACTION
+import xyz.flussigkatz.spoonzilla.util.AppConst.NAVIGATE_TO_ADVANCED_SEARCH
 import xyz.flussigkatz.spoonzilla.util.AutoDisposable
 import xyz.flussigkatz.spoonzilla.viewmodel.AdvancedSearchSettingsFragmentViewModel
 
@@ -148,7 +148,7 @@ class AdvancedSearchSettingsFragment : Fragment() {
                     putString(KEY_MEAl_TYPE, keyMeatType)
                 }
                 putExtra(KEY_ADVANCED_SEARCH_SETTINGS, bundle)
-                action = NAVIGATE_TO_ADVANCED_SEARCH_ACTION
+                action = NAVIGATE_TO_ADVANCED_SEARCH
             }
             requireActivity().sendBroadcast(intent)
         }
@@ -162,7 +162,6 @@ class AdvancedSearchSettingsFragment : Fragment() {
         private const val KEY_DIETS_SWITCH = "key_diets_switch"
         private const val KEY_INTOLERANCES_SWITCH = "key_intolerances_switch"
         private const val KEY_MEAL_TYPES_SWITCH = "key_meal_types_switch"
-        private const val TAG = "AdvancedSearchSettingsFragment"
 
     }
 }

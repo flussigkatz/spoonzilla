@@ -17,6 +17,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import xyz.flussigkatz.core_api.entity.Dish
 import xyz.flussigkatz.core_api.entity.DishMarked
 import xyz.flussigkatz.spoonzilla.databinding.FragmentMarkedBinding
@@ -60,7 +61,7 @@ class MarkedFragment : Fragment() {
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
                 { dishAdapter.updateData(it.map { list -> Converter.convertDishMarkedToDish(list) }) },
-                { println("$TAG getMarkedDishes onError: ${it.localizedMessage}") }
+                { Timber.e(it, "getMarkedDishes onError") }
             ).addTo(autoDisposable)
     }
 
@@ -80,7 +81,7 @@ class MarkedFragment : Fragment() {
         val clickListener = object : DishRecyclerAdapter.OnItemClickListener {
             override fun click(dishId: Int) {
                 val intent = Intent().apply {
-                    action = AppConst.NAVIGATE_TO_DETAILS_ACTION
+                    action = AppConst.NAVIGATE_TO_DETAILS
                     val bundle = Bundle().apply { putInt(AppConst.KEY_DISH_ID, dishId) }
                     putExtra(AppConst.KEY_DISH_ID, bundle)
                 }
@@ -116,7 +117,7 @@ class MarkedFragment : Fragment() {
                     if (it.isEmpty()) binding.markedRecycler.smoothScrollToPosition(FIRST_POSITION)
                     getMarkedDishes(viewModel.getMarkedDishesFromDb(it))
                 },
-                { println("$TAG initMarkedSearch onError: ${it.localizedMessage}") }
+                { Timber.e(it, "initMarkedSearch onError") }
             ).addTo(autoDisposable)
     }
 
@@ -126,7 +127,6 @@ class MarkedFragment : Fragment() {
     }
 
     companion object {
-        private const val TAG = "MarkedFragment"
         private const val IS_SCROLL_FLAG = 0
         private const val FIRST_POSITION = 0
 

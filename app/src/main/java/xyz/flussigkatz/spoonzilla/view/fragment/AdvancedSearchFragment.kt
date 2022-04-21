@@ -16,6 +16,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import xyz.flussigkatz.core_api.entity.Dish
 import xyz.flussigkatz.spoonzilla.databinding.FragmentAdvancedSearchBinding
 import xyz.flussigkatz.spoonzilla.util.AppConst.KEY_CUISINE
@@ -23,7 +24,7 @@ import xyz.flussigkatz.spoonzilla.util.AppConst.KEY_DIET
 import xyz.flussigkatz.spoonzilla.util.AppConst.KEY_DISH_ID
 import xyz.flussigkatz.spoonzilla.util.AppConst.KEY_INTOLERANCE
 import xyz.flussigkatz.spoonzilla.util.AppConst.KEY_MEAl_TYPE
-import xyz.flussigkatz.spoonzilla.util.AppConst.NAVIGATE_TO_DETAILS_ACTION
+import xyz.flussigkatz.spoonzilla.util.AppConst.NAVIGATE_TO_DETAILS
 import xyz.flussigkatz.spoonzilla.util.AppConst.PADDING_DP
 import xyz.flussigkatz.spoonzilla.util.AppConst.REMAINDER_OF_ELEMENTS
 import xyz.flussigkatz.spoonzilla.util.AppConst.SEARCH_DEBOUNCE_TIME_MILLISECONDS
@@ -71,7 +72,7 @@ class AdvancedSearchFragment : Fragment() {
         viewModel.loadingState.subscribeOn(Schedulers.io())
             .subscribe(
                 { isLoadingFromApi = it },
-                { println("$TAG initIsLoading onError: ${it.localizedMessage}") }
+                { Timber.e(it, "initIsLoading onError") }
             ).addTo(autoDisposable)
     }
 
@@ -83,7 +84,7 @@ class AdvancedSearchFragment : Fragment() {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                     { binding.advancedSearchRefreshLayout.isRefreshing = it },
-                    { println("$TAG initRefreshLayout onError: ${it.localizedMessage}") }
+                    { Timber.e(it, "initRefreshLayout onError") }
                 ).addTo(autoDisposable)
         }
     }
@@ -97,7 +98,7 @@ class AdvancedSearchFragment : Fragment() {
                     mQuery = it
                     getSearchedRecipes()
                 },
-                { println("$TAG initSearch onError: ${it.localizedMessage}") }
+                { Timber.e(it, "initSearch onError") }
             ).addTo(autoDisposable)
     }
 
@@ -108,7 +109,7 @@ class AdvancedSearchFragment : Fragment() {
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
                 { dishAdapter.updateData(it) },
-                { println("$TAG initContent onError: ${it.localizedMessage}") }
+                { Timber.e(it, "initContent onError") }
             ).addTo(autoDisposable)
     }
 
@@ -117,7 +118,7 @@ class AdvancedSearchFragment : Fragment() {
         val clickListener = object : DishRecyclerAdapter.OnItemClickListener {
             override fun click(dishId: Int) {
                 val intent = Intent().apply {
-                    action = NAVIGATE_TO_DETAILS_ACTION
+                    action = NAVIGATE_TO_DETAILS
                     val bundle = Bundle().apply { putInt(KEY_DISH_ID, dishId) }
                     putExtra(KEY_DISH_ID, bundle)
                 }
@@ -198,7 +199,6 @@ class AdvancedSearchFragment : Fragment() {
     }
 
     companion object {
-        private const val TAG = "AdvancedSearchFragment"
         private const val FIRST_POSITION = 0
         private const val IS_SCROLL_FLAG = 0
 

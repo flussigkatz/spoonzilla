@@ -3,6 +3,7 @@
     package="xyz.flussigkatz.spoonzilla">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
 
     <application
         android:name=".App"
@@ -17,7 +18,8 @@
             android:enabled="true"
             android:exported="false">
             <intent-filter>
-                <action android:name="xyz.flussigkatz.spoonzilla.dish_reminder_alarm" />
+                <action android:name="xyz.flussigkatz.spoonzilla.DISH_REMINDER_ALARM" />
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
             </intent-filter>
         </receiver>
 

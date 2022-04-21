@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import timber.log.Timber
 import xyz.flussigkatz.spoonzilla.databinding.FragmentDishInstructionsBinding
 import xyz.flussigkatz.spoonzilla.util.AppConst.KEY_DISH_ID
 import xyz.flussigkatz.spoonzilla.view.rv_adapter.InstructionsItemRecyclerAdapter
@@ -39,7 +40,7 @@ class DishInstructionsFragment : Fragment() {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                     { instructionsAdapter.addItems(it) },
-                    { println("$TAG getInstructions onError: ${it.localizedMessage}") }
+                    { Timber.e(it, "getInstructions onError") }
                 )
         }
     }
@@ -51,10 +52,4 @@ class DishInstructionsFragment : Fragment() {
             layoutManager = LinearLayoutManager(context)
         }
     }
-
-
-    companion object {
-        private const val TAG = "DishInstructionsFragment"
-    }
-
 }

@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
+import timber.log.Timber
 import xyz.flussigkatz.spoonzilla.R
 import xyz.flussigkatz.core_api.entity.Dish
 import xyz.flussigkatz.spoonzilla.databinding.DishItemBinding
@@ -57,7 +58,7 @@ class DishRecyclerAdapter(
             }
 
             override fun onError(e: Exception?) {
-                println("$TAG callbackPicasso onError: ${e?.localizedMessage}")
+                Timber.e(e, "callbackPicasso onError")
             }
 
         }
@@ -76,9 +77,5 @@ class DishRecyclerAdapter(
 
     interface OnCheckedChangeListener {
         fun checkedChange(dish: Dish, isChecked: Boolean)
-    }
-
-    companion object {
-        private const val TAG = "DishRecyclerAdapter"
     }
 }

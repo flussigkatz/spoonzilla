@@ -164,5 +164,6 @@
     <string name="fragment_similar_recipes">Similar</string>
     <string name="dish_reminder_title">Eat me!</string>
     <string name="dish_reminder_text">"Don't forget to cook "</string>
+    <string name="dish_reminder_cancel_action_button">Cancel</string>
 
 </resources>

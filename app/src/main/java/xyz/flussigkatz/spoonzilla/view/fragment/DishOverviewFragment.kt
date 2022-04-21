@@ -24,9 +24,9 @@ import com.squareup.picasso.Picasso
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.schedulers.Schedulers
 import kotlinx.coroutines.*
+import timber.log.Timber
 import xyz.flussigkatz.core_api.entity.DishAdvancedInfo
 import xyz.flussigkatz.core_api.entity.DishAlarm
-import xyz.flussigkatz.searchmovie.view.notification.NotificationHelper
 import xyz.flussigkatz.spoonzilla.R
 import xyz.flussigkatz.spoonzilla.databinding.FragmentDishOverviewBinding
 import xyz.flussigkatz.spoonzilla.util.AppConst.KEY_DISH_ID
@@ -82,7 +82,7 @@ class DishOverviewFragment : Fragment() {
                                 viewModel.getRecipeByIdFromApi(dishId)
                             }
                         },
-                        { println("$TAG getDish onError: ${it.localizedMessage}") }
+                        { Timber.e(it, "getDish onError") }
                     )
             } else bindData(mDishAdvancedInfo!!)
         }
@@ -105,11 +105,6 @@ class DishOverviewFragment : Fragment() {
             calendar.set(Calendar.MINUTE, timePicker.minute)
             val alarmTime = calendar.timeInMillis
             if (alarmTime > System.currentTimeMillis()) {
-                NotificationHelper.setDishRemind(
-                    requireContext(),
-                    dishAdvancedInfo,
-                    alarmTime
-                )
                 dishOverviewScope.launch {
                     setDishRemind(alarmTime, dishAdvancedInfo)
                 }
@@ -210,7 +205,7 @@ class DishOverviewFragment : Fragment() {
             }
 
             override fun onError(e: Exception?) {
-                println("$TAG callbackPicasso onError: ${e?.localizedMessage}")
+                Timber.e(e, "callbackPicasso onError")
             }
 
         }
@@ -240,7 +235,6 @@ class DishOverviewFragment : Fragment() {
     }
 
     companion object {
-        private const val TAG = "DishOverviewFragment"
         private const val DATE_PICKER_TAG = "datePicker"
         private const val TIME_PICKER_TAG = "timePicker"
         private const val TEXT_TYPE = "text/plain"

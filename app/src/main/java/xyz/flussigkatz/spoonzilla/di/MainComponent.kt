@@ -4,6 +4,7 @@ import dagger.Component
 import xyz.flussigkatz.core_api.AppProvider
 import xyz.flussigkatz.core_api.db.DatabaseProvider
 import xyz.flussigkatz.remote.RemoteProvider
+import xyz.flussigkatz.spoonzilla.SpoonzillaReceiver
 import xyz.flussigkatz.spoonzilla.di.module.DialogModule
 import xyz.flussigkatz.spoonzilla.di.module.DomainModule
 import xyz.flussigkatz.spoonzilla.viewmodel.*
@@ -46,5 +47,7 @@ interface MainComponent {
     fun inject(dishNutrientFragmentViewModel: DishNutrientFragmentViewModel)
 
     fun inject(dishAlarmFragmentViewModel: DishAlarmFragmentViewModel)
+
+    fun inject(SpoonzillaReceiver: SpoonzillaReceiver)
 
 }

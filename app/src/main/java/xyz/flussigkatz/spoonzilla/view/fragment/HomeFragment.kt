@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle.State.RESUMED
@@ -18,11 +17,11 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import xyz.flussigkatz.core_api.entity.Dish
-import xyz.flussigkatz.spoonzilla.R
 import xyz.flussigkatz.spoonzilla.databinding.FragmentHomeBinding
 import xyz.flussigkatz.spoonzilla.util.AppConst.KEY_DISH_ID
-import xyz.flussigkatz.spoonzilla.util.AppConst.NAVIGATE_TO_DETAILS_ACTION
+import xyz.flussigkatz.spoonzilla.util.AppConst.NAVIGATE_TO_DETAILS
 import xyz.flussigkatz.spoonzilla.util.AppConst.PADDING_DP
 import xyz.flussigkatz.spoonzilla.util.AppConst.REMAINDER_OF_ELEMENTS
 import xyz.flussigkatz.spoonzilla.util.AppConst.SEARCH_DEBOUNCE_TIME_MILLISECONDS
@@ -64,7 +63,7 @@ class HomeFragment : Fragment() {
         viewModel.loadingState.subscribeOn(Schedulers.io())
             .subscribe(
                 { isLoadingFromApi = it },
-                { println("$TAG initIsLoading onError: ${it.localizedMessage}") }
+                { Timber.e(it, "initIsLoading onError") }
             ).addTo(autoDisposable)
     }
 
@@ -76,7 +75,7 @@ class HomeFragment : Fragment() {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                     { binding.homeRefreshLayout.isRefreshing = it },
-                    { println("$TAG initRefreshLayout onError: ${it.localizedMessage}") }
+                    { Timber.e(it, "initRefreshLayout onError") }
                 ).addTo(autoDisposable)
         }
     }
@@ -87,7 +86,7 @@ class HomeFragment : Fragment() {
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
                 { getSearchedRecipes(it) },
-                { println("$TAG initQuickSearch onError: ${it.localizedMessage}") }
+                { Timber.e(it, "initQuickSearch onError") }
             ).addTo(autoDisposable)
     }
 
@@ -97,7 +96,7 @@ class HomeFragment : Fragment() {
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
                 { mAdapter.updateData(it) },
-                { println("$TAG initContent onError: ${it.localizedMessage}") }
+                { Timber.e(it, "initContent onError") }
             ).addTo(autoDisposable)
     }
 
@@ -106,7 +105,7 @@ class HomeFragment : Fragment() {
         val clickListener = object : DishRecyclerAdapter.OnItemClickListener {
             override fun click(dishId: Int) {
                 val intent = Intent().apply {
-                    action = NAVIGATE_TO_DETAILS_ACTION
+                    action = NAVIGATE_TO_DETAILS
                     val bundle = Bundle().apply { putInt(KEY_DISH_ID, dishId) }
                     putExtra(KEY_DISH_ID, bundle)
                 }
@@ -164,7 +163,7 @@ class HomeFragment : Fragment() {
 
     fun paginationCheck(visibleItemCount: Int, totalItemCount: Int, pastVisibleItems: Int) {
         if (totalItemCount - (visibleItemCount + pastVisibleItems) <= REMAINDER_OF_ELEMENTS) {
-            (requireActivity().findViewById<SearchView>(R.id.main_quick_search))?.query.let {
+            (activity as MainActivity).getSearchQuery().let {
                 if (it.isNullOrBlank()) viewModel.doRandomRecipePagination()
                 else viewModel.doSearchedRecipesPagination(it.toString(), totalItemCount)
             }
@@ -172,9 +171,7 @@ class HomeFragment : Fragment() {
     }
 
     companion object {
-        private const val TAG = "HomeFragment"
         private const val IS_SCROLL_FLAG = 0
-
     }
 
 }

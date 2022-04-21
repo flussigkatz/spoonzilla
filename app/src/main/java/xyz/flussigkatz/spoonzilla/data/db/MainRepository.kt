@@ -42,6 +42,8 @@ class MainRepository(private val dishDao: DishDao) {
 
     fun getAllDishAlarmsFromDb() = dishDao.getDishAlarms()
 
+    fun getDishAlarmsToListFromDb() = dishDao.getDishAlarmsToList()
+
     fun deleteDishAlarm(localId: Int) {
         val dishAlarm = dishDao.getDishAlarm(localId)
         dishDao.deleteDishAlarm(dishAlarm)
@@ -76,8 +78,10 @@ class MainRepository(private val dishDao: DishDao) {
         return dishDao.getCashedObservableAdvancedInfoDishToList(dishId)
     }
 
+    fun getSingleCashedAdvancedInfoDish(dishId: Int) = dishDao.getSingleCashedAdvancedInfoDish(dishId)
+
     fun deleteAdvancedInfoDishFromDb(dishId: Int) {
-        val dishAdvancedInfo = dishDao.getCashedAdvancedInfoDish(dishId)
+        val dishAdvancedInfo = dishDao.getSingleCashedAdvancedInfoDish(dishId)
         dishDao.deleteAdvancedInfoDish(dishAdvancedInfo)
     }
 

@@ -24,11 +24,13 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import xyz.flussigkatz.core_api.entity.DishAlarm
+import xyz.flussigkatz.spoonzilla.view.notification.NotificationHelper
 import xyz.flussigkatz.spoonzilla.R
 import xyz.flussigkatz.spoonzilla.databinding.FragmentDishRemindsBinding
 import xyz.flussigkatz.spoonzilla.util.AppConst.KEY_DISH_ID
-import xyz.flussigkatz.spoonzilla.util.AppConst.NAVIGATE_TO_DETAILS_ACTION
+import xyz.flussigkatz.spoonzilla.util.AppConst.NAVIGATE_TO_DETAILS
 import xyz.flussigkatz.spoonzilla.util.AppConst.PADDING_DP
 import xyz.flussigkatz.spoonzilla.util.AutoDisposable
 import xyz.flussigkatz.spoonzilla.util.addTo
@@ -112,7 +114,7 @@ class DishRemindsFragment : Fragment() {
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
                 { mAdapter.updateData(it) },
-                { println("$TAG initContent onError: ${it.localizedMessage}") }
+                { Timber.e(it, "initContent onError") }
             ).addTo(autoDisposable)
     }
 
@@ -121,7 +123,7 @@ class DishRemindsFragment : Fragment() {
         val itemClickListener = object : DishAlarmRecyclerAdapter.OnItemClickListener {
             override fun click(dishId: Int) {
                 val intent = Intent().apply {
-                    action = NAVIGATE_TO_DETAILS_ACTION
+                    action = NAVIGATE_TO_DETAILS
                     val bundle = Bundle().apply { putInt(KEY_DISH_ID, dishId) }
                     putExtra(KEY_DISH_ID, bundle)
                 }
@@ -187,13 +189,16 @@ class DishRemindsFragment : Fragment() {
         override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
             dishRemindsScope.launch {
                 val dishAlarm = adapter.getDishAlarm(viewHolder.absoluteAdapterPosition)
-                viewModel.deleteDishAlarm(dishAlarm.localId)
+                NotificationHelper.cancelDishRemind(
+                    requireContext(),
+                    dishAlarm.localId
+                )
+                viewModel.deleteDishAlarmFromDb(dishAlarm.localId)
             }
         }
     }
 
     companion object {
-        private const val TAG = "DishRemindsFragment"
         private const val IS_SCROLL_FLAG = 0
         private const val DATE_PICKER_TAG = "datePicker"
         private const val TIME_PICKER_TAG = "timePicker"

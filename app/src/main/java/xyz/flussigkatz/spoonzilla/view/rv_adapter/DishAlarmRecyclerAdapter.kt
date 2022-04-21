@@ -4,10 +4,12 @@ import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.ImageView
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
+import timber.log.Timber
 import xyz.flussigkatz.spoonzilla.R
 import xyz.flussigkatz.core_api.entity.DishAlarm
 import xyz.flussigkatz.spoonzilla.databinding.DishAlarmItemBinding
@@ -22,9 +24,11 @@ class DishAlarmRecyclerAdapter(
     private val alarmClickListener: OnAlarmItemClickListener
 ) : RecyclerView.Adapter<DishAlarmViewHolder>() {
     private var items = listOf<DishAlarm>()
+    private var darkRed: Int? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DishAlarmViewHolder {
         val inflater = LayoutInflater.from(parent.context)
+        darkRed = ContextCompat.getColor(parent.context, R.color.dark_red)
         return DishAlarmViewHolder(DishAlarmItemBinding.inflate(inflater, parent, false))
     }
 
@@ -44,6 +48,12 @@ class DishAlarmRecyclerAdapter(
         val dateFormatter = SimpleDateFormat("HH:mm | dd.MM.yyyy", Locale.getDefault())
         val alarm = dateFormatter.format(calendar.time)
         binding.dishAlarmTime.text = alarm
+        if (dishAlarm.alarmTime < System.currentTimeMillis()) {
+            darkRed?.let {
+                binding.dishAlarmTime.setTextColor(it)
+                binding.alarmIcon.setColorFilter(it)
+            }
+        }
     }
 
     override fun getItemCount() = items.size
@@ -51,8 +61,7 @@ class DishAlarmRecyclerAdapter(
     fun getDishAlarm(position: Int) = items[position]
 
     fun updateData(newList: List<DishAlarm>) {
-        val sortedList = newList.filter { it.alarmTime >= System.currentTimeMillis() }
-            .sortedWith(compareBy { it.alarmTime })
+        val sortedList = newList.sortedWith(compareBy { it.alarmTime })
         val diffResult = DiffUtil.calculateDiff(DishAlarmDiff(items, sortedList))
         items = sortedList
         diffResult.dispatchUpdatesTo(this)
@@ -65,7 +74,7 @@ class DishAlarmRecyclerAdapter(
             }
 
             override fun onError(e: Exception?) {
-                println("$TAG callbackPicasso onError: ${e?.localizedMessage}")
+                Timber.e(e, "callbackPicasso onError")
             }
 
         }
@@ -84,9 +93,5 @@ class DishAlarmRecyclerAdapter(
 
     interface OnAlarmItemClickListener {
         fun click(dishAlarm: DishAlarm)
-    }
-
-    companion object {
-        private const val TAG = "DishAlarmRecyclerAdapter"
     }
 }

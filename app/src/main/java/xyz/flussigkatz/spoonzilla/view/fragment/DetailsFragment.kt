@@ -7,14 +7,17 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.google.android.material.tabs.TabLayoutMediator
+import xyz.flussigkatz.core_api.entity.DishAdvancedInfo
 import xyz.flussigkatz.spoonzilla.R
 import xyz.flussigkatz.spoonzilla.databinding.FragmentDetailsBinding
+import xyz.flussigkatz.spoonzilla.util.AppConst
+import xyz.flussigkatz.spoonzilla.util.AppConst.KEY_DISH
+import xyz.flussigkatz.spoonzilla.util.AppConst.KEY_DISH_ID
 import xyz.flussigkatz.spoonzilla.view.DishDetailsStateAdapter
 import xyz.flussigkatz.spoonzilla.viewmodel.DetailsFragmentViewModel
 
 
 class DetailsFragment : Fragment() {
-    private val viewModel: DetailsFragmentViewModel by activityViewModels()
     private lateinit var dishDetailsStateAdapter: DishDetailsStateAdapter
     private lateinit var binding: FragmentDetailsBinding
 
@@ -28,12 +31,17 @@ class DetailsFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        initStateAdapter()
+        val dish = arguments?.getParcelable<DishAdvancedInfo>(KEY_DISH)
+        val dishId = dish?.id
+        dishId?.let {
+            val bundle = Bundle().apply { putInt(KEY_DISH_ID, dishId) }
+            initStateAdapter(bundle)
+        } ?: initStateAdapter(arguments)
     }
 
-    private fun initStateAdapter() {
-        arguments?.let { bundle ->
-            dishDetailsStateAdapter = DishDetailsStateAdapter(this, bundle)
+    private fun initStateAdapter(bundle: Bundle?) {
+        bundle?.let {
+            dishDetailsStateAdapter = DishDetailsStateAdapter(this, it)
             binding.recipeDetailsViewpager.adapter = dishDetailsStateAdapter
             initTabs()
         }
@@ -52,9 +60,5 @@ class DetailsFragment : Fragment() {
                 4 -> tab.text = requireContext().getText(R.string.tab_name_nutrient)
             }
         }.attach()
-    }
-
-    companion object {
-        private const val TAG = "DetailsFragment"
     }
 }

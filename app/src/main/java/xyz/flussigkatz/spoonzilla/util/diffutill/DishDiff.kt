@@ -1,4 +1,4 @@
-package xyz.flussigkatz.spoonzilla.util
+package xyz.flussigkatz.spoonzilla.util.diffutill
 
 import androidx.recyclerview.widget.DiffUtil
 import xyz.flussigkatz.core_api.entity.Dish

@@ -8,7 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
-import xyz.flussigkatz.core_api.entity.nutrient.NutrientItem
+import timber.log.Timber
 import xyz.flussigkatz.spoonzilla.databinding.FragmentDishNutrientBinding
 import xyz.flussigkatz.spoonzilla.util.AppConst
 import xyz.flussigkatz.spoonzilla.view.rv_adapter.NutrientRecyclerAdapter
@@ -18,7 +18,6 @@ import xyz.flussigkatz.spoonzilla.viewmodel.DishNutrientFragmentViewModel
 class DishNutrientFragment : Fragment() {
     private lateinit var binding: FragmentDishNutrientBinding
     private lateinit var nutrientsAdapter: NutrientRecyclerAdapter
-    private var nutrientItem: List<NutrientItem>? = null
     private val viewModel: DishNutrientFragmentViewModel by activityViewModels()
 
     override fun onCreateView(
@@ -38,20 +37,12 @@ class DishNutrientFragment : Fragment() {
     private fun getNutrients() {
         arguments?.let { bundle ->
             val dishId = bundle.getInt(AppConst.KEY_DISH_ID)
-            if (nutrientItem.isNullOrEmpty()) {
-                viewModel.getNutrientByIdFromDb(dishId)
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(
-                        {
-                            nutrientItem = it
-                            nutrientsAdapter.addItems(it)
-                            println(it)
-                        },
-                        { println("$TAG getNutrients onError: ${it.localizedMessage}") }
-                    )
-            } else {
-                nutrientsAdapter.addItems(nutrientItem!!)
-            }
+            viewModel.getNutrientByIdFromDb(dishId)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                    { nutrientsAdapter.addItems(it) },
+                    { Timber.e(it, "getNutrients onError") }
+                )
         }
     }
 
@@ -62,9 +53,4 @@ class DishNutrientFragment : Fragment() {
             layoutManager = LinearLayoutManager(context)
         }
     }
-
-    companion object {
-        private const val TAG = "DishNutrientFragment"
-    }
-
 }

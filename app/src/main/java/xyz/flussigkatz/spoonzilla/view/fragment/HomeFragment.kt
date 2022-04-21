@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle.State.RESUMED
@@ -18,11 +17,11 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import xyz.flussigkatz.core_api.entity.Dish
-import xyz.flussigkatz.spoonzilla.R
 import xyz.flussigkatz.spoonzilla.databinding.FragmentHomeBinding
 import xyz.flussigkatz.spoonzilla.util.AppConst.KEY_DISH_ID
-import xyz.flussigkatz.spoonzilla.util.AppConst.NAVIGATE_TO_DETAILS_ACTION
+import xyz.flussigkatz.spoonzilla.util.AppConst.NAVIGATE_TO_DETAILS
 import xyz.flussigkatz.spoonzilla.util.AppConst.PADDING_DP
 import xyz.flussigkatz.spoonzilla.util.AppConst.REMAINDER_OF_ELEMENTS
 import xyz.flussigkatz.spoonzilla.util.AppConst.SEARCH_DEBOUNCE_TIME_MILLISECONDS
@@ -30,13 +29,13 @@ import xyz.flussigkatz.spoonzilla.util.AutoDisposable
 import xyz.flussigkatz.spoonzilla.util.addTo
 import xyz.flussigkatz.spoonzilla.view.MainActivity
 import xyz.flussigkatz.spoonzilla.view.rv_adapter.DishRecyclerAdapter
-import xyz.flussigkatz.spoonzilla.view.rv_adapter.SpacingItemDecoration
+import xyz.flussigkatz.spoonzilla.view.rv_adapter.rv_decoration.SpacingItemDecoration
 import xyz.flussigkatz.spoonzilla.viewmodel.HomeFragmentViewModel
 import java.util.concurrent.TimeUnit
 
 class HomeFragment : Fragment() {
     private val viewModel: HomeFragmentViewModel by activityViewModels()
-    private lateinit var dishAdapter: DishRecyclerAdapter
+    private lateinit var mAdapter: DishRecyclerAdapter
     private lateinit var binding: FragmentHomeBinding
     private val autoDisposable = AutoDisposable()
     private val homeFragmentScope = CoroutineScope(Dispatchers.IO)
@@ -53,7 +52,7 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initDishAdapter()
+        initAdapter()
         initContent()
         initQuickSearch()
         initRefreshLayout()
@@ -64,7 +63,7 @@ class HomeFragment : Fragment() {
         viewModel.loadingState.subscribeOn(Schedulers.io())
             .subscribe(
                 { isLoadingFromApi = it },
-                { println("$TAG initIsLoading onError: ${it.localizedMessage}") }
+                { Timber.e(it, "initIsLoading onError") }
             ).addTo(autoDisposable)
     }
 
@@ -76,7 +75,7 @@ class HomeFragment : Fragment() {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                     { binding.homeRefreshLayout.isRefreshing = it },
-                    { println("$TAG initRefreshLayout onError: ${it.localizedMessage}") }
+                    { Timber.e(it, "initRefreshLayout onError") }
                 ).addTo(autoDisposable)
         }
     }
@@ -87,7 +86,7 @@ class HomeFragment : Fragment() {
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
                 { getSearchedRecipes(it) },
-                { println("$TAG initQuickSearch onError: ${it.localizedMessage}") }
+                { Timber.e(it, "initQuickSearch onError") }
             ).addTo(autoDisposable)
     }
 
@@ -96,17 +95,17 @@ class HomeFragment : Fragment() {
             .filter { !it.isNullOrEmpty() }
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
-                { dishAdapter.updateData(it) },
-                { println("$TAG initContent onError: ${it.localizedMessage}") }
+                { mAdapter.updateData(it) },
+                { Timber.e(it, "initContent onError") }
             ).addTo(autoDisposable)
     }
 
-    private fun initDishAdapter() {
+    private fun initAdapter() {
         val mLayoutManager = LinearLayoutManager(context)
         val clickListener = object : DishRecyclerAdapter.OnItemClickListener {
             override fun click(dishId: Int) {
                 val intent = Intent().apply {
-                    action = NAVIGATE_TO_DETAILS_ACTION
+                    action = NAVIGATE_TO_DETAILS
                     val bundle = Bundle().apply { putInt(KEY_DISH_ID, dishId) }
                     putExtra(KEY_DISH_ID, bundle)
                 }
@@ -124,13 +123,13 @@ class HomeFragment : Fragment() {
         val scrollListener = object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
-                if (dy != 0) {
+                if (dy != IS_SCROLL_FLAG) {
                     (requireActivity() as MainActivity).apply {
                         mainSearchViewClearFocus()
                         hideBottomSheet()
                     }
                 }
-                if (dy > 0 && !isLoadingFromApi) paginationCheck(
+                if (dy > IS_SCROLL_FLAG && !isLoadingFromApi) paginationCheck(
                     mLayoutManager.childCount,
                     mLayoutManager.itemCount,
                     mLayoutManager.findFirstVisibleItemPosition()
@@ -138,11 +137,11 @@ class HomeFragment : Fragment() {
             }
         }
         binding.homeRecycler.apply {
-            dishAdapter = DishRecyclerAdapter(clickListener, checkedChangeListener).apply {
+            mAdapter = DishRecyclerAdapter(clickListener, checkedChangeListener).apply {
                 stateRestorationPolicy = PREVENT_WHEN_EMPTY
             }
             layoutManager = mLayoutManager
-            adapter = dishAdapter
+            adapter = mAdapter
             addOnScrollListener(scrollListener)
             addItemDecoration(SpacingItemDecoration(PADDING_DP))
         }
@@ -164,7 +163,7 @@ class HomeFragment : Fragment() {
 
     fun paginationCheck(visibleItemCount: Int, totalItemCount: Int, pastVisibleItems: Int) {
         if (totalItemCount - (visibleItemCount + pastVisibleItems) <= REMAINDER_OF_ELEMENTS) {
-            (requireActivity().findViewById<SearchView>(R.id.main_quick_search))?.query.let {
+            (activity as MainActivity).getSearchQuery().let {
                 if (it.isNullOrBlank()) viewModel.doRandomRecipePagination()
                 else viewModel.doSearchedRecipesPagination(it.toString(), totalItemCount)
             }
@@ -172,7 +171,7 @@ class HomeFragment : Fragment() {
     }
 
     companion object {
-        private const val TAG = "HomeFragment"
+        private const val IS_SCROLL_FLAG = 0
     }
 
 }

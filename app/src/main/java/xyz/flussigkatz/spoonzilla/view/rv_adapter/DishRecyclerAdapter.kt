@@ -8,10 +8,11 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
+import timber.log.Timber
 import xyz.flussigkatz.spoonzilla.R
 import xyz.flussigkatz.core_api.entity.Dish
 import xyz.flussigkatz.spoonzilla.databinding.DishItemBinding
-import xyz.flussigkatz.spoonzilla.util.DishDiff
+import xyz.flussigkatz.spoonzilla.util.diffutill.DishDiff
 import xyz.flussigkatz.spoonzilla.view.rv_viewholder.DishViewHolder
 import java.lang.Exception
 
@@ -32,7 +33,7 @@ class DishRecyclerAdapter(
         binding.dish = dish
         setDishImage(dish.image, binding.dishImage)
         binding.rootDishItem.setOnClickListener {
-            binding.dish?.id?.let { id -> clickListener.click(id) }
+            dish.id.let { id -> clickListener.click(id) }
         }
         binding.dishMarkCheckBox.setOnCheckedChangeListener { _, isChecked ->
             checkedChangeListener.checkedChange(dish, isChecked)
@@ -57,7 +58,7 @@ class DishRecyclerAdapter(
             }
 
             override fun onError(e: Exception?) {
-                println("$TAG callbackPicasso onError: ${e?.localizedMessage}")
+                Timber.e(e, "callbackPicasso onError")
             }
 
         }
@@ -76,9 +77,5 @@ class DishRecyclerAdapter(
 
     interface OnCheckedChangeListener {
         fun checkedChange(dish: Dish, isChecked: Boolean)
-    }
-
-    companion object {
-        private const val TAG = "DishRecyclerAdapter"
     }
 }

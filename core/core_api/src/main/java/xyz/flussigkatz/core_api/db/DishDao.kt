@@ -4,6 +4,7 @@ import androidx.room.*
 import io.reactivex.rxjava3.core.Observable
 import xyz.flussigkatz.core_api.entity.Dish
 import xyz.flussigkatz.core_api.entity.DishAdvancedInfo
+import xyz.flussigkatz.core_api.entity.DishAlarm
 import xyz.flussigkatz.core_api.entity.DishMarked
 import xyz.flussigkatz.core_api.entity.equipments.Equipments
 import xyz.flussigkatz.core_api.entity.ingredients.Ingredients
@@ -12,6 +13,7 @@ import xyz.flussigkatz.core_api.entity.nutrient.Nutrients
 
 @Dao
 interface DishDao {
+    //Dish
     @Query("SELECT * FROM cashed_dishes ORDER BY localId")
     fun getCashedDishes(): Observable<List<Dish>>
 
@@ -30,9 +32,30 @@ interface DishDao {
     @Delete
     fun deleteDishes(list: List<Dish>): Int
 
+    //DishAlarm
+    @Query("SELECT * FROM dishes_alarms ORDER BY localId")
+    fun getDishAlarms(): Observable<List<DishAlarm>>
 
-    @Query("SELECT * FROM cashed_marked_dishes " +
-            "WHERE title LIKE '%' || :query || '%' ORDER BY localId DESC")
+    @Query("SELECT * FROM dishes_alarms ORDER BY localId")
+    fun getDishAlarmsToList(): List<DishAlarm>
+
+    @Query("SELECT * FROM dishes_alarms WHERE localId LIKE :localId")
+    fun getDishAlarm(localId: Int): DishAlarm
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertDishAlarm(dishAlarm: DishAlarm)
+
+    @Update
+    fun updateDishAlarm(dishAlarm: DishAlarm)
+
+    @Delete
+    fun deleteDishAlarm(dishAlarm: DishAlarm): Int
+
+    //DishMarked
+    @Query(
+        "SELECT * FROM cashed_marked_dishes " +
+                "WHERE title LIKE '%' || :query || '%' ORDER BY localId DESC"
+    )
     fun getCashedMarkedDishes(query: String): Observable<List<DishMarked>>
 
     @Query("SELECT id FROM cashed_marked_dishes")
@@ -47,7 +70,7 @@ interface DishDao {
     @Delete
     fun deleteMarkedDish(dish: DishMarked): Int
 
-
+    //DishAdvancedInfo
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAdvancedInfoDish(dishAdvancedInfo: DishAdvancedInfo)
 
@@ -58,11 +81,7 @@ interface DishDao {
     fun getCashedObservableAdvancedInfoDishToList(id: Int): List<DishAdvancedInfo>
 
     @Query("SELECT * FROM cashed_dishes_advanced_info WHERE id LIKE :id")
-    fun getCashedAdvancedInfoDish(id: Int): DishAdvancedInfo
-
-    @Query("SELECT localId, id, title, image, mark  " +
-            "FROM cashed_dishes_advanced_info ORDER BY localId DESC")
-    fun getAllCashedAdvancedInfoDishes(): Observable<List<Dish>>
+    fun getSingleCashedAdvancedInfoDish(id: Int): DishAdvancedInfo
 
     @Update
     fun updateAdvancedInfoDish(dishAdvancedInfo: DishAdvancedInfo)
@@ -70,28 +89,35 @@ interface DishDao {
     @Delete
     fun deleteAdvancedInfoDish(dishAdvancedInfo: DishAdvancedInfo): Int
 
+    //    RecentlyViewed
+    @Query(
+        "SELECT localId, id, title, image, mark  " +
+                "FROM cashed_dishes_advanced_info ORDER BY localId DESC"
+    )
+    fun getAllCashedAdvancedInfoDishes(): Observable<List<Dish>>
 
+    //Ingredients
     @Query("SELECT * FROM cashed_dishes_ingredients WHERE dishId LIKE :dishId")
     fun getIngredients(dishId: Int): Observable<Ingredients>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertIngredients(ingredients: Ingredients)
 
-
+    //Equipments
     @Query("SELECT * FROM cashed_dishes_equipments WHERE dishId LIKE :dishId")
     fun getEquipments(dishId: Int): Observable<Equipments>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertEquipments(equipments: Equipments)
 
-
+    //Instructions
     @Query("SELECT * FROM cashed_dishes_instructions WHERE dishId LIKE :dishId")
     fun getInstructions(dishId: Int): Observable<Instructions>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertInstructions(instructions: Instructions)
 
-
+    //Nutrients
     @Query("SELECT * FROM cashed_dishes_nutrients WHERE dishId LIKE :dishId")
     fun getNutrients(dishId: Int): Observable<Nutrients>
 

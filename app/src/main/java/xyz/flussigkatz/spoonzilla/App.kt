@@ -1,8 +1,10 @@
 package xyz.flussigkatz.spoonzilla
 
 import android.app.Application
+import timber.log.Timber
 import xyz.flussigkatz.core.CoreProvidersFactory
 import xyz.flussigkatz.remote.DaggerRemoteComponent
+import xyz.flussigkatz.spoonzilla.view.notification.NotificationHelper
 import xyz.flussigkatz.spoonzilla.di.AppComponent
 import xyz.flussigkatz.spoonzilla.di.DaggerMainComponent
 import xyz.flussigkatz.spoonzilla.di.MainComponent
@@ -15,6 +17,8 @@ class App : Application() {
         super.onCreate()
         instance = this
         initDagger()
+        initTimber()
+        NotificationHelper.initNotification(this)
     }
 
     private fun initDagger() {
@@ -24,6 +28,10 @@ class App : Application() {
             .databaseProvider(CoreProvidersFactory.createDatabaseBuilder(AppComponent.create(this)))
             .domainModule(DomainModule())
             .build()
+    }
+
+    private fun initTimber() {
+        if(BuildConfig.DEBUG) Timber.plant(Timber.DebugTree())
     }
 
     companion object {

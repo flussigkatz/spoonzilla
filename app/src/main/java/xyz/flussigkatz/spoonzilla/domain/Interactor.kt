@@ -4,14 +4,14 @@ import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.schedulers.Schedulers
 import io.reactivex.rxjava3.subjects.BehaviorSubject
 import io.reactivex.rxjava3.subjects.PublishSubject
+import timber.log.Timber
 import xyz.flussigkatz.core_api.entity.Dish
-import xyz.flussigkatz.core_api.entity.DishAdvancedInfo
+import xyz.flussigkatz.core_api.entity.DishAlarm
 import xyz.flussigkatz.core_api.entity.DishMarked
 import xyz.flussigkatz.core_api.entity.equipments.EquipmentItem
 import xyz.flussigkatz.core_api.entity.ingredients.IngredientItem
 import xyz.flussigkatz.core_api.entity.instructions.InstructionsItem
 import xyz.flussigkatz.core_api.entity.nutrient.NutrientItem
-import xyz.flussigkatz.core_api.entity.nutrient.Nutrients
 import xyz.flussigkatz.remote.SpoonacularApi
 import xyz.flussigkatz.spoonzilla.ApiKey.API_KEY
 import xyz.flussigkatz.spoonzilla.data.db.MainRepository
@@ -38,13 +38,14 @@ class Interactor(
                 Converter.convertRecipeByIdFromApi(it, markedIds)
             }.subscribe(
                 { repository.putAdvancedInfoDishToDb(it) },
-                { println("$TAG getRecipeByIdFromApi onError: ${it.localizedMessage}") }
+                { Timber.e(it, "getRecipeByIdFromApi onError") }
             )
     }
 
     fun getRecentlyViewedDishes(): Observable<List<Dish>> {
         return repository.getRecentlyViewedDishes()
     }
+
     fun getIngredientsByIdFromDb(id: Int): Observable<List<IngredientItem>> {
         return repository.getIngredients(id)
             .subscribeOn(Schedulers.io())
@@ -58,7 +59,7 @@ class Interactor(
             .map { Converter.convertIngredientsFromApi(it, metric, id) }
             .subscribe(
                 { repository.putIngredients(it) },
-                { println("$TAG getIngredientsByIdFromApi onError: ${it.localizedMessage}") }
+                { Timber.e(it, "getIngredientsByIdFromApi onError") }
             )
     }
 
@@ -74,7 +75,7 @@ class Interactor(
             .map { Converter.convertEquipmentsFromApi(it, id) }
             .subscribe(
                 { repository.putEquipments(it) },
-                { println("$TAG getEquipmentsByIdFromApi onError: ${it.localizedMessage}") }
+                { Timber.e(it, "getEquipmentsByIdFromApi onError") }
             )
     }
 
@@ -90,7 +91,7 @@ class Interactor(
             .map { Converter.convertInstructionsByIdFromApi(it, id) }
             .subscribe(
                 { repository.putInstructions(it) },
-                { println("$TAG getInstructionsByIdFromApi onError: ${it.localizedMessage}") }
+                { Timber.e(it, "getInstructionsByIdFromApi onError") }
             )
     }
 
@@ -105,7 +106,7 @@ class Interactor(
             .map { Converter.convertNutrientsFromApi(it, id) }
             .subscribe(
                 { repository.putNutrients(it) },
-                { println("$TAG getNutrientByIdFromApi onError: ${it.localizedMessage}") }
+                { Timber.e(it, "getNutrientByIdFromApi onError") }
             )
     }
 
@@ -133,11 +134,28 @@ class Interactor(
                     if (clearDb) repository.clearDishTable()
                     repository.putDishesToDb(it)
                 },
-                { println("$TAG getRandomRecipeFromApi onError: ${it.localizedMessage}") }
+                { Timber.e(it, "getRandomRecipeFromApi onError") }
             )
     }
 
     fun getDishesFromDb() = repository.getAllDishesFromDb()
+
+    //    DishAlarm
+    fun getDishAlarmsFromDb() = repository.getAllDishAlarmsFromDb()
+
+    fun getDishAlarmsToListFromDb() = repository.getDishAlarmsToListFromDb()
+
+    fun putDishAlarmToDb(dishAlarm: DishAlarm) {
+        repository.putDishAlarmToDb(dishAlarm)
+    }
+
+    fun updateDishAlarm(dishAlarm: DishAlarm) {
+        repository.updateDishAlarm(dishAlarm)
+    }
+
+    fun deleteDishAlarmFromDb(localId: Int) {
+        repository.deleteDishAlarm(localId)
+    }
 
     fun getMarkedDishesFromDb(query: String): Observable<List<DishMarked>> {
         return repository.getAllMarkedDishesFromDb(query)
@@ -154,7 +172,7 @@ class Interactor(
             dishAdvancedInfo.map { it.mark = dish.mark }
             if (dishAdvancedInfo.isNotEmpty()) repository.updateAdvancedInfoDish(dishAdvancedInfo.first())
         } catch (e: Exception) {
-            println("$TAG ${e.localizedMessage}")
+            Timber.e(e, "setDishMark")
         }
     }
 
@@ -167,7 +185,7 @@ class Interactor(
         ).subscribeOn(Schedulers.io())
             .subscribe(
                 { onNext -> onNext.forEach { println(it.title) } },
-                { println("$TAG getSimilarRecipesFromApi onError: ${it.localizedMessage}") }
+                { Timber.e(it, "getSimilarRecipesFromApi onError") }
             )
     }
 
@@ -179,7 +197,7 @@ class Interactor(
         ).subscribeOn(Schedulers.io())
             .subscribe(
                 { println(it) },
-                { println("$TAG getRecipeTasteFromApi onError: ${it.localizedMessage}") }
+                { Timber.e(it, "getRecipeTasteFromApi onError") }
             )
 
     }
@@ -209,7 +227,7 @@ class Interactor(
                     if (clearDb) repository.clearDishTable()
                     repository.putDishesToDb(it)
                 },
-                { println("$TAG getSearchedRecipesFromApi onError: ${it.localizedMessage}") }
+                { Timber.e(it, "getSearchedRecipesFromApi onError") }
             )
     }
 
@@ -248,11 +266,14 @@ class Interactor(
                     if (clearDb) repository.clearDishTable()
                     repository.putDishesToDb(it)
                 },
-                { println("$TAG getAdvancedSearchedRecipes onError: ${it.localizedMessage}") }
+                { Timber.e(it, "getAdvancedSearchedRecipes onError") }
             )
     }
 
     fun getDishAdvancedInfoFromDb(dishId: Int) = repository.getAdvancedInfoDishFromDb(dishId)
+
+    fun getSingleCashedAdvancedInfoDishFromDb(dishId: Int) =
+        repository.getSingleCashedAdvancedInfoDish(dishId)
 
     fun deleteAdvancedInfoDishFromDb(dishId: Int) {
         repository.deleteAdvancedInfoDishFromDb(dishId)
@@ -285,8 +306,4 @@ class Interactor(
     }
 
     fun getAdvancedSearchSwitchState(key: String) = preferences.getAdvancedSearchSwitchState(key)
-
-    companion object {
-        private const val TAG = "Interactor"
-    }
 }

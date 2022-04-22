@@ -48,6 +48,8 @@ interface MainComponent {
 
     fun inject(dishAlarmFragmentViewModel: DishAlarmFragmentViewModel)
 
+    fun inject(settingsFragmentViewModel: SettingsFragmentViewModel)
+
     fun inject(SpoonzillaReceiver: SpoonzillaReceiver)
 
 }

@@ -44,6 +44,7 @@
 
     <!--    fragment_settings-->
     <dimen name="settings_menu_item_height">50dp</dimen>
+    <dimen name="settings_menu_item_margin">5dp</dimen>
 
     <!--    ingredient_item-->
     <dimen name="ingredient_item_root_height">100dp</dimen>

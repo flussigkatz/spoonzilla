@@ -231,6 +231,13 @@ class Interactor(
             )
     }
 
+    //AdvancedSearch
+    fun saveAdvancedSearchSwitchState(key: String, state: Boolean) {
+        preferences.saveAdvancedSearchSwitchState(key, state)
+    }
+
+    fun getAdvancedSearchSwitchState(key: String) = preferences.getAdvancedSearchSwitchState(key)
+
     fun getAdvancedSearchedRecipes(
         query: String?,
         cuisine: String?,
@@ -295,15 +302,17 @@ class Interactor(
 
     fun getRefreshState() = loadingState
 
-    fun serProfile(profile: String?) {
+    //Profile
+    fun setProfile(profile: String?) {
         preferences.setProfile(profile)
     }
 
     fun getProfile() = preferences.getProfile()
 
-    fun saveAdvancedSearchSwitchState(key: String, state: Boolean) {
-        preferences.saveAdvancedSearchSwitchState(key, state)
+    //Theme
+    fun setNightMode (mode: Int) {
+        preferences.saveNightMode(mode)
     }
 
-    fun getAdvancedSearchSwitchState(key: String) = preferences.getAdvancedSearchSwitchState(key)
+    fun getNightModeFromPreferences() = preferences.getNightMode()
 }

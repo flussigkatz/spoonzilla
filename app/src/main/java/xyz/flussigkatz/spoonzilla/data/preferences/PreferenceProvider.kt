@@ -15,11 +15,11 @@ class PreferenceProvider(context: Context) {
         Context.MODE_PRIVATE
     )
 
-    fun saveAppTheme(theme: Int) {
-        preferences.edit() { putInt(KEY_APP_THEME, theme) }
+    fun saveNightMode(mode: Int) {
+        preferences.edit() { putInt(KEY_NIGHT_MODE, mode) }
     }
 
-    fun getAppTheme() = preferences.getInt(KEY_APP_THEME, MODE_NIGHT_FOLLOW_SYSTEM)
+    fun getNightMode() = preferences.getInt(KEY_NIGHT_MODE, MODE_NIGHT_FOLLOW_SYSTEM)
 
     fun putDialogItems(key: String, set: Set<String>?) {
         preferences.edit() { putStringSet(key, set) }
@@ -58,7 +58,7 @@ class PreferenceProvider(context: Context) {
     fun getAdvancedSearchSwitchState(key: String) = preferences.getBoolean(key, false)
 
     companion object {
-        private const val KEY_APP_THEME = "key_app_theme"
+        private const val KEY_NIGHT_MODE = "key_app_theme"
         private const val KEY_PROFILE = "key_profile"
         private const val KEY_ADVANCED_INFO_STATE = "key_advanced_info_state"
         private const val KEY_METRIC = "key_metric"

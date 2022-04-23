@@ -31,7 +31,6 @@ class IntolerancesDialogFragment(private val markedItems: MutableList<String>) :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         binding.recyclerIntolerances.apply {
             val clickListener = object : DialogItemRecyclerAdapter.OnCheckedChangeListener {
                 override fun checkedChange(item: String, state: Boolean) {
@@ -48,5 +47,4 @@ class IntolerancesDialogFragment(private val markedItems: MutableList<String>) :
         setFragmentResult(KEY_RESULT_REQUEST_DIALOG, bundleOf(KEY_INTOLERANCE to markedItems))
         super.onStop()
     }
-
 }

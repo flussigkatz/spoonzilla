@@ -11,13 +11,17 @@ import androidx.fragment.app.setFragmentResultListener
 import xyz.flussigkatz.spoonzilla.databinding.FragmentAdvancedSearchSettingsBinding
 import xyz.flussigkatz.spoonzilla.util.AppConst.KEY_ADVANCED_SEARCH_SETTINGS
 import xyz.flussigkatz.spoonzilla.util.AppConst.KEY_CUISINE
+import xyz.flussigkatz.spoonzilla.util.AppConst.KEY_CUISINES_DIALOG
 import xyz.flussigkatz.spoonzilla.util.AppConst.KEY_CUISINE_FROM_PROFILE
 import xyz.flussigkatz.spoonzilla.util.AppConst.KEY_DIET
+import xyz.flussigkatz.spoonzilla.util.AppConst.KEY_DIETS_DIALOG
 import xyz.flussigkatz.spoonzilla.util.AppConst.KEY_DIET_FROM_PROFILE
 import xyz.flussigkatz.spoonzilla.util.AppConst.KEY_INSTRUCTIONS_SWITCH
 import xyz.flussigkatz.spoonzilla.util.AppConst.KEY_INTOLERANCE
+import xyz.flussigkatz.spoonzilla.util.AppConst.KEY_INTOLERANCES_DIALOG
 import xyz.flussigkatz.spoonzilla.util.AppConst.KEY_INTOLERANCE_FROM_PROFILE
-import xyz.flussigkatz.spoonzilla.util.AppConst.KEY_MEAT_TYPE_FROM_PROFILE
+import xyz.flussigkatz.spoonzilla.util.AppConst.KEY_MEAL_TYPES_DIALOG
+import xyz.flussigkatz.spoonzilla.util.AppConst.KEY_MEAL_TYPE_FROM_PROFILE
 import xyz.flussigkatz.spoonzilla.util.AppConst.KEY_MEAl_TYPE
 import xyz.flussigkatz.spoonzilla.util.AppConst.KEY_RESULT_REQUEST_DIALOG
 import xyz.flussigkatz.spoonzilla.util.AppConst.NAVIGATE_TO_ADVANCED_SEARCH
@@ -49,23 +53,7 @@ class AdvancedSearchSettingsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setFragmentResultListener(
-            KEY_RESULT_REQUEST_DIALOG
-        ) { key, bundle ->
-            println(key)
-            bundle.getStringArrayList(KEY_CUISINE)?.let {
-                viewModel.putDialogItemsToPreference(KEY_CUISINE, it.toSet())
-            }
-            bundle.getStringArrayList(KEY_DIET)?.let {
-                viewModel.putDialogItemsToPreference(KEY_DIET, it.toSet())
-            }
-            bundle.getStringArrayList(KEY_INTOLERANCE)?.let {
-                viewModel.putDialogItemsToPreference(KEY_INTOLERANCE, it.toSet())
-            }
-            bundle.getStringArrayList(KEY_MEAl_TYPE)?.let {
-                viewModel.putDialogItemsToPreference(KEY_MEAl_TYPE, it.toSet())
-            }
-        }
+        initFragmentResultListener()
         initCuisines()
         initDiets()
         initIntolerances()
@@ -74,8 +62,24 @@ class AdvancedSearchSettingsFragment : Fragment() {
         initSearch()
     }
 
+    private fun initFragmentResultListener() {
+        setFragmentResultListener(KEY_RESULT_REQUEST_DIALOG) { _, bundle ->
+            bundle.getStringArrayList(KEY_CUISINE)?.let {
+                viewModel.putDialogItemsToPreference(KEY_CUISINE, it)
+            }
+            bundle.getStringArrayList(KEY_DIET)?.let {
+                viewModel.putDialogItemsToPreference(KEY_DIET, it)
+            }
+            bundle.getStringArrayList(KEY_INTOLERANCE)?.let {
+                viewModel.putDialogItemsToPreference(KEY_INTOLERANCE, it)
+            }
+            bundle.getStringArrayList(KEY_MEAl_TYPE)?.let {
+                viewModel.putDialogItemsToPreference(KEY_MEAl_TYPE, it)
+            }
+        }
+    }
+
     private fun initCuisines() {
-        binding.cuisineSwitch.isEnabled = viewModel.existProfile()
         viewModel.getAdvancedSearchSwitchState(KEY_CUISINE_SWITCH).let {
             binding.includeCuisineButton.isEnabled = !it
             binding.cuisineSwitch.isChecked = it
@@ -96,7 +100,6 @@ class AdvancedSearchSettingsFragment : Fragment() {
     }
 
     private fun initDiets() {
-        binding.dietSwitch.isEnabled = viewModel.existProfile()
         viewModel.getAdvancedSearchSwitchState(KEY_DIETS_SWITCH).let {
             binding.includeDietButton.isEnabled = !it
             binding.dietSwitch.isChecked = it
@@ -117,7 +120,6 @@ class AdvancedSearchSettingsFragment : Fragment() {
     }
 
     private fun initIntolerances() {
-        binding.intolerancesSwitch.isEnabled = viewModel.existProfile()
         viewModel.getAdvancedSearchSwitchState(KEY_INTOLERANCES_SWITCH).let {
             binding.includeIntolerancesButton.isEnabled = !it
             binding.intolerancesSwitch.isChecked = it
@@ -138,17 +140,16 @@ class AdvancedSearchSettingsFragment : Fragment() {
     }
 
     private fun initMealTypes() {
-        binding.mealTypeSwitch.isEnabled = viewModel.existProfile()
         viewModel.getAdvancedSearchSwitchState(KEY_MEAL_TYPES_SWITCH).let {
             binding.includeMealTypeButton.isEnabled = !it
             binding.mealTypeSwitch.isChecked = it
-            keyMeatType = if (it) KEY_MEAT_TYPE_FROM_PROFILE
+            keyMeatType = if (it) KEY_MEAL_TYPE_FROM_PROFILE
             else KEY_MEAl_TYPE
         }
         binding.mealTypeSwitch.setOnCheckedChangeListener { _, isChecked ->
             binding.includeMealTypeButton.isEnabled = !isChecked
             viewModel.saveAdvancedSearchSwitchState(KEY_MEAL_TYPES_SWITCH, isChecked)
-            keyMeatType = if (isChecked) KEY_MEAT_TYPE_FROM_PROFILE
+            keyMeatType = if (isChecked) KEY_MEAL_TYPE_FROM_PROFILE
             else KEY_MEAl_TYPE
         }
         binding.includeMealTypeButton.setOnClickListener {
@@ -184,10 +185,6 @@ class AdvancedSearchSettingsFragment : Fragment() {
     }
 
     companion object {
-        private const val KEY_CUISINES_DIALOG = "key_cuisines_dialog"
-        private const val KEY_DIETS_DIALOG = "key_diets_dialog"
-        private const val KEY_INTOLERANCES_DIALOG = "key_intolerances_dialog"
-        private const val KEY_MEAL_TYPES_DIALOG = "key_meal_types_dialog"
         private const val KEY_CUISINE_SWITCH = "key_cuisine_switch"
         private const val KEY_DIETS_SWITCH = "key_diets_switch"
         private const val KEY_INTOLERANCES_SWITCH = "key_intolerances_switch"

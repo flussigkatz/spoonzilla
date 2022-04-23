@@ -46,6 +46,4 @@ class DietsDialogFragment(private val markedItems: MutableList<String>) : Dialog
         setFragmentResult(KEY_RESULT_REQUEST_DIALOG, bundleOf(KEY_DIET to markedItems))
         super.onStop()
     }
-
-
 }

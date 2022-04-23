@@ -10,6 +10,7 @@
         android:id="@+id/cuisine_switch"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/advanced_search_settings_menu_item_margin"
         android:text="@string/cuisine_switch_description"
         android:textAppearance="@style/TextAppearance.MaterialComponents.Body1" />
 
@@ -17,12 +18,14 @@
         android:id="@+id/include_cuisine_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/advanced_search_settings_menu_item_margin"
         android:text="@string/include_cuisine_button_text" />
 
     <com.google.android.material.switchmaterial.SwitchMaterial
         android:id="@+id/diet_switch"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/advanced_search_settings_menu_item_margin"
         android:text="@string/diet_switch_description"
         android:textAppearance="@style/TextAppearance.MaterialComponents.Body1" />
 
@@ -30,12 +33,14 @@
         android:id="@+id/include_diet_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/advanced_search_settings_menu_item_margin"
         android:text="@string/include_diet_button_text" />
 
     <com.google.android.material.switchmaterial.SwitchMaterial
         android:id="@+id/intolerances_switch"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/advanced_search_settings_menu_item_margin"
         android:text="@string/intolerances_switch_description"
         android:textAppearance="@style/TextAppearance.MaterialComponents.Body1" />
 
@@ -43,12 +48,14 @@
         android:id="@+id/include_intolerances_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/advanced_search_settings_menu_item_margin"
         android:text="@string/include_intolerances_button_text" />
 
     <com.google.android.material.switchmaterial.SwitchMaterial
         android:id="@+id/meal_type_switch"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/advanced_search_settings_menu_item_margin"
         android:text="@string/meal_type_switch_description"
         android:textAppearance="@style/TextAppearance.MaterialComponents.Body1" />
 
@@ -56,12 +63,14 @@
         android:id="@+id/include_meal_type_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/advanced_search_settings_menu_item_margin"
         android:text="@string/include_meal_type_button_text" />
 
     <com.google.android.material.switchmaterial.SwitchMaterial
         android:id="@+id/instructions_switch"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/advanced_search_settings_menu_item_margin"
         android:text="@string/instructions_switch_description"
         android:textAppearance="@style/TextAppearance.MaterialComponents.Body1" />
 
@@ -70,6 +79,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:layout_marginStart="@dimen/advanced_search_settings_menu_item_margin"
         android:text="@string/advanced_search_button" />
 
 </androidx.appcompat.widget.LinearLayoutCompat>

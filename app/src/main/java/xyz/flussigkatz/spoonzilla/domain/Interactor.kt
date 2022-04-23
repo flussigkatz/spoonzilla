@@ -302,6 +302,19 @@ class Interactor(
 
     fun getRefreshState() = loadingState
 
+    fun setPersonalPreferencesSwitchState(key: String, state: Boolean) {
+        preferences.savePersonalPreferencesSwitchState(key, state)
+    }
+
+    fun getPersonalPreferencesSwitchState(key: String) = preferences.getPersonalPreferencesSwitchState(key)
+
+    //Metric
+    fun setMetric(metric: Boolean) {
+        preferences.setMetric(metric)
+    }
+
+    fun getMetric() = preferences.getMetric()
+
     //Profile
     fun setProfile(profile: String?) {
         preferences.setProfile(profile)

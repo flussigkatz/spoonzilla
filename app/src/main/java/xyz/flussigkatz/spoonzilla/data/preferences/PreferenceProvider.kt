@@ -7,7 +7,7 @@ import androidx.core.content.edit
 import xyz.flussigkatz.spoonzilla.util.AppConst.KEY_CUISINE_FROM_PROFILE
 import xyz.flussigkatz.spoonzilla.util.AppConst.KEY_DIET_FROM_PROFILE
 import xyz.flussigkatz.spoonzilla.util.AppConst.KEY_INTOLERANCE_FROM_PROFILE
-import xyz.flussigkatz.spoonzilla.util.AppConst.KEY_MEAT_TYPE_FROM_PROFILE
+import xyz.flussigkatz.spoonzilla.util.AppConst.KEY_MEAL_TYPE_FROM_PROFILE
 
 class PreferenceProvider(context: Context) {
     private val preferences: SharedPreferences = context.getSharedPreferences(
@@ -27,12 +27,6 @@ class PreferenceProvider(context: Context) {
 
     fun getDialogItems(key: String): MutableSet<String>? = preferences.getStringSet(key, null)
 
-    fun setAdvancedInfoState(state: Boolean) {
-        preferences.edit() { putBoolean(KEY_ADVANCED_INFO_STATE, state) }
-    }
-
-    fun getAdvancedInfoState() = preferences.getBoolean(KEY_ADVANCED_INFO_STATE, true)
-
     fun setMetric(metric: Boolean) {
         preferences.edit() { putBoolean(KEY_METRIC, metric) }
     }
@@ -45,7 +39,7 @@ class PreferenceProvider(context: Context) {
             putDialogItems(KEY_CUISINE_FROM_PROFILE, null)
             putDialogItems(KEY_DIET_FROM_PROFILE, null)
             putDialogItems(KEY_INTOLERANCE_FROM_PROFILE, null)
-            putDialogItems(KEY_MEAT_TYPE_FROM_PROFILE, null)
+            putDialogItems(KEY_MEAL_TYPE_FROM_PROFILE, null)
         }
     }
 
@@ -57,10 +51,15 @@ class PreferenceProvider(context: Context) {
 
     fun getAdvancedSearchSwitchState(key: String) = preferences.getBoolean(key, false)
 
+    fun savePersonalPreferencesSwitchState(key: String, state: Boolean) {
+        preferences.edit() { putBoolean(key, state) }
+    }
+
+    fun getPersonalPreferencesSwitchState(key: String) = preferences.getBoolean(key, true)
+
     companion object {
         private const val KEY_NIGHT_MODE = "key_app_theme"
         private const val KEY_PROFILE = "key_profile"
-        private const val KEY_ADVANCED_INFO_STATE = "key_advanced_info_state"
         private const val KEY_METRIC = "key_metric"
         private const val SETTINGS_FILE_NAME = "settings_spoonzilla"
     }

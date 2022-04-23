@@ -25,4 +25,24 @@ class SettingsFragmentViewModel : ViewModel() {
     }
 
     private fun getNightModeFromPreferences() = interactor.getNightModeFromPreferences()
+
+    fun putDialogItemsToPreference(key: String, list: ArrayList<String>) {
+        interactor.putDialogItemsToPreference(key, list.toSet())
+    }
+
+    fun getDialogItemsFromPreference(key: String): MutableList<String> {
+        return interactor.getSearchSettings(key).orEmpty().toMutableList()
+    }
+
+    fun setSwitchState(key: String, state: Boolean) {
+        interactor.setPersonalPreferencesSwitchState(key, state)
+    }
+
+    fun getSwitchState(key: String) = interactor.getPersonalPreferencesSwitchState(key)
+
+    fun setMetric(metric: Boolean) {
+        interactor.setMetric(metric)
+    }
+
+    fun getMetric() = interactor.getMetric()
 }

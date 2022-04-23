@@ -3,9 +3,6 @@ package xyz.flussigkatz.spoonzilla.viewmodel
 import androidx.lifecycle.ViewModel
 import xyz.flussigkatz.spoonzilla.App
 import xyz.flussigkatz.spoonzilla.domain.Interactor
-import xyz.flussigkatz.spoonzilla.view.dialog.DietsDialogFragment
-import xyz.flussigkatz.spoonzilla.view.dialog.IntolerancesDialogFragment
-import xyz.flussigkatz.spoonzilla.view.dialog.MealTypesDialogFragment
 import javax.inject.Inject
 
 class AdvancedSearchSettingsFragmentViewModel : ViewModel() {
@@ -25,8 +22,8 @@ class AdvancedSearchSettingsFragmentViewModel : ViewModel() {
 
     fun existProfile() = !interactor.getProfile().isNullOrEmpty()
 
-    fun putDialogItemsToPreference(key: String, set: Set<String>) {
-        interactor.putDialogItemsToPreference(key, set)
+    fun putDialogItemsToPreference(key: String, list: ArrayList<String>) {
+        interactor.putDialogItemsToPreference(key, list.toSet())
     }
 
     fun getDialogItemsFromPreference(key: String): MutableList<String> {

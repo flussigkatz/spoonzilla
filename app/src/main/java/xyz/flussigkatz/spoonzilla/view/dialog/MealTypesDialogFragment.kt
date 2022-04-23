@@ -30,7 +30,6 @@ class MealTypesDialogFragment(private val markedItems: MutableList<String>) : Di
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         binding.recyclerMealTypes.apply {
             val clickListener = object : DialogItemRecyclerAdapter.OnCheckedChangeListener {
                 override fun checkedChange(item: String, state: Boolean) {
@@ -47,5 +46,4 @@ class MealTypesDialogFragment(private val markedItems: MutableList<String>) : Di
         setFragmentResult(KEY_RESULT_REQUEST_DIALOG, bundleOf(KEY_MEAl_TYPE to markedItems))
         super.onStop()
     }
-
 }

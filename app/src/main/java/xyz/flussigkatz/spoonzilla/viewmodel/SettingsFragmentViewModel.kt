@@ -9,7 +9,7 @@ import javax.inject.Inject
 class SettingsFragmentViewModel : ViewModel() {
     @Inject
     lateinit var interactor: Interactor
-    val nightMode: Int
+    var nightMode: Int
 
     init {
         App.instance.dagger.inject(this)
@@ -17,11 +17,10 @@ class SettingsFragmentViewModel : ViewModel() {
     }
 
     fun setNightMode(mode: Int, activity: Activity) {
-        val mMode = interactor.getNightModeFromPreferences()
-        if (mMode != mode) {
+        nightMode = getNightModeFromPreferences()
+        if (nightMode != mode) {
             interactor.setNightMode(mode)
             activity.recreate()
-            getNightModeFromPreferences()
         }
     }
 

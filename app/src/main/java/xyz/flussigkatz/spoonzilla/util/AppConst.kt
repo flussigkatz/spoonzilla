@@ -8,6 +8,7 @@ object AppConst {
     const val KEY_DISH_ID = "key_dish_id"
     const val KEY_DISH_LOCAL_ID = "key_dish_local_id"
     const val KEY_ADVANCED_SEARCH_SETTINGS = "key_advanced_search_settings"
+    const val KEY_RESULT_REQUEST_DIALOG = "key_result_request_dialog"
     const val KEY_CUISINE = "key_cuisine"
     const val KEY_DIET = "key_diet"
     const val KEY_INTOLERANCE = "key_intolerances"

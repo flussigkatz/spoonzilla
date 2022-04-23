@@ -10,13 +10,16 @@
     <Spinner
         android:id="@+id/settings_theme_spinner"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/settings_menu_item_height" />
+        android:layout_height="@dimen/settings_menu_item_height"
+        android:layout_marginTop="@dimen/settings_menu_item_margin" />
 
     <TextView
         android:id="@+id/settings_diets"
         android:layout_width="match_parent"
         android:layout_height="@dimen/settings_menu_item_height"
-        android:layout_margin="@dimen/settings_menu_item_margin"
+        android:layout_marginStart="@dimen/settings_menu_item_margin"
+        android:layout_marginTop="@dimen/settings_menu_item_margin"
+        android:layout_marginEnd="@dimen/settings_menu_item_margin"
         android:text="@string/settings_title_diets"
         android:textAppearance="@style/TextAppearance.MaterialComponents.Body1" />
 
@@ -24,7 +27,9 @@
         android:id="@+id/settings_meal_types"
         android:layout_width="match_parent"
         android:layout_height="@dimen/settings_menu_item_height"
-        android:layout_margin="@dimen/settings_menu_item_margin"
+        android:layout_marginStart="@dimen/settings_menu_item_margin"
+        android:layout_marginTop="@dimen/settings_menu_item_margin"
+        android:layout_marginEnd="@dimen/settings_menu_item_margin"
         android:text="@string/settings_title_meal_types"
         android:textAppearance="@style/TextAppearance.MaterialComponents.Body1" />
 
@@ -32,7 +37,9 @@
         android:id="@+id/settings_intolerances"
         android:layout_width="match_parent"
         android:layout_height="@dimen/settings_menu_item_height"
-        android:layout_margin="@dimen/settings_menu_item_margin"
+        android:layout_marginStart="@dimen/settings_menu_item_margin"
+        android:layout_marginTop="@dimen/settings_menu_item_margin"
+        android:layout_marginEnd="@dimen/settings_menu_item_margin"
         android:text="@string/settings_title_intolerances"
         android:textAppearance="@style/TextAppearance.MaterialComponents.Body1" />
 
@@ -40,7 +47,9 @@
         android:id="@+id/settings_cuisine"
         android:layout_width="match_parent"
         android:layout_height="@dimen/settings_menu_item_height"
-        android:layout_margin="@dimen/settings_menu_item_margin"
+        android:layout_marginStart="@dimen/settings_menu_item_margin"
+        android:layout_marginTop="@dimen/settings_menu_item_margin"
+        android:layout_marginEnd="@dimen/settings_menu_item_margin"
         android:text="@string/settings_title_cuisine"
         android:textAppearance="@style/TextAppearance.MaterialComponents.Body1" />
 

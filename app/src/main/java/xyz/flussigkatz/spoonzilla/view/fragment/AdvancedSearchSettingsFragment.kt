@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.setFragmentResultListener
 import xyz.flussigkatz.spoonzilla.databinding.FragmentAdvancedSearchSettingsBinding
 import xyz.flussigkatz.spoonzilla.util.AppConst.KEY_ADVANCED_SEARCH_SETTINGS
 import xyz.flussigkatz.spoonzilla.util.AppConst.KEY_CUISINE
@@ -18,8 +19,13 @@ import xyz.flussigkatz.spoonzilla.util.AppConst.KEY_INTOLERANCE
 import xyz.flussigkatz.spoonzilla.util.AppConst.KEY_INTOLERANCE_FROM_PROFILE
 import xyz.flussigkatz.spoonzilla.util.AppConst.KEY_MEAT_TYPE_FROM_PROFILE
 import xyz.flussigkatz.spoonzilla.util.AppConst.KEY_MEAl_TYPE
+import xyz.flussigkatz.spoonzilla.util.AppConst.KEY_RESULT_REQUEST_DIALOG
 import xyz.flussigkatz.spoonzilla.util.AppConst.NAVIGATE_TO_ADVANCED_SEARCH
 import xyz.flussigkatz.spoonzilla.util.AutoDisposable
+import xyz.flussigkatz.spoonzilla.view.dialog.CuisineDialogFragment
+import xyz.flussigkatz.spoonzilla.view.dialog.DietsDialogFragment
+import xyz.flussigkatz.spoonzilla.view.dialog.IntolerancesDialogFragment
+import xyz.flussigkatz.spoonzilla.view.dialog.MealTypesDialogFragment
 import xyz.flussigkatz.spoonzilla.viewmodel.AdvancedSearchSettingsFragmentViewModel
 
 class AdvancedSearchSettingsFragment : Fragment() {
@@ -43,6 +49,23 @@ class AdvancedSearchSettingsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setFragmentResultListener(
+            KEY_RESULT_REQUEST_DIALOG
+        ) { key, bundle ->
+            println(key)
+            bundle.getStringArrayList(KEY_CUISINE)?.let {
+                viewModel.putDialogItemsToPreference(KEY_CUISINE, it.toSet())
+            }
+            bundle.getStringArrayList(KEY_DIET)?.let {
+                viewModel.putDialogItemsToPreference(KEY_DIET, it.toSet())
+            }
+            bundle.getStringArrayList(KEY_INTOLERANCE)?.let {
+                viewModel.putDialogItemsToPreference(KEY_INTOLERANCE, it.toSet())
+            }
+            bundle.getStringArrayList(KEY_MEAl_TYPE)?.let {
+                viewModel.putDialogItemsToPreference(KEY_MEAl_TYPE, it.toSet())
+            }
+        }
         initCuisines()
         initDiets()
         initIntolerances()
@@ -66,7 +89,9 @@ class AdvancedSearchSettingsFragment : Fragment() {
             else KEY_CUISINE
         }
         binding.includeCuisineButton.setOnClickListener {
-            viewModel.getCuisineDialogFragment().show(parentFragmentManager, KEY_CUISINES_DIALOG)
+            val markedItems = viewModel.getDialogItemsFromPreference(KEY_CUISINE)
+            val dialog = CuisineDialogFragment(markedItems)
+            dialog.show(parentFragmentManager, KEY_CUISINES_DIALOG)
         }
     }
 
@@ -85,7 +110,9 @@ class AdvancedSearchSettingsFragment : Fragment() {
             else KEY_DIET
         }
         binding.includeDietButton.setOnClickListener {
-            viewModel.getDietsDialogFragment().show(parentFragmentManager, KEY_DIETS_DIALOG)
+            val markedItems = viewModel.getDialogItemsFromPreference(KEY_DIET)
+            val dialog = DietsDialogFragment(markedItems)
+            dialog.show(parentFragmentManager, KEY_DIETS_DIALOG)
         }
     }
 
@@ -104,8 +131,9 @@ class AdvancedSearchSettingsFragment : Fragment() {
             else KEY_INTOLERANCE
         }
         binding.includeIntolerancesButton.setOnClickListener {
-            viewModel.getIntolerancesDialogFragment()
-                .show(parentFragmentManager, KEY_INTOLERANCES_DIALOG)
+            val markedItems = viewModel.getDialogItemsFromPreference(KEY_INTOLERANCE)
+            val dialog = IntolerancesDialogFragment(markedItems)
+            dialog.show(parentFragmentManager, KEY_INTOLERANCES_DIALOG)
         }
     }
 
@@ -124,8 +152,9 @@ class AdvancedSearchSettingsFragment : Fragment() {
             else KEY_MEAl_TYPE
         }
         binding.includeMealTypeButton.setOnClickListener {
-            viewModel.getMealTypesDialogFragment()
-                .show(parentFragmentManager, KEY_MEAL_TYPES_DIALOG)
+            val markedItems = viewModel.getDialogItemsFromPreference(KEY_MEAl_TYPE)
+            val dialog = MealTypesDialogFragment(markedItems)
+            dialog.show(parentFragmentManager, KEY_MEAL_TYPES_DIALOG)
         }
     }
 
@@ -153,6 +182,7 @@ class AdvancedSearchSettingsFragment : Fragment() {
             requireActivity().sendBroadcast(intent)
         }
     }
+
     companion object {
         private const val KEY_CUISINES_DIALOG = "key_cuisines_dialog"
         private const val KEY_DIETS_DIALOG = "key_diets_dialog"

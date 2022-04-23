@@ -4,20 +4,19 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.fragment.app.DialogFragment
-import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.setFragmentResult
 import androidx.recyclerview.widget.LinearLayoutManager
 import xyz.flussigkatz.spoonzilla.data.enums.MealTypes
 import xyz.flussigkatz.spoonzilla.databinding.DialogMealTypesBinding
 import xyz.flussigkatz.spoonzilla.util.AppConst.KEY_MEAl_TYPE
+import xyz.flussigkatz.spoonzilla.util.AppConst.KEY_RESULT_REQUEST_DIALOG
 import xyz.flussigkatz.spoonzilla.view.rv_adapter.DialogItemRecyclerAdapter
-import xyz.flussigkatz.spoonzilla.viewmodel.MealTypesDialogFragmentViewModel
 
-class MealTypesDialogFragment : DialogFragment() {
+class MealTypesDialogFragment(private val markedItems: MutableList<String>) : DialogFragment() {
     private lateinit var binding: DialogMealTypesBinding
-    private val viewModel: MealTypesDialogFragmentViewModel by activityViewModels()
     private lateinit var mAdapter: DialogItemRecyclerAdapter
-    private lateinit var markedItems: MutableList<String>
     private val allItems = MealTypes.values().map { it.typeName }
 
     override fun onCreateView(
@@ -33,9 +32,6 @@ class MealTypesDialogFragment : DialogFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.recyclerMealTypes.apply {
-            viewModel.getDialogItemsFromPreference(KEY_MEAl_TYPE).let {
-                markedItems = it.orEmpty().toMutableList()
-            }
             val clickListener = object : DialogItemRecyclerAdapter.OnCheckedChangeListener {
                 override fun checkedChange(item: String, state: Boolean) {
                     if (state) markedItems.remove(item) else markedItems.add(item)
@@ -48,7 +44,7 @@ class MealTypesDialogFragment : DialogFragment() {
     }
 
     override fun onStop() {
-        viewModel.putDialogItemsToPreference(KEY_MEAl_TYPE, markedItems.toSet())
+        setFragmentResult(KEY_RESULT_REQUEST_DIALOG, bundleOf(KEY_MEAl_TYPE to markedItems))
         super.onStop()
     }
 

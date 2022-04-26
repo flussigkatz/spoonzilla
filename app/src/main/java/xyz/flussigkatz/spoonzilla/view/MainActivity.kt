@@ -12,6 +12,7 @@ import android.view.View.VISIBLE
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.widget.SearchView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.GravityCompat
@@ -70,6 +71,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         autoDisposable.bindTo(lifecycle)
+        AppCompatDelegate.setDefaultNightMode(viewModel.getNightModeFromPreferences())
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         initNavigation()
@@ -171,6 +173,7 @@ class MainActivity : AppCompatActivity() {
 
         binding.mainNavigationView.setNavigationItemSelectedListener { menuItem ->
             binding.mainDrawerLayout.closeDrawers()
+            binding.mainAppbar.setExpanded(true)
             val onScreenFragmentId = navController.currentDestination?.id
             if (onScreenFragmentId != menuItem.itemId) {
                 NavigationHelper.navigate(navController, menuItem.itemId, onScreenFragmentId)
@@ -227,7 +230,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        binding.mainAppbar.setExpanded(true)
         recentlyViewedBottomSheet.state = STATE_HIDDEN
         val onScreenFragmentId = navController.currentDestination?.id
         if (
@@ -299,7 +301,7 @@ class MainActivity : AppCompatActivity() {
                     binding.recentlyViewedRecycler.smoothScrollToPosition(FIRST_POSITION)
                     adapterIsNotEmpty = it.isNotEmpty()
                 },
-                { Timber.e(it, "initContent onError") }
+                { Timber.d(it, "initContent onError") }
             ).addTo(autoDisposable)
     }
 
@@ -308,7 +310,7 @@ class MainActivity : AppCompatActivity() {
             .filter { !it.isNullOrEmpty() }
             .subscribe(
                 { initDishReminds(it) },
-                { Timber.e(it, "initAlarms onError") }
+                { Timber.d(it, "initAlarms onError") }
             ).addTo(autoDisposable)
     }
 

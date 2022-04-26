@@ -23,6 +23,7 @@ import xyz.flussigkatz.spoonzilla.util.AppConst.KEY_CUISINE
 import xyz.flussigkatz.spoonzilla.util.AppConst.KEY_DIET
 import xyz.flussigkatz.spoonzilla.util.AppConst.KEY_DISH_ID
 import xyz.flussigkatz.spoonzilla.util.AppConst.KEY_INTOLERANCE
+import xyz.flussigkatz.spoonzilla.util.AppConst.KEY_MAX_READY_TIME
 import xyz.flussigkatz.spoonzilla.util.AppConst.KEY_MEAl_TYPE
 import xyz.flussigkatz.spoonzilla.util.AppConst.NAVIGATE_TO_DETAILS
 import xyz.flussigkatz.spoonzilla.util.AppConst.PADDING_DP
@@ -48,6 +49,7 @@ class AdvancedSearchFragment : Fragment() {
     private lateinit var keyDiet: String
     private lateinit var keyIntolerance: String
     private lateinit var keyMeatType: String
+    private var maxReadyTime: Int? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -72,7 +74,7 @@ class AdvancedSearchFragment : Fragment() {
         viewModel.loadingState.subscribeOn(Schedulers.io())
             .subscribe(
                 { isLoadingFromApi = it },
-                { Timber.e(it, "initIsLoading onError") }
+                { Timber.d(it, "initIsLoading onError") }
             ).addTo(autoDisposable)
     }
 
@@ -84,7 +86,7 @@ class AdvancedSearchFragment : Fragment() {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                     { binding.advancedSearchRefreshLayout.isRefreshing = it },
-                    { Timber.e(it, "initRefreshLayout onError") }
+                    { Timber.d(it, "initRefreshLayout onError") }
                 ).addTo(autoDisposable)
         }
     }
@@ -98,7 +100,7 @@ class AdvancedSearchFragment : Fragment() {
                     mQuery = it
                     getSearchedRecipes()
                 },
-                { Timber.e(it, "initSearch onError") }
+                { Timber.d(it, "initSearch onError") }
             ).addTo(autoDisposable)
     }
 
@@ -109,7 +111,7 @@ class AdvancedSearchFragment : Fragment() {
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
                 { dishAdapter.updateData(it) },
-                { Timber.e(it, "initContent onError") }
+                { Timber.d(it, "initContent onError") }
             ).addTo(autoDisposable)
     }
 
@@ -164,6 +166,7 @@ class AdvancedSearchFragment : Fragment() {
         if (totalItemCount - (visibleItemCount + pastVisibleItems) <= REMAINDER_OF_ELEMENTS) {
             viewModel.doSearchedRecipesPagination(
                 query = mQuery,
+                maxReadyTime = maxReadyTime,
                 offset = totalItemCount,
                 keyCuisine = keyCuisine,
                 keyDiet = keyDiet,
@@ -179,12 +182,14 @@ class AdvancedSearchFragment : Fragment() {
             keyDiet = getString(KEY_DIET) ?: KEY_DIET
             keyIntolerance = getString(KEY_INTOLERANCE) ?: KEY_INTOLERANCE
             keyMeatType = getString(KEY_MEAl_TYPE) ?: KEY_MEAl_TYPE
+            getInt(KEY_MAX_READY_TIME).let { maxReadyTime = if (it != 0) it else null }
         }
     }
 
     private fun getSearchedRecipes() {
         viewModel.getAdvancedSearchedRecipes(
             query = mQuery,
+            maxReadyTime = maxReadyTime,
             keyCuisine = keyCuisine,
             keyDiet = keyDiet,
             keyIntolerance = keyIntolerance,

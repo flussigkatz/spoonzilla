@@ -27,6 +27,7 @@ class AdvancedSearchFragmentViewModel : ViewModel() {
 
     fun getAdvancedSearchedRecipes(
         query: String?,
+        maxReadyTime: Int?,
         keyCuisine: String,
         keyDiet: String,
         keyIntolerance: String,
@@ -45,6 +46,7 @@ class AdvancedSearchFragmentViewModel : ViewModel() {
             intolerances = intolerances?.joinToString(),
             type = type?.joinToString(),
             instructionsRequired = instructionsRequired,
+            maxReadyTime = maxReadyTime,
             offset = null,
             number = null,
             clearDb = true
@@ -53,6 +55,7 @@ class AdvancedSearchFragmentViewModel : ViewModel() {
 
     fun doSearchedRecipesPagination(
         query: String?,
+        maxReadyTime: Int?,
         offset: Int,
         keyCuisine: String,
         keyDiet: String,
@@ -66,6 +69,7 @@ class AdvancedSearchFragmentViewModel : ViewModel() {
         val instructionsRequired = interactor.getAdvancedSearchSwitchState(KEY_INSTRUCTIONS_SWITCH)
         interactor.getAdvancedSearchedRecipes(
             query = query,
+            maxReadyTime = maxReadyTime,
             cuisine = cuisine?.joinToString(),
             diet = diet?.joinToString(),
             intolerances = intolerances?.joinToString(),

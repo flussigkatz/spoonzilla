@@ -41,7 +41,7 @@ class DishNutrientFragment : Fragment() {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                     { nutrientsAdapter.addItems(it) },
-                    { Timber.e(it, "getNutrients onError") }
+                    { Timber.d(it, "getNutrients onError") }
                 )
         }
     }

@@ -10,8 +10,10 @@ import xyz.flussigkatz.spoonzilla.domain.Interactor
 import xyz.flussigkatz.spoonzilla.util.AppConst.KEY_CUISINE_FROM_PROFILE
 import xyz.flussigkatz.spoonzilla.util.AppConst.KEY_DIET_FROM_PROFILE
 import xyz.flussigkatz.spoonzilla.util.AppConst.KEY_INTOLERANCE_FROM_PROFILE
+import xyz.flussigkatz.spoonzilla.util.AppConst.KEY_PERSONAL_PREFERENCES
 import xyz.flussigkatz.spoonzilla.util.AppConst.PAGINATION_NUMBER_ELEMENTS
 import xyz.flussigkatz.spoonzilla.util.AppConst.TOTAL_NUMBER_ELEMENTS
+import java.util.*
 import javax.inject.Inject
 
 class HomeFragmentViewModel : ViewModel() {
@@ -49,24 +51,42 @@ class HomeFragmentViewModel : ViewModel() {
 
     fun getRandomRecipe() {
         val cuisine =
-            interactor.getSearchSettings(KEY_CUISINE_FROM_PROFILE)?.joinToString().orEmpty()
+            interactor.getSearchSettings(KEY_CUISINE_FROM_PROFILE)?.joinToString(separator = " ")
+                .orEmpty()
         val diet =
-            interactor.getSearchSettings(KEY_DIET_FROM_PROFILE)?.joinToString().orEmpty()
+            interactor.getSearchSettings(KEY_DIET_FROM_PROFILE)?.joinToString(separator = " ")
+                .orEmpty()
         val intolerances =
-            interactor.getSearchSettings(KEY_INTOLERANCE_FROM_PROFILE)?.joinToString().orEmpty()
-        val tags = cuisine + diet + intolerances
-        interactor.getRandomRecipeFromApi(TOTAL_NUMBER_ELEMENTS, tags, true)
+            interactor.getSearchSettings(KEY_INTOLERANCE_FROM_PROFILE)
+                ?.joinToString(separator = " ").orEmpty()
+        val tags = if (interactor.getPersonalPreferencesSwitchState(KEY_PERSONAL_PREFERENCES)) {
+            "${cuisine.trim()} ${diet.trim()} ${intolerances.trim()}"
+        } else String()
+        interactor.getRandomRecipeFromApi(
+            TOTAL_NUMBER_ELEMENTS,
+            tags.lowercase(Locale.getDefault()).trim(),
+            true
+        )
     }
 
     fun doRandomRecipePagination() {
         val cuisine =
-            interactor.getSearchSettings(KEY_CUISINE_FROM_PROFILE)?.joinToString().orEmpty()
+            interactor.getSearchSettings(KEY_CUISINE_FROM_PROFILE)?.joinToString(separator = " ")
+                .orEmpty()
         val diet =
-            interactor.getSearchSettings(KEY_DIET_FROM_PROFILE)?.joinToString().orEmpty()
+            interactor.getSearchSettings(KEY_DIET_FROM_PROFILE)?.joinToString(separator = " ")
+                .orEmpty()
         val intolerances =
-            interactor.getSearchSettings(KEY_INTOLERANCE_FROM_PROFILE)?.joinToString().orEmpty()
-        val tags = cuisine + diet + intolerances
-        interactor.getRandomRecipeFromApi(PAGINATION_NUMBER_ELEMENTS, tags, false)
+            interactor.getSearchSettings(KEY_INTOLERANCE_FROM_PROFILE)
+                ?.joinToString(separator = " ").orEmpty()
+        val tags = if (interactor.getPersonalPreferencesSwitchState(KEY_PERSONAL_PREFERENCES)) {
+            "${cuisine.trim()} ${diet.trim()} ${intolerances.trim()}"
+        } else String()
+        interactor.getRandomRecipeFromApi(
+            PAGINATION_NUMBER_ELEMENTS,
+            tags.lowercase(Locale.getDefault()).trim(),
+            false
+        )
     }
 
     fun setDishMark(dish: Dish) {

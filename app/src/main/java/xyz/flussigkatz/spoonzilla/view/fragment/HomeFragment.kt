@@ -61,9 +61,13 @@ class HomeFragment : Fragment() {
 
     private fun initLoadingState() {
         viewModel.loadingState.subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
-                { isLoadingFromApi = it },
-                { Timber.e(it, "initIsLoading onError") }
+                {
+                    isLoadingFromApi = it
+                    binding.homeRefreshLayout.isRefreshing = it
+                },
+                { Timber.d(it, "initLoadingState onError") }
             ).addTo(autoDisposable)
     }
 
@@ -71,12 +75,6 @@ class HomeFragment : Fragment() {
         binding.homeRefreshLayout.setOnRefreshListener {
             (requireActivity() as MainActivity).mainSearchViewClearFocus()
             viewModel.getRandomRecipe()
-            viewModel.loadingState.subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(
-                    { binding.homeRefreshLayout.isRefreshing = it },
-                    { Timber.e(it, "initRefreshLayout onError") }
-                ).addTo(autoDisposable)
         }
     }
 
@@ -86,7 +84,7 @@ class HomeFragment : Fragment() {
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
                 { getSearchedRecipes(it) },
-                { Timber.e(it, "initQuickSearch onError") }
+                { Timber.d(it, "initQuickSearch onError") }
             ).addTo(autoDisposable)
     }
 
@@ -96,7 +94,7 @@ class HomeFragment : Fragment() {
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
                 { mAdapter.updateData(it) },
-                { Timber.e(it, "initContent onError") }
+                { Timber.d(it, "initContent onError") }
             ).addTo(autoDisposable)
     }
 

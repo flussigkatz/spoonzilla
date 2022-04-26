@@ -1,44 +1,131 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/root_settings"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/transparent"
     android:orientation="vertical"
     tools:context=".view.fragment.SettingsFragment">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/settings_menu_item_height"
+        android:layout_marginStart="@dimen/settings_menu_item_margin"
+        android:layout_marginEnd="@dimen/settings_menu_item_margin"
+        android:gravity="start|center"
+        android:text="@string/settings_title_appearance"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+        android:textColor="@color/app_color_1" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/settings_menu_item_subtitle_margin"
+        android:layout_marginTop="@dimen/settings_menu_item_margin"
+        android:gravity="start|bottom"
+        android:text="@string/settings_title_night_mode"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
+        android:textColor="@color/app_color_1" />
 
     <Spinner
         android:id="@+id/settings_theme_spinner"
         android:layout_width="match_parent"
-        android:gravity="center"
-        android:layout_height="@dimen/settings_menu_item_height" />
+        android:layout_height="@dimen/settings_menu_item_height"
+        android:layout_marginEnd="@dimen/settings_menu_item_margin"
+        android:background="@drawable/ic_spinner"
+        android:backgroundTint="@color/black"
+        android:prompt="@color/app_color_1" />
 
     <TextView
-        android:id="@+id/settings_diets"
-        android:text="@string/settings_title_diets"
-        android:gravity="center"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/settings_menu_item_height"/>
-
-    <TextView
-        android:id="@+id/settings_meal_types"
-        android:text="@string/settings_title_meal_types"
-        android:layout_width="match_parent"
-        android:gravity="center"
-        android:layout_height="@dimen/settings_menu_item_height"/>
-
-    <TextView
-        android:id="@+id/settings_intolerances"
-        android:text="@string/settings_title_intolerances"
-        android:gravity="center"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/settings_menu_item_height"/>
+        android:layout_height="@dimen/settings_menu_item_height"
+        android:layout_marginStart="@dimen/settings_menu_item_margin"
+        android:layout_marginTop="@dimen/settings_menu_item_margin"
+        android:layout_marginEnd="@dimen/settings_menu_item_margin"
+        android:gravity="start|center"
+        android:text="@string/settings_title_personal_preferences"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+        android:textColor="@color/app_color_1" />
 
     <TextView
         android:id="@+id/settings_cuisine"
-        android:text="@string/settings_title_cuisine"
-        android:gravity="center"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/settings_menu_item_height"/>
+        android:layout_height="@dimen/settings_menu_item_height"
+        android:layout_marginStart="@dimen/settings_menu_item_margin"
+        android:layout_marginTop="@dimen/settings_menu_item_margin"
+        android:layout_marginEnd="@dimen/settings_menu_item_margin"
+        android:clickable="true"
+        android:focusable="true"
+        android:gravity="start|center"
+        android:text="@string/settings_title_cuisine"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+        app:drawableRightCompat="@drawable/ic_keyboard_arrow_right"
+        app:drawableTint="@color/black" />
+
+    <TextView
+        android:id="@+id/settings_diets"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/settings_menu_item_height"
+        android:layout_marginStart="@dimen/settings_menu_item_margin"
+        android:layout_marginTop="@dimen/settings_menu_item_margin"
+        android:layout_marginEnd="@dimen/settings_menu_item_margin"
+        android:clickable="true"
+        android:focusable="true"
+        android:gravity="start|center"
+        android:text="@string/settings_title_diets"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+        app:drawableRightCompat="@drawable/ic_keyboard_arrow_right"
+        app:drawableTint="@color/black" />
+
+    <TextView
+        android:id="@+id/settings_meal_types"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/settings_menu_item_height"
+        android:layout_marginStart="@dimen/settings_menu_item_margin"
+        android:layout_marginTop="@dimen/settings_menu_item_margin"
+        android:layout_marginEnd="@dimen/settings_menu_item_margin"
+        android:clickable="true"
+        android:focusable="true"
+        android:gravity="start|center"
+        android:text="@string/settings_title_meal_types"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+        app:drawableRightCompat="@drawable/ic_keyboard_arrow_right"
+        app:drawableTint="@color/black" />
+
+    <TextView
+        android:id="@+id/settings_intolerances"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/settings_menu_item_height"
+        android:layout_marginStart="@dimen/settings_menu_item_margin"
+        android:layout_marginTop="@dimen/settings_menu_item_margin"
+        android:layout_marginEnd="@dimen/settings_menu_item_margin"
+        android:clickable="true"
+        android:focusable="true"
+        android:gravity="start|center"
+        android:text="@string/settings_title_intolerances"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+        app:drawableRightCompat="@drawable/ic_keyboard_arrow_right"
+        app:drawableTint="@color/black" />
+
+    <com.google.android.material.switchmaterial.SwitchMaterial
+        android:id="@+id/settings_profile_preferences_switch"
+        style="@style/Theme.Spoonzilla"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/settings_menu_item_margin"
+        android:text="@string/settings_profile_preferences_switch_description"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1" />
+
+    <com.google.android.material.switchmaterial.SwitchMaterial
+        android:id="@+id/settings_metric_switch"
+        style="@style/Theme.Spoonzilla"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/settings_menu_item_margin"
+        android:text="@string/settings_title_metric"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1" />
+
 
 </LinearLayout>

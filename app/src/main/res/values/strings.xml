@@ -46,13 +46,14 @@
     <string name="time_cooking_measure">min</string>
 
     <!--    fragment_advanced_search_settings-->
-    <string name="cuisine_switch_description">Cuisine from profile</string>
+    <string name="cuisine_switch_description">Cuisine from personal preferences</string>
     <string name="include_cuisine_button_text">Cuisine</string>
-    <string name="diet_switch_description">Diet from profile</string>
+    <string name="diet_switch_description">Diet from personal preferences</string>
     <string name="include_diet_button_text">Diet</string>
-    <string name="intolerances_switch_description">Intolerances from profile</string>
+    <string name="time_cook_text">Max cooking time in minutes</string>
+    <string name="intolerances_switch_description">Intolerances from personal preferences</string>
     <string name="include_intolerances_button_text">Intolerances</string>
-    <string name="meal_type_switch_description">Meal types from profile</string>
+    <string name="meal_type_switch_description">Meal types from personal preferences</string>
     <string name="include_meal_type_button_text">Meal types</string>
     <string name="instructions_switch_description">Recipes must have instructions</string>
     <string name="advanced_search_hint">Search query</string>
@@ -69,10 +70,16 @@
     <string name="profile_avatar_description">Profile avatar</string>
 
     <!--    fragment_settings-->
+    <string name="settings_title_personal_preferences">Personal preferences</string>
+    <string name="settings_title_metric">Metric system</string>
+    <string name="settings_title_appearance">Appearance</string>
+    <string name="settings_title_night_mode">Night mode</string>
     <string name="settings_title_diets">Choose your diets</string>
     <string name="settings_title_cuisine">Choose a cuisines</string>
     <string name="settings_title_meal_types">Select meal types</string>
     <string name="settings_title_intolerances">Choose an intolerances</string>
+    <string name="settings_profile_preferences_switch_description">Use profile preferences on home screen</string>
+
 
     <!--    dialog_cuisine-->
     <string name="dialog_cuisine_african">African</string>
@@ -144,6 +151,12 @@
     <string name="diet_primal">Primal</string>
     <string name="diet_low_fodmap">Low FODMAP</string>
     <string name="diet_whole30">Whole30</string>
+
+    <!--    night_mode-->
+    <string name="mode_night_no">No</string>
+    <string name="mode_night_yes">Yes</string>
+    <string name="mode_night_system_follow">System follow</string>
+    <string name="mode_night_auto_battery">Auto battery</string>
 
     <!--    Common-->
     <string name="app_name" translatable="false">Spoonzilla</string>

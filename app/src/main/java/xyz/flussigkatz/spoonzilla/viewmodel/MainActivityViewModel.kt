@@ -34,4 +34,6 @@ class MainActivityViewModel : ViewModel() {
     fun deleteDishAlarmFromDb(localId: Int) {
         interactor.deleteDishAlarmFromDb(localId)
     }
+
+    fun getNightModeFromPreferences() = interactor.getNightModeFromPreferences()
 }

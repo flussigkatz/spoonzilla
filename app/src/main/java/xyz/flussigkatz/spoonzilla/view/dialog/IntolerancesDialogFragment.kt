@@ -4,21 +4,20 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.fragment.app.DialogFragment
-import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.setFragmentResult
 import androidx.recyclerview.widget.LinearLayoutManager
 import xyz.flussigkatz.spoonzilla.data.enums.Intolerances
 import xyz.flussigkatz.spoonzilla.databinding.DialogIntolerancesBinding
 import xyz.flussigkatz.spoonzilla.util.AppConst.KEY_INTOLERANCE
+import xyz.flussigkatz.spoonzilla.util.AppConst.KEY_RESULT_REQUEST_DIALOG
 import xyz.flussigkatz.spoonzilla.view.rv_adapter.DialogItemRecyclerAdapter
-import xyz.flussigkatz.spoonzilla.viewmodel.IntolerancesDialogFragmentViewModel
 
 
-class IntolerancesDialogFragment : DialogFragment() {
+class IntolerancesDialogFragment(private val markedItems: MutableList<String>) : DialogFragment() {
     private lateinit var binding: DialogIntolerancesBinding
-    private val viewModel: IntolerancesDialogFragmentViewModel by activityViewModels()
     private lateinit var mAdapter: DialogItemRecyclerAdapter
-    private lateinit var markedItems: MutableList<String>
     private val allItems = Intolerances.values().map { it.intoleranceName }
 
     override fun onCreateView(
@@ -32,11 +31,7 @@ class IntolerancesDialogFragment : DialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         binding.recyclerIntolerances.apply {
-            viewModel.getDialogItemsFromPreference(KEY_INTOLERANCE).let {
-                markedItems = it.orEmpty().toMutableList()
-            }
             val clickListener = object : DialogItemRecyclerAdapter.OnCheckedChangeListener {
                 override fun checkedChange(item: String, state: Boolean) {
                     if (state) markedItems.remove(item) else markedItems.add(item)
@@ -49,8 +44,7 @@ class IntolerancesDialogFragment : DialogFragment() {
     }
 
     override fun onStop() {
-        viewModel.putDialogItemsToPreference(KEY_INTOLERANCE, markedItems.toSet())
+        setFragmentResult(KEY_RESULT_REQUEST_DIALOG, bundleOf(KEY_INTOLERANCE to markedItems))
         super.onStop()
     }
-
 }

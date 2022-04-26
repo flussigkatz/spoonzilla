@@ -5,7 +5,6 @@ import xyz.flussigkatz.core_api.AppProvider
 import xyz.flussigkatz.core_api.db.DatabaseProvider
 import xyz.flussigkatz.remote.RemoteProvider
 import xyz.flussigkatz.spoonzilla.SpoonzillaReceiver
-import xyz.flussigkatz.spoonzilla.di.module.DialogModule
 import xyz.flussigkatz.spoonzilla.di.module.DomainModule
 import xyz.flussigkatz.spoonzilla.viewmodel.*
 import javax.inject.Singleton
@@ -13,7 +12,7 @@ import javax.inject.Singleton
 @Singleton
 @Component(
     dependencies = [AppProvider::class, RemoteProvider::class, DatabaseProvider::class],
-    modules = [DomainModule::class, DialogModule::class]
+    modules = [DomainModule::class]
 )
 
 interface MainComponent {
@@ -23,14 +22,6 @@ interface MainComponent {
     fun inject(homeFragmentViewModel: HomeFragmentViewModel)
 
     fun inject(markedFragmentViewModel: MarkedFragmentViewModel)
-
-    fun inject(cuisineDialogFragmentViewModel: CuisineDialogFragmentViewModel)
-
-    fun inject(dietsDialogFragmentViewModel: DietsDialogFragmentViewModel)
-
-    fun inject(intolerancesDialogFragmentViewModel: IntolerancesDialogFragmentViewModel)
-
-    fun inject(mealTypesDialogFragmentViewModel: MealTypesDialogFragmentViewModel)
 
     fun inject(advancedSearchSettingsFragmentViewModel: AdvancedSearchSettingsFragmentViewModel)
 
@@ -47,6 +38,8 @@ interface MainComponent {
     fun inject(dishNutrientFragmentViewModel: DishNutrientFragmentViewModel)
 
     fun inject(dishAlarmFragmentViewModel: DishAlarmFragmentViewModel)
+
+    fun inject(settingsFragmentViewModel: SettingsFragmentViewModel)
 
     fun inject(SpoonzillaReceiver: SpoonzillaReceiver)
 

@@ -114,7 +114,7 @@ class DishRemindsFragment : Fragment() {
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
                 { mAdapter.updateData(it) },
-                { Timber.e(it, "initContent onError") }
+                { Timber.d(it, "initContent onError") }
             ).addTo(autoDisposable)
     }
 

@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
+    android:background="@color/transparent"
     tools:context=".view.MainActivity"
     tools:openDrawer="start">
 
@@ -16,6 +17,7 @@
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/main_appbar"
             style="@style/Widget.MaterialComponents.AppBarLayout.PrimarySurface"
+            android:background="?attr/colorPrimary"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 

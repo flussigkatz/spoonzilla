@@ -8,6 +8,8 @@
 
     <com.google.android.material.switchmaterial.SwitchMaterial
         android:id="@+id/cuisine_switch"
+        style="@style/Theme.Spoonzilla"
+        android:focusable="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/advanced_search_settings_menu_item_margin"
@@ -23,6 +25,7 @@
 
     <com.google.android.material.switchmaterial.SwitchMaterial
         android:id="@+id/diet_switch"
+        style="@style/Theme.Spoonzilla"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/advanced_search_settings_menu_item_margin"
@@ -38,6 +41,7 @@
 
     <com.google.android.material.switchmaterial.SwitchMaterial
         android:id="@+id/intolerances_switch"
+        style="@style/Theme.Spoonzilla"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/advanced_search_settings_menu_item_margin"
@@ -53,6 +57,7 @@
 
     <com.google.android.material.switchmaterial.SwitchMaterial
         android:id="@+id/meal_type_switch"
+        style="@style/Theme.Spoonzilla"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/advanced_search_settings_menu_item_margin"
@@ -66,8 +71,22 @@
         android:layout_marginStart="@dimen/advanced_search_settings_menu_item_margin"
         android:text="@string/include_meal_type_button_text" />
 
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/time_cook"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+            android:hint="@string/time_cook_text"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
     <com.google.android.material.switchmaterial.SwitchMaterial
         android:id="@+id/instructions_switch"
+        style="@style/Theme.Spoonzilla"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/advanced_search_settings_menu_item_margin"

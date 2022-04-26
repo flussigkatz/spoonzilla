@@ -67,7 +67,7 @@ class HomeFragment : Fragment() {
                     isLoadingFromApi = it
                     binding.homeRefreshLayout.isRefreshing = it
                 },
-                { Timber.e(it, "initLoadingState onError") }
+                { Timber.d(it, "initLoadingState onError") }
             ).addTo(autoDisposable)
     }
 
@@ -84,7 +84,7 @@ class HomeFragment : Fragment() {
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
                 { getSearchedRecipes(it) },
-                { Timber.e(it, "initQuickSearch onError") }
+                { Timber.d(it, "initQuickSearch onError") }
             ).addTo(autoDisposable)
     }
 
@@ -94,7 +94,7 @@ class HomeFragment : Fragment() {
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
                 { mAdapter.updateData(it) },
-                { Timber.e(it, "initContent onError") }
+                { Timber.d(it, "initContent onError") }
             ).addTo(autoDisposable)
     }
 

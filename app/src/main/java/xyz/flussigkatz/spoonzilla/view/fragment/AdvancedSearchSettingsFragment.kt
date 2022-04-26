@@ -2,9 +2,13 @@ package xyz.flussigkatz.spoonzilla.view.fragment
 
 import android.content.Intent
 import android.os.Bundle
+import android.text.Editable
+import android.text.InputFilter
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.text.isDigitsOnly
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.setFragmentResultListener
@@ -20,6 +24,7 @@ import xyz.flussigkatz.spoonzilla.util.AppConst.KEY_INSTRUCTIONS_SWITCH
 import xyz.flussigkatz.spoonzilla.util.AppConst.KEY_INTOLERANCE
 import xyz.flussigkatz.spoonzilla.util.AppConst.KEY_INTOLERANCES_DIALOG
 import xyz.flussigkatz.spoonzilla.util.AppConst.KEY_INTOLERANCE_FROM_PROFILE
+import xyz.flussigkatz.spoonzilla.util.AppConst.KEY_MAX_READY_TIME
 import xyz.flussigkatz.spoonzilla.util.AppConst.KEY_MEAL_TYPES_DIALOG
 import xyz.flussigkatz.spoonzilla.util.AppConst.KEY_MEAL_TYPE_FROM_PROFILE
 import xyz.flussigkatz.spoonzilla.util.AppConst.KEY_MEAl_TYPE
@@ -40,7 +45,7 @@ class AdvancedSearchSettingsFragment : Fragment() {
     private lateinit var keyDiet: String
     private lateinit var keyIntolerance: String
     private lateinit var keyMeatType: String
-
+    private var maxReadyTime: Int? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -60,6 +65,7 @@ class AdvancedSearchSettingsFragment : Fragment() {
         initMealTypes()
         initInstructions()
         initSearch()
+        initTimeCookEditText()
     }
 
     private fun initFragmentResultListener() {
@@ -79,6 +85,32 @@ class AdvancedSearchSettingsFragment : Fragment() {
         }
     }
 
+    private fun initTimeCookEditText() {
+        binding.timeCook.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+                if (!s.isNullOrBlank()) maxReadyTime = s.toString().toInt()
+            }
+        })
+        val inputFilter = InputFilter { source, _, _, dest, _, _ ->
+            if (!dest.isNullOrBlank()) {
+                val formatSource = if (source.isDigitsOnly()) source else ""
+                val intValue = (dest.toString() + formatSource.toString()).toInt()
+                if (intValue in 0..999) {
+                    source
+                } else {
+                    ""
+                }
+            } else source
+        }
+        binding.timeCook.filters = arrayOf(inputFilter)
+    }
+
     private fun initCuisines() {
         viewModel.getAdvancedSearchSwitchState(KEY_CUISINE_SWITCH).let {
             binding.includeCuisineButton.isEnabled = !it
@@ -87,12 +119,14 @@ class AdvancedSearchSettingsFragment : Fragment() {
             else KEY_CUISINE
         }
         binding.cuisineSwitch.setOnCheckedChangeListener { _, isChecked ->
+            timeCookEditTextClearFocus()
             binding.includeCuisineButton.isEnabled = !isChecked
             viewModel.saveAdvancedSearchSwitchState(KEY_CUISINE_SWITCH, isChecked)
             keyCuisine = if (isChecked) KEY_CUISINE_FROM_PROFILE
             else KEY_CUISINE
         }
         binding.includeCuisineButton.setOnClickListener {
+            timeCookEditTextClearFocus()
             val markedItems = viewModel.getDialogItemsFromPreference(KEY_CUISINE)
             val dialog = CuisineDialogFragment(markedItems)
             dialog.show(parentFragmentManager, KEY_CUISINES_DIALOG)
@@ -107,12 +141,14 @@ class AdvancedSearchSettingsFragment : Fragment() {
             else KEY_DIET
         }
         binding.dietSwitch.setOnCheckedChangeListener { _, isChecked ->
+            timeCookEditTextClearFocus()
             binding.includeDietButton.isEnabled = !isChecked
             viewModel.saveAdvancedSearchSwitchState(KEY_DIETS_SWITCH, isChecked)
             keyDiet = if (isChecked) KEY_DIET_FROM_PROFILE
             else KEY_DIET
         }
         binding.includeDietButton.setOnClickListener {
+            timeCookEditTextClearFocus()
             val markedItems = viewModel.getDialogItemsFromPreference(KEY_DIET)
             val dialog = DietsDialogFragment(markedItems)
             dialog.show(parentFragmentManager, KEY_DIETS_DIALOG)
@@ -127,12 +163,14 @@ class AdvancedSearchSettingsFragment : Fragment() {
             else KEY_INTOLERANCE
         }
         binding.intolerancesSwitch.setOnCheckedChangeListener { _, isChecked ->
+            timeCookEditTextClearFocus()
             binding.includeIntolerancesButton.isEnabled = !isChecked
             viewModel.saveAdvancedSearchSwitchState(KEY_INTOLERANCES_SWITCH, isChecked)
             keyIntolerance = if (isChecked) KEY_INTOLERANCE_FROM_PROFILE
             else KEY_INTOLERANCE
         }
         binding.includeIntolerancesButton.setOnClickListener {
+            timeCookEditTextClearFocus()
             val markedItems = viewModel.getDialogItemsFromPreference(KEY_INTOLERANCE)
             val dialog = IntolerancesDialogFragment(markedItems)
             dialog.show(parentFragmentManager, KEY_INTOLERANCES_DIALOG)
@@ -147,12 +185,14 @@ class AdvancedSearchSettingsFragment : Fragment() {
             else KEY_MEAl_TYPE
         }
         binding.mealTypeSwitch.setOnCheckedChangeListener { _, isChecked ->
+            timeCookEditTextClearFocus()
             binding.includeMealTypeButton.isEnabled = !isChecked
             viewModel.saveAdvancedSearchSwitchState(KEY_MEAL_TYPES_SWITCH, isChecked)
             keyMeatType = if (isChecked) KEY_MEAL_TYPE_FROM_PROFILE
             else KEY_MEAl_TYPE
         }
         binding.includeMealTypeButton.setOnClickListener {
+            timeCookEditTextClearFocus()
             val markedItems = viewModel.getDialogItemsFromPreference(KEY_MEAl_TYPE)
             val dialog = MealTypesDialogFragment(markedItems)
             dialog.show(parentFragmentManager, KEY_MEAL_TYPES_DIALOG)
@@ -164,6 +204,7 @@ class AdvancedSearchSettingsFragment : Fragment() {
             binding.instructionsSwitch.isChecked = it
         }
         binding.instructionsSwitch.setOnCheckedChangeListener { _, isChecked ->
+            timeCookEditTextClearFocus()
             viewModel.saveAdvancedSearchSwitchState(KEY_INSTRUCTIONS_SWITCH, isChecked)
         }
     }
@@ -176,12 +217,18 @@ class AdvancedSearchSettingsFragment : Fragment() {
                     putString(KEY_DIET, keyDiet)
                     putString(KEY_INTOLERANCE, keyIntolerance)
                     putString(KEY_MEAl_TYPE, keyMeatType)
+                    maxReadyTime?.let { putInt(KEY_MAX_READY_TIME, it) }
+
                 }
                 putExtra(KEY_ADVANCED_SEARCH_SETTINGS, bundle)
                 action = NAVIGATE_TO_ADVANCED_SEARCH
             }
             requireActivity().sendBroadcast(intent)
         }
+    }
+
+    private fun timeCookEditTextClearFocus() {
+        binding.timeCook.clearFocus()
     }
 
     companion object {

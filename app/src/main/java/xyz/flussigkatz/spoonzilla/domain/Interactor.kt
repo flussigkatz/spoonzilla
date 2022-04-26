@@ -38,7 +38,7 @@ class Interactor(
                 Converter.convertRecipeByIdFromApi(it, markedIds)
             }.subscribe(
                 { repository.putAdvancedInfoDishToDb(it) },
-                { Timber.e(it, "getRecipeByIdFromApi onError") }
+                { Timber.d(it, "getRecipeByIdFromApi onError") }
             )
     }
 
@@ -59,7 +59,7 @@ class Interactor(
             .map { Converter.convertIngredientsFromApi(it, metric, id) }
             .subscribe(
                 { repository.putIngredients(it) },
-                { Timber.e(it, "getIngredientsByIdFromApi onError") }
+                { Timber.d(it, "getIngredientsByIdFromApi onError") }
             )
     }
 
@@ -75,7 +75,7 @@ class Interactor(
             .map { Converter.convertEquipmentsFromApi(it, id) }
             .subscribe(
                 { repository.putEquipments(it) },
-                { Timber.e(it, "getEquipmentsByIdFromApi onError") }
+                { Timber.d(it, "getEquipmentsByIdFromApi onError") }
             )
     }
 
@@ -91,7 +91,7 @@ class Interactor(
             .map { Converter.convertInstructionsByIdFromApi(it, id) }
             .subscribe(
                 { repository.putInstructions(it) },
-                { Timber.e(it, "getInstructionsByIdFromApi onError") }
+                { Timber.d(it, "getInstructionsByIdFromApi onError") }
             )
     }
 
@@ -106,7 +106,7 @@ class Interactor(
             .map { Converter.convertNutrientsFromApi(it, id) }
             .subscribe(
                 { repository.putNutrients(it) },
-                { Timber.e(it, "getNutrientByIdFromApi onError") }
+                { Timber.d(it, "getNutrientByIdFromApi onError") }
             )
     }
 
@@ -134,7 +134,7 @@ class Interactor(
                     if (clearDb) repository.clearDishTable()
                     repository.putDishesToDb(it)
                 },
-                { Timber.e(it, "getRandomRecipeFromApi onError") }
+                { Timber.d(it, "getRandomRecipeFromApi onError") }
             )
     }
 
@@ -172,7 +172,7 @@ class Interactor(
             dishAdvancedInfo.map { it.mark = dish.mark }
             if (dishAdvancedInfo.isNotEmpty()) repository.updateAdvancedInfoDish(dishAdvancedInfo.first())
         } catch (e: Exception) {
-            Timber.e(e, "setDishMark")
+            Timber.d(e, "setDishMark")
         }
     }
 
@@ -185,7 +185,7 @@ class Interactor(
         ).subscribeOn(Schedulers.io())
             .subscribe(
                 { onNext -> onNext.forEach { println(it.title) } },
-                { Timber.e(it, "getSimilarRecipesFromApi onError") }
+                { Timber.d(it, "getSimilarRecipesFromApi onError") }
             )
     }
 
@@ -197,7 +197,7 @@ class Interactor(
         ).subscribeOn(Schedulers.io())
             .subscribe(
                 { println(it) },
-                { Timber.e(it, "getRecipeTasteFromApi onError") }
+                { Timber.d(it, "getRecipeTasteFromApi onError") }
             )
 
     }
@@ -227,7 +227,7 @@ class Interactor(
                     if (clearDb) repository.clearDishTable()
                     repository.putDishesToDb(it)
                 },
-                { Timber.e(it, "getSearchedRecipesFromApi onError") }
+                { Timber.d(it, "getSearchedRecipesFromApi onError") }
             )
     }
 
@@ -245,6 +245,7 @@ class Interactor(
         intolerances: String?,
         type: String?,
         instructionsRequired: Boolean?,
+        maxReadyTime: Int?,
         offset: Int?,
         number: Int?,
         clearDb: Boolean
@@ -256,6 +257,7 @@ class Interactor(
             intolerances = intolerances,
             type = type,
             instructionsRequired = instructionsRequired,
+            maxReadyTime = maxReadyTime,
             offset = offset,
             number = number,
             limitLicense = false,
@@ -273,7 +275,7 @@ class Interactor(
                     if (clearDb) repository.clearDishTable()
                     repository.putDishesToDb(it)
                 },
-                { Timber.e(it, "getAdvancedSearchedRecipes onError") }
+                { Timber.d(it, "getAdvancedSearchedRecipes onError") }
             )
     }
 

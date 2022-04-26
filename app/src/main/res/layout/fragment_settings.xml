@@ -5,6 +5,7 @@
     android:id="@+id/root_settings"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/transparent"
     android:orientation="vertical"
     tools:context=".view.fragment.SettingsFragment">
 
@@ -15,8 +16,8 @@
         android:layout_marginEnd="@dimen/settings_menu_item_margin"
         android:gravity="start|center"
         android:text="@string/settings_title_appearance"
-        android:textColor="@color/app_color_1"
-        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6" />
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+        android:textColor="@color/app_color_1" />
 
     <TextView
         android:layout_width="match_parent"
@@ -25,17 +26,17 @@
         android:layout_marginTop="@dimen/settings_menu_item_margin"
         android:gravity="start|bottom"
         android:text="@string/settings_title_night_mode"
-        android:textColor="@color/app_color_1"
-        android:textAppearance="@style/TextAppearance.MaterialComponents.Body2" />
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
+        android:textColor="@color/app_color_1" />
 
     <Spinner
         android:id="@+id/settings_theme_spinner"
-        android:background="@drawable/ic_spinner"
-        android:backgroundTint="@color/black"
         android:layout_width="match_parent"
         android:layout_height="@dimen/settings_menu_item_height"
-        android:prompt="@color/app_color_1"
-        android:layout_marginEnd="@dimen/settings_menu_item_margin" />
+        android:layout_marginEnd="@dimen/settings_menu_item_margin"
+        android:background="@drawable/ic_spinner"
+        android:backgroundTint="@color/black"
+        android:prompt="@color/app_color_1" />
 
     <TextView
         android:layout_width="match_parent"
@@ -45,8 +46,8 @@
         android:layout_marginEnd="@dimen/settings_menu_item_margin"
         android:gravity="start|center"
         android:text="@string/settings_title_personal_preferences"
-        android:textColor="@color/app_color_1"
-        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6" />
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+        android:textColor="@color/app_color_1" />
 
     <TextView
         android:id="@+id/settings_cuisine"
@@ -110,6 +111,7 @@
 
     <com.google.android.material.switchmaterial.SwitchMaterial
         android:id="@+id/settings_profile_preferences_switch"
+        style="@style/Theme.Spoonzilla"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/settings_menu_item_margin"
@@ -118,6 +120,7 @@
 
     <com.google.android.material.switchmaterial.SwitchMaterial
         android:id="@+id/settings_metric_switch"
+        style="@style/Theme.Spoonzilla"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/settings_menu_item_margin"

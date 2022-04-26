@@ -51,9 +51,11 @@ class HomeFragmentViewModel : ViewModel() {
 
     fun getRandomRecipe() {
         val cuisine =
-            interactor.getSearchSettings(KEY_CUISINE_FROM_PROFILE)?.joinToString().orEmpty()
+            interactor.getSearchSettings(KEY_CUISINE_FROM_PROFILE)?.joinToString(separator = " ")
+                .orEmpty()
         val diet =
-            interactor.getSearchSettings(KEY_DIET_FROM_PROFILE)?.joinToString().orEmpty()
+            interactor.getSearchSettings(KEY_DIET_FROM_PROFILE)?.joinToString(separator = " ")
+                .orEmpty()
         val intolerances =
             interactor.getSearchSettings(KEY_INTOLERANCE_FROM_PROFILE)
                 ?.joinToString(separator = " ").orEmpty()
@@ -62,20 +64,29 @@ class HomeFragmentViewModel : ViewModel() {
         } else String()
         interactor.getRandomRecipeFromApi(
             TOTAL_NUMBER_ELEMENTS,
-            tags.lowercase(Locale.getDefault()),
+            tags.lowercase(Locale.getDefault()).trim(),
             true
         )
     }
 
     fun doRandomRecipePagination() {
         val cuisine =
-            interactor.getSearchSettings(KEY_CUISINE_FROM_PROFILE)?.joinToString().orEmpty()
+            interactor.getSearchSettings(KEY_CUISINE_FROM_PROFILE)?.joinToString(separator = " ")
+                .orEmpty()
         val diet =
-            interactor.getSearchSettings(KEY_DIET_FROM_PROFILE)?.joinToString().orEmpty()
+            interactor.getSearchSettings(KEY_DIET_FROM_PROFILE)?.joinToString(separator = " ")
+                .orEmpty()
         val intolerances =
-            interactor.getSearchSettings(KEY_INTOLERANCE_FROM_PROFILE)?.joinToString().orEmpty()
-        val tags = cuisine + diet + intolerances
-        interactor.getRandomRecipeFromApi(PAGINATION_NUMBER_ELEMENTS, tags, false)
+            interactor.getSearchSettings(KEY_INTOLERANCE_FROM_PROFILE)
+                ?.joinToString(separator = " ").orEmpty()
+        val tags = if (interactor.getPersonalPreferencesSwitchState(KEY_PERSONAL_PREFERENCES)) {
+            "${cuisine.trim()} ${diet.trim()} ${intolerances.trim()}"
+        } else String()
+        interactor.getRandomRecipeFromApi(
+            PAGINATION_NUMBER_ELEMENTS,
+            tags.lowercase(Locale.getDefault()).trim(),
+            false
+        )
     }
 
     fun setDishMark(dish: Dish) {

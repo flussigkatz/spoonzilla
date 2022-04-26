@@ -17,6 +17,7 @@ object AppConst {
     const val KEY_CUISINE = "key_cuisine"
     const val KEY_DIET = "key_diet"
     const val KEY_INTOLERANCE = "key_intolerances"
+    const val KEY_MAX_READY_TIME = "key_max_ready_time"
     const val KEY_MEAl_TYPE = "key_meal_type"
     const val KEY_CUISINE_FROM_PROFILE = "key_cuisine_from_profile"
     const val KEY_DIET_FROM_PROFILE = "key_diet_from_profile"

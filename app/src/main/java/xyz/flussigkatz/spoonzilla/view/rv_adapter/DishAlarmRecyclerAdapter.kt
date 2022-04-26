@@ -74,7 +74,7 @@ class DishAlarmRecyclerAdapter(
             }
 
             override fun onError(e: Exception?) {
-                Timber.e(e, "callbackPicasso onError")
+                Timber.d(e, "callbackPicasso onError")
             }
 
         }

@@ -82,7 +82,7 @@ class DishOverviewFragment : Fragment() {
                                 viewModel.getRecipeByIdFromApi(dishId)
                             }
                         },
-                        { Timber.e(it, "getDish onError") }
+                        { Timber.d(it, "getDish onError") }
                     )
             } else bindData(mDishAdvancedInfo!!)
         }
@@ -205,7 +205,7 @@ class DishOverviewFragment : Fragment() {
             }
 
             override fun onError(e: Exception?) {
-                Timber.e(e, "callbackPicasso onError")
+                Timber.d(e, "callbackPicasso onError")
             }
 
         }

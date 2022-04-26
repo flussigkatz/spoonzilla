@@ -173,6 +173,7 @@ class MainActivity : AppCompatActivity() {
 
         binding.mainNavigationView.setNavigationItemSelectedListener { menuItem ->
             binding.mainDrawerLayout.closeDrawers()
+            binding.mainAppbar.setExpanded(true)
             val onScreenFragmentId = navController.currentDestination?.id
             if (onScreenFragmentId != menuItem.itemId) {
                 NavigationHelper.navigate(navController, menuItem.itemId, onScreenFragmentId)
@@ -229,7 +230,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        binding.mainAppbar.setExpanded(true)
         recentlyViewedBottomSheet.state = STATE_HIDDEN
         val onScreenFragmentId = navController.currentDestination?.id
         if (
@@ -301,7 +301,7 @@ class MainActivity : AppCompatActivity() {
                     binding.recentlyViewedRecycler.smoothScrollToPosition(FIRST_POSITION)
                     adapterIsNotEmpty = it.isNotEmpty()
                 },
-                { Timber.e(it, "initContent onError") }
+                { Timber.d(it, "initContent onError") }
             ).addTo(autoDisposable)
     }
 
@@ -310,7 +310,7 @@ class MainActivity : AppCompatActivity() {
             .filter { !it.isNullOrEmpty() }
             .subscribe(
                 { initDishReminds(it) },
-                { Timber.e(it, "initAlarms onError") }
+                { Timber.d(it, "initAlarms onError") }
             ).addTo(autoDisposable)
     }
 

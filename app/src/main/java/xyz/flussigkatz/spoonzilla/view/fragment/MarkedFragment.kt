@@ -61,7 +61,7 @@ class MarkedFragment : Fragment() {
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
                 { dishAdapter.updateData(it.map { list -> Converter.convertDishMarkedToDish(list) }) },
-                { Timber.e(it, "getMarkedDishes onError") }
+                { Timber.d(it, "getMarkedDishes onError") }
             ).addTo(autoDisposable)
     }
 
@@ -117,7 +117,7 @@ class MarkedFragment : Fragment() {
                     if (it.isEmpty()) binding.markedRecycler.smoothScrollToPosition(FIRST_POSITION)
                     getMarkedDishes(viewModel.getMarkedDishesFromDb(it))
                 },
-                { Timber.e(it, "initMarkedSearch onError") }
+                { Timber.d(it, "initMarkedSearch onError") }
             ).addTo(autoDisposable)
     }
 

@@ -40,7 +40,7 @@ class DishIngredientsFragment : Fragment() {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                     { ingredientsAdapter.addItems(it) },
-                    { Timber.e(it, "getIngredients onError") }
+                    { Timber.d(it, "getIngredients onError") }
                 )
         }
     }

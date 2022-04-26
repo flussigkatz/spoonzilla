@@ -9,7 +9,6 @@ import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import timber.log.Timber
-import xyz.flussigkatz.core_api.entity.equipments.EquipmentItem
 import xyz.flussigkatz.spoonzilla.databinding.FragmentDishEquipmentBinding
 import xyz.flussigkatz.spoonzilla.util.AppConst.KEY_DISH_ID
 import xyz.flussigkatz.spoonzilla.view.rv_adapter.EquipmentRecyclerAdapter
@@ -41,7 +40,7 @@ class DishEquipmentFragment : Fragment() {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                     { equipmentsAdapter.addItems(it) },
-                    { Timber.e(it, "getEquipments onError") }
+                    { Timber.d(it, "getEquipments onError") }
                 )
         }
     }

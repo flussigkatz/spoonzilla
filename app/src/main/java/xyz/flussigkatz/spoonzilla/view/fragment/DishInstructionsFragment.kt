@@ -40,7 +40,7 @@ class DishInstructionsFragment : Fragment() {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                     { instructionsAdapter.addItems(it) },
-                    { Timber.e(it, "getInstructions onError") }
+                    { Timber.d(it, "getInstructions onError") }
                 )
         }
     }

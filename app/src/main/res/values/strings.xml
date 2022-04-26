@@ -50,6 +50,7 @@
     <string name="include_cuisine_button_text">Cuisine</string>
     <string name="diet_switch_description">Diet from personal preferences</string>
     <string name="include_diet_button_text">Diet</string>
+    <string name="time_cook_text">Max cooking time in minutes</string>
     <string name="intolerances_switch_description">Intolerances from personal preferences</string>
     <string name="include_intolerances_button_text">Intolerances</string>
     <string name="meal_type_switch_description">Meal types from personal preferences</string>

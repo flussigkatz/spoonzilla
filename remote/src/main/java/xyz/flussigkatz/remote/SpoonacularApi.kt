@@ -86,6 +86,7 @@ interface SpoonacularApi {
         @Query("intolerances") intolerances: String?,
         @Query("type") type: String?,
         @Query("instructionsRequired") instructionsRequired: Boolean?,
+        @Query("maxReadyTime") maxReadyTime: Int?,
         @Query("offset") offset: Int?,
         @Query("number") number: Int?,
         @Query("limitLicense") limitLicense: Boolean,

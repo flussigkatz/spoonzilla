@@ -1,5 +1,6 @@
 package xyz.flussigkatz.spoonzilla.data.preferences
 
+import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
@@ -9,7 +10,8 @@ import xyz.flussigkatz.spoonzilla.util.AppConst.KEY_DIET_FROM_PROFILE
 import xyz.flussigkatz.spoonzilla.util.AppConst.KEY_INTOLERANCE_FROM_PROFILE
 import xyz.flussigkatz.spoonzilla.util.AppConst.KEY_MEAL_TYPE_FROM_PROFILE
 
-class PreferenceProvider(context: Context) {
+class PreferenceProvider(application: Application) {
+    private var context: Context = application.applicationContext
     private val preferences: SharedPreferences = context.getSharedPreferences(
         SETTINGS_FILE_NAME,
         Context.MODE_PRIVATE

@@ -16,12 +16,12 @@ import xyz.flussigkatz.spoonzilla.util.AppConst.DISH_REMINDER_ALARM
 import xyz.flussigkatz.spoonzilla.util.AppConst.KEY_DISH
 import xyz.flussigkatz.spoonzilla.util.AppConst.KEY_DISH_LOCAL_ID
 import xyz.flussigkatz.spoonzilla.util.AppConst.KEY_REMINDER_NOTIFICATION_DISH
-import xyz.flussigkatz.spoonzilla.util.AppConst.NOTIFICATION_CHANNEL_ID
 import xyz.flussigkatz.spoonzilla.util.AppConst.NOTIFICATION_CHANNEL_NAME
 import xyz.flussigkatz.spoonzilla.util.AppConst.REMINDER_NOTIFICATION
 import xyz.flussigkatz.spoonzilla.view.MainActivity
 
 object NotificationHelper {
+    private const val NOTIFICATION_CHANNEL_ID = "notification_channel_1"
     private lateinit var notification: Notification.Builder
 
     fun initNotification(context: Context) {

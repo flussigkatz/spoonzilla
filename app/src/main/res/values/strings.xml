@@ -161,6 +161,7 @@
     <!--    Common-->
     <string name="app_name" translatable="false">Spoonzilla</string>
     <string name="home_search_hint">Quick search</string>
+    <string name="anonymous">Anonymous</string>
     <string name="search_hint">Search</string>
     <string name="fragment_home">Home</string>
     <string name="fragment_profile">Profile</string>

@@ -5,16 +5,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
 import com.google.android.material.tabs.TabLayoutMediator
 import xyz.flussigkatz.core_api.entity.DishAdvancedInfo
 import xyz.flussigkatz.spoonzilla.R
 import xyz.flussigkatz.spoonzilla.databinding.FragmentDetailsBinding
-import xyz.flussigkatz.spoonzilla.util.AppConst
 import xyz.flussigkatz.spoonzilla.util.AppConst.KEY_DISH
 import xyz.flussigkatz.spoonzilla.util.AppConst.KEY_DISH_ID
 import xyz.flussigkatz.spoonzilla.view.DishDetailsStateAdapter
-import xyz.flussigkatz.spoonzilla.viewmodel.DetailsFragmentViewModel
 
 
 class DetailsFragment : Fragment() {

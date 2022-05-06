@@ -81,6 +81,7 @@ class MainActivity : AppCompatActivity() {
         initRecentlyViewedAdapter()
         initContent()
         initAlarms()
+        mainSearchViewClearFocus()
     }
 
     private fun initRecentlyViewedBottomSheet() {
@@ -174,6 +175,8 @@ class MainActivity : AppCompatActivity() {
         binding.mainNavigationView.setNavigationItemSelectedListener { menuItem ->
             binding.mainDrawerLayout.closeDrawers()
             binding.mainAppbar.setExpanded(true)
+            mainSearchViewClearFocus()
+            mainSearchViewDropQuery()
             val onScreenFragmentId = navController.currentDestination?.id
             if (onScreenFragmentId != menuItem.itemId) {
                 NavigationHelper.navigate(navController, menuItem.itemId, onScreenFragmentId)
@@ -182,10 +185,6 @@ class MainActivity : AppCompatActivity() {
         }
 
         navController.addOnDestinationChangedListener { _, destination, _ ->
-            binding.mainQuickSearch.apply {
-                setQuery(null, false)
-                clearFocus()
-            }
             when (destination.id) {
                 R.id.homeFragment -> {
                     binding.mainQuickSearch.queryHint = getText(R.string.home_search_hint)
@@ -336,6 +335,9 @@ class MainActivity : AppCompatActivity() {
 
     fun mainSearchViewClearFocus() {
         binding.mainQuickSearch.clearFocus()
+    }
+    private fun mainSearchViewDropQuery() {
+        binding.mainQuickSearch.setQuery(null, false)
     }
 
     private fun showRecentlyViewedFab(state: Boolean) {

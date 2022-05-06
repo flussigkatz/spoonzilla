@@ -20,8 +20,6 @@ class AdvancedSearchSettingsFragmentViewModel : ViewModel() {
 
     fun getAdvancedSearchSwitchState(key: String) = interactor.getAdvancedSearchSwitchState(key)
 
-    fun existProfile() = !interactor.getProfile().isNullOrEmpty()
-
     fun putDialogItemsToPreference(key: String, list: ArrayList<String>) {
         interactor.putDialogItemsToPreference(key, list.toSet())
     }

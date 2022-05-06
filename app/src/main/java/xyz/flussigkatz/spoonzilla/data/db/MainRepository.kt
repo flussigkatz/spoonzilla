@@ -11,7 +11,6 @@ import xyz.flussigkatz.core_api.entity.instructions.Instructions
 import xyz.flussigkatz.core_api.entity.nutrient.Nutrients
 
 class MainRepository(private val dishDao: DishDao) {
-
     //    Dish
     fun putDishesToDb(list: List<Dish>) {
         dishDao.insertAllDishes(list)
@@ -21,9 +20,9 @@ class MainRepository(private val dishDao: DishDao) {
         dishDao.updateDish(dish)
     }
 
-    fun getAllDishesFromDb() =  dishDao.getCashedDishes()
+    fun getAllDishesFromDb() = dishDao.getCashedDishes()
 
-    fun getDishFromDb(dishId: Int) =  dishDao.getCashedDish(dishId)
+    fun getDishFromDb(dishId: Int) = dishDao.getCashedDish(dishId)
 
     fun clearDishTable() {
         val dishes = dishDao.getCashedDishesToList()
@@ -78,7 +77,8 @@ class MainRepository(private val dishDao: DishDao) {
         return dishDao.getCashedObservableAdvancedInfoDishToList(dishId)
     }
 
-    fun getSingleCashedAdvancedInfoDish(dishId: Int) = dishDao.getSingleCashedAdvancedInfoDish(dishId)
+    fun getSingleCashedAdvancedInfoDish(dishId: Int) =
+        dishDao.getSingleCashedAdvancedInfoDish(dishId)
 
     fun deleteAdvancedInfoDishFromDb(dishId: Int) {
         val dishAdvancedInfo = dishDao.getSingleCashedAdvancedInfoDish(dishId)

@@ -39,7 +39,7 @@ class DishAlarmRecyclerAdapter(
         binding.rootDishAlarmItem.setOnClickListener {
             itemClickListener.click(dishAlarm.id)
         }
-        binding.dishAlarmTime.setOnClickListener {
+        binding.dishAlarmContainer.setOnClickListener {
             alarmClickListener.click(dishAlarm)
         }
         binding.dishAlarmTitle.text = dishAlarm.title

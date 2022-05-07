@@ -10,15 +10,18 @@ import androidx.fragment.app.setFragmentResult
 import androidx.recyclerview.widget.LinearLayoutManager
 import xyz.flussigkatz.spoonzilla.data.enums.Cuisines
 import xyz.flussigkatz.spoonzilla.databinding.DialogCuisineBinding
+import xyz.flussigkatz.spoonzilla.util.AppConst.DEF_PACKAGE
+import xyz.flussigkatz.spoonzilla.util.AppConst.DEF_TYPE
 import xyz.flussigkatz.spoonzilla.util.AppConst.KEY_CUISINE
 import xyz.flussigkatz.spoonzilla.util.AppConst.KEY_RESULT_REQUEST_DIALOG
 import xyz.flussigkatz.spoonzilla.view.rv_adapter.DialogItemRecyclerAdapter
+import java.util.*
 
 
 class CuisineDialogFragment(private val markedItems: MutableList<String>) : DialogFragment() {
     private lateinit var binding: DialogCuisineBinding
     private lateinit var mAdapter: DialogItemRecyclerAdapter
-    private val allItems = Cuisines.values().map { it.nameCuisine }
+    private lateinit var allItems: List<String>
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -31,6 +34,7 @@ class CuisineDialogFragment(private val markedItems: MutableList<String>) : Dial
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        allItems = Cuisines.values().map { getCuisineFromResources(it.name) }
         binding.recyclerCuisine.apply {
             val clickListener = object : DialogItemRecyclerAdapter.OnCheckedChangeListener {
                 override fun checkedChange(item: String, state: Boolean) {
@@ -46,5 +50,15 @@ class CuisineDialogFragment(private val markedItems: MutableList<String>) : Dial
     override fun onStop() {
         setFragmentResult(KEY_RESULT_REQUEST_DIALOG, bundleOf(KEY_CUISINE to markedItems))
         super.onStop()
+    }
+
+    private fun getCuisineFromResources(cuisine: String): String {
+        return resources.getString(
+            resources.getIdentifier(
+                cuisine.lowercase(Locale.getDefault()),
+                DEF_TYPE,
+                DEF_PACKAGE
+            )
+        )
     }
 }

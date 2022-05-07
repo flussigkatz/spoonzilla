@@ -31,4 +31,6 @@ object AppConst {
     const val NOTIFICATION_CHANNEL_NAME = "DISH_REMINDER"
     const val KEY_DISH = "key_dish"
     const val KEY_REMINDER_NOTIFICATION_DISH = "key_reminder_notification_dish"
+    const val DEF_TYPE = "string"
+    const val DEF_PACKAGE = "xyz.flussigkatz.spoonzilla"
 }

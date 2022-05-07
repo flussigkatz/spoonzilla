@@ -1,15 +1,15 @@
 package xyz.flussigkatz.spoonzilla.data.enums
 
-enum class Diets(val dietName: String) {
-    GLUTEN_FREE("Gluten Free"),
-    KETOGENIC("Ketogenic"),
-    VEGETARIAN("Vegetarian"),
-    LACTO_VEGETARIAN("Lacto-Vegetarian"),
-    OVO_VEGETARIAN("Ovo-Vegetarian"),
-    VEGAN("Vegan"),
-    PESCETARIAN("Pescetarian"),
-    PALEO("Paleo"),
-    PRIMAL("Primal"),
-    LOW_FODMAP("Low FODMAP"),
-    WHOLE30("Whole30")
+enum class Diets {
+    DIET_GLUTEN_FREE,
+    DIET_KETOGENIC,
+    DIET_VEGETARIAN,
+    DIET_LACTO_VEGETARIAN,
+    DIET_OVO_VEGETARIAN,
+    DIET_VEGAN,
+    DIET_PESCETARIAN,
+    DIET_PALEO,
+    DIET_PRIMAL,
+    DIET_LOW_FODMAP,
+    DIET_WHOLE30
 }

@@ -1,16 +1,16 @@
 package xyz.flussigkatz.spoonzilla.data.enums
 
-enum class Intolerances(val intoleranceName: String) {
-    DAIRY("Dairy"),
-    EGG("Egg"),
-    GLUTEN("Gluten"),
-    GRAIN("Grain"),
-    PEANUT("Peanut"),
-    SEAFOOD("Seafood"),
-    SESAME("Sesame"),
-    SHELLFISH("Shellfish"),
-    SOY("Soy"),
-    SULFITE("Sulfite"),
-    TREE_NUT("Tree Nut"),
-    WHEAT("Wheat")
+enum class Intolerances {
+    INTOLERANCE_DAIRY,
+    INTOLERANCE_EGG,
+    INTOLERANCE_GLUTEN,
+    INTOLERANCE_GRAIN,
+    INTOLERANCE_PEANUT,
+    INTOLERANCE_SEAFOOD,
+    INTOLERANCE_SESAME,
+    INTOLERANCE_SHELLFISH,
+    INTOLERANCE_SOY,
+    INTOLERANCE_SULFITE,
+    INTOLERANCE_TREE_NUT,
+    INTOLERANCE_WHEAT
 }

@@ -1,18 +1,18 @@
 package xyz.flussigkatz.spoonzilla.data.enums
 
-enum class MealTypes(val typeName: String) {
-    MAIN_COURSE("main course"),
-    SIDE_DISH("side dish"),
-    DESSERT("dessert"),
-    APPETIZER("appetizer"),
-    SALAD("salad"),
-    BREAD("bread"),
-    BREAKFAST("breakfast"),
-    SOUP("soup"),
-    BEVERAGE("beverage"),
-    SAUCE("sauce"),
-    MARINADE("marinade"),
-    FINGERFOOD("fingerfood"),
-    SNACK("snack"),
-    DRINK("drink")
+enum class MealTypes {
+    MEAL_TYPE_MAIN_COURSE,
+    MEAL_TYPE_SIDE_DISH,
+    MEAL_TYPE_DESSERT,
+    MEAL_TYPE_APPETIZER,
+    MEAL_TYPE_SALAD,
+    MEAL_TYPE_BREAD,
+    MEAL_TYPE_BREAKFAST,
+    MEAL_TYPE_SOUP,
+    MEAL_TYPE_BEVERAGE,
+    MEAL_TYPE_SAUCE,
+    MEAL_TYPE_MARINADE,
+    MEAL_TYPE_FINGERFOOD,
+    MEAL_TYPE_SNACK,
+    MEAL_TYPE_DRINK()
 }

@@ -9,12 +9,14 @@ import android.view.MenuItem
 import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.widget.SearchView
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.core.view.GravityCompat
 import androidx.lifecycle.Lifecycle.State.RESUMED
 import androidx.navigation.NavController
@@ -35,9 +37,9 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 import xyz.flussigkatz.core_api.entity.Dish
 import xyz.flussigkatz.core_api.entity.DishAlarm
-import xyz.flussigkatz.spoonzilla.view.notification.NotificationHelper
 import xyz.flussigkatz.spoonzilla.R
 import xyz.flussigkatz.spoonzilla.databinding.ActivityMainBinding
+import xyz.flussigkatz.spoonzilla.util.AppConst.HIDE_KEYBOARD_FLAG
 import xyz.flussigkatz.spoonzilla.util.AppConst.KEY_ADVANCED_SEARCH_SETTINGS
 import xyz.flussigkatz.spoonzilla.util.AppConst.KEY_DISH_ID
 import xyz.flussigkatz.spoonzilla.util.AppConst.KEY_DISH_LOCAL_ID
@@ -49,6 +51,7 @@ import xyz.flussigkatz.spoonzilla.util.AppConst.REMINDER_NOTIFICATION
 import xyz.flussigkatz.spoonzilla.util.AutoDisposable
 import xyz.flussigkatz.spoonzilla.util.NavigationHelper
 import xyz.flussigkatz.spoonzilla.util.addTo
+import xyz.flussigkatz.spoonzilla.view.notification.NotificationHelper
 import xyz.flussigkatz.spoonzilla.view.rv_adapter.DishRecyclerAdapter
 import xyz.flussigkatz.spoonzilla.view.rv_adapter.rv_decoration.SpacingItemDecoration
 import xyz.flussigkatz.spoonzilla.viewmodel.MainActivityViewModel
@@ -152,6 +155,9 @@ class MainActivity : AppCompatActivity() {
                     return false
                 }
             })
+        binding.mainQuickSearch.apply {
+            if (!this.hasFocus()) hideSoftKeyboard(this)
+        }
     }
 
     private fun initNavigation() {
@@ -336,6 +342,7 @@ class MainActivity : AppCompatActivity() {
     fun mainSearchViewClearFocus() {
         binding.mainQuickSearch.clearFocus()
     }
+
     private fun mainSearchViewDropQuery() {
         binding.mainQuickSearch.setQuery(null, false)
     }
@@ -412,6 +419,11 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
+    }
+
+    private fun hideSoftKeyboard(view: View) {
+        val inputMethodManager = getSystemService(this, InputMethodManager::class.java)
+        inputMethodManager?.hideSoftInputFromWindow(view.windowToken, HIDE_KEYBOARD_FLAG)
     }
 
     override fun onNewIntent(intent: Intent?) {

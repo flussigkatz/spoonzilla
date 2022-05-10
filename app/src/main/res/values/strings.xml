@@ -35,6 +35,9 @@
     <string name="menu_title_dish_reminds">Dish Reminds</string>
     <string name="menu_title_log_out">Log Out</string>
 
+    <!--    fragment_dish_ingredients-->
+    <string name="ingredients_servings_count_hint">Enter servings count</string>
+
     <!--    fragment_dish_overview-->
     <string name="overview_mark_fab_description">Press to marked</string>
     <string name="overview_share_fab_description">Share button</string>
@@ -42,7 +45,7 @@
     <string name="time_picker_text_past_time">The selected time is in the past</string>
     <string name="date_picker_text">Select date</string>
     <string name="share_message">"Check out this recipe I found on the Spoonzilla app: "</string>
-    <string name="share_message_source_link">"Source link: "</string>
+    <string name="share_message_source_link">" Source link: "</string>
     <string name="time_cooking_measure">min</string>
 
     <!--    fragment_advanced_search_settings-->

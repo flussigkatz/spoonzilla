@@ -29,6 +29,7 @@ import xyz.flussigkatz.core_api.entity.DishAlarm
 import xyz.flussigkatz.spoonzilla.view.notification.NotificationHelper
 import xyz.flussigkatz.spoonzilla.R
 import xyz.flussigkatz.spoonzilla.databinding.FragmentDishRemindsBinding
+import xyz.flussigkatz.spoonzilla.util.AppConst.IS_SCROLL_FLAG
 import xyz.flussigkatz.spoonzilla.util.AppConst.KEY_DISH_ID
 import xyz.flussigkatz.spoonzilla.util.AppConst.NAVIGATE_TO_DETAILS
 import xyz.flussigkatz.spoonzilla.util.AppConst.PADDING_DP
@@ -78,10 +79,17 @@ class DishRemindsFragment : Fragment() {
         timePicker.addOnPositiveButtonClickListener {
             mCalendar.set(HOUR_OF_DAY, timePicker.hour)
             mCalendar.set(MINUTE, timePicker.minute)
-            dishAlarm.alarmTime = mCalendar.timeInMillis
             if (mCalendar.timeInMillis > System.currentTimeMillis()) {
                 dishRemindsScope.launch {
-                    viewModel.updateDishRemind(dishAlarm)
+                    val dishAlarmCopy = DishAlarm(
+                        localId = dishAlarm.localId,
+                        id = dishAlarm.id,
+                        title = dishAlarm.title,
+                        image = dishAlarm.image,
+                        alarmTime = mCalendar.timeInMillis,
+                    )
+                    viewModel.updateDishRemind(dishAlarmCopy)
+                    return@launch
                 }
             } else {
                 Toast.makeText(
@@ -199,7 +207,6 @@ class DishRemindsFragment : Fragment() {
     }
 
     companion object {
-        private const val IS_SCROLL_FLAG = 0
         private const val DATE_PICKER_TAG = "datePicker"
         private const val TIME_PICKER_TAG = "timePicker"
     }

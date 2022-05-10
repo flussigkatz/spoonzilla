@@ -100,12 +100,18 @@ interface DishDao {
     @Query("SELECT * FROM cashed_dishes_ingredients WHERE dishId LIKE :dishId")
     fun getIngredients(dishId: Int): Observable<Ingredients>
 
+    @Query("SELECT * FROM cashed_dishes_ingredients WHERE dishId LIKE :dishId")
+    fun getIngredientsToList(dishId: Int): List<Ingredients>
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertIngredients(ingredients: Ingredients)
 
     //Equipments
     @Query("SELECT * FROM cashed_dishes_equipments WHERE dishId LIKE :dishId")
     fun getEquipments(dishId: Int): Observable<Equipments>
+
+    @Query("SELECT * FROM cashed_dishes_equipments WHERE dishId LIKE :dishId")
+    fun getEquipmentsToList(dishId: Int): List<Equipments>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertEquipments(equipments: Equipments)
@@ -114,12 +120,18 @@ interface DishDao {
     @Query("SELECT * FROM cashed_dishes_instructions WHERE dishId LIKE :dishId")
     fun getInstructions(dishId: Int): Observable<Instructions>
 
+    @Query("SELECT * FROM cashed_dishes_instructions WHERE dishId LIKE :dishId")
+    fun getInstructionsToList(dishId: Int): List<Instructions>
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertInstructions(instructions: Instructions)
 
     //Nutrients
     @Query("SELECT * FROM cashed_dishes_nutrients WHERE dishId LIKE :dishId")
     fun getNutrients(dishId: Int): Observable<Nutrients>
+
+    @Query("SELECT * FROM cashed_dishes_nutrients WHERE dishId LIKE :dishId")
+    fun getNutrientsToList(dishId: Int): List<Nutrients>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertNutrients(nutrients: Nutrients)

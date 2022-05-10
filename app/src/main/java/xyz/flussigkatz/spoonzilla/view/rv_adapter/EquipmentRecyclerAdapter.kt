@@ -46,7 +46,6 @@ class EquipmentRecyclerAdapter : RecyclerView.Adapter<EquipmentViewHolder>() {
     }
 
     companion object {
-        private const val TAG = "EquipmentRecyclerAdapter"
         private const val IMAGE_PATH = "https://spoonacular.com/cdn/equipment_100x100/"
     }
 }

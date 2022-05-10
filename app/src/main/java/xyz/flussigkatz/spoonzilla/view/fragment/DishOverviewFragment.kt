@@ -21,15 +21,12 @@ import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
-import io.reactivex.rxjava3.schedulers.Schedulers
 import kotlinx.coroutines.*
 import timber.log.Timber
 import xyz.flussigkatz.core_api.entity.DishAdvancedInfo
 import xyz.flussigkatz.core_api.entity.DishAlarm
 import xyz.flussigkatz.spoonzilla.R
 import xyz.flussigkatz.spoonzilla.databinding.FragmentDishOverviewBinding
-import xyz.flussigkatz.spoonzilla.util.AppConst.KEY_DISH_ID
 import xyz.flussigkatz.spoonzilla.util.AppConst.KEY_DISH
 import xyz.flussigkatz.spoonzilla.viewmodel.DishOverviewFragmentViewModel
 import java.util.*
@@ -38,7 +35,6 @@ import java.util.*
 class DishOverviewFragment : Fragment() {
     private val viewModel: DishOverviewFragmentViewModel by activityViewModels()
     private lateinit var binding: FragmentDishOverviewBinding
-    private var mDishAdvancedInfo: DishAdvancedInfo? = null
     private val dishOverviewScope = CoroutineScope(Dispatchers.IO)
 
     override fun onCreateView(
@@ -51,41 +47,7 @@ class DishOverviewFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        mDishAdvancedInfo = arguments?.getParcelable(KEY_DISH)
-        mDishAdvancedInfo?.let { bindData(it) }
-        dishOverviewScope.launch {
-            repeat(GET_DISH_REPLAY) {
-                if (mDishAdvancedInfo == null) {
-                    getDish()
-                    delay(GET_DISH_DELAY)
-                }
-            }
-        }
-    }
-
-    private fun getDish() {
-        arguments?.let { bundle ->
-            val dishId = bundle.getInt(KEY_DISH_ID)
-            if (mDishAdvancedInfo == null) {
-                viewModel.getDishAdvancedInfoFromDb(dishId).subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(
-                        {
-                            if (it.isNotEmpty()) {
-                                mDishAdvancedInfo = it.first()
-                                bindData(it.first())
-                                viewModel.getIngredientsByIdFromApi(dishId)
-                                viewModel.getEquipmentsByIdFromApi(dishId)
-                                viewModel.getInstructionsByIdFromApi(dishId)
-                                viewModel.getNutrientByIdFromApi(dishId)
-                            } else {
-                                viewModel.getRecipeByIdFromApi(dishId)
-                            }
-                        },
-                        { Timber.d(it, "getDish onError") }
-                    )
-            } else bindData(mDishAdvancedInfo!!)
-        }
+        arguments?.getParcelable<DishAdvancedInfo?>(KEY_DISH)?.let { bindData(it) }
     }
 
     private fun bindData(dishAdvancedInfo: DishAdvancedInfo) {
@@ -239,8 +201,6 @@ class DishOverviewFragment : Fragment() {
         private const val TIME_PICKER_TAG = "timePicker"
         private const val TEXT_TYPE = "text/plain"
         private const val DOLLAR_SYMBOL = "$"
-        private const val GET_DISH_DELAY = 2000L
-        private const val GET_DISH_REPLAY = 5
         private const val ZERO = 0
     }
 

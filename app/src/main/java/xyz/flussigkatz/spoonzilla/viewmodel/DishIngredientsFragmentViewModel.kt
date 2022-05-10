@@ -15,4 +15,10 @@ class DishIngredientsFragmentViewModel : ViewModel() {
 
     fun getIngredientsByIdFromDb(id: Int) = interactor.getIngredientsByIdFromDb(id)
 
+    fun getIngredientsByIdFromApi(dishId: Int) {
+        interactor.getIngredientsByIdFromApi(dishId)
+    }
+
+    fun getIngredientsToListByIdFromDb(dishId: Int) =
+        interactor.getIngredientsToListByIdFromDb(dishId)
 }

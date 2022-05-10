@@ -33,4 +33,8 @@ object AppConst {
     const val KEY_REMINDER_NOTIFICATION_DISH = "key_reminder_notification_dish"
     const val DEF_TYPE = "string"
     const val DEF_PACKAGE = "xyz.flussigkatz.spoonzilla"
+    const val INGREDIENT_VALUE_KEY = "INGREDIENT_VALUE_KEY"
+    const val ALARM_TIME_VALUE_KEY = "ALARM_TIME_VALUE_KEY"
+    const val IS_SCROLL_FLAG = 0
+    const val HIDE_KEYBOARD_FLAG = 0
 }

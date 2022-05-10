@@ -1,6 +1,7 @@
 package xyz.flussigkatz.spoonzilla.view.rv_adapter
 
 import android.graphics.Color
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.ImageView
@@ -10,12 +11,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 import timber.log.Timber
-import xyz.flussigkatz.spoonzilla.R
 import xyz.flussigkatz.core_api.entity.DishAlarm
+import xyz.flussigkatz.spoonzilla.R
 import xyz.flussigkatz.spoonzilla.databinding.DishAlarmItemBinding
 import xyz.flussigkatz.spoonzilla.util.diffutill.DishAlarmDiff
 import xyz.flussigkatz.spoonzilla.view.rv_viewholder.DishAlarmViewHolder
-import java.lang.Exception
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -56,14 +56,40 @@ class DishAlarmRecyclerAdapter(
         }
     }
 
+    override fun onBindViewHolder(
+        holder: DishAlarmViewHolder,
+        position: Int,
+        payloads: MutableList<Any>
+    ) {
+        if (payloads.isNotEmpty()) {
+            (payloads.first() as Bundle).apply {
+                val dishAlarm = getDishAlarm(position)
+                val binding = holder.binding
+                binding.dishAlarmContainer.setOnClickListener {
+                    alarmClickListener.click(dishAlarm)
+                }
+                val calendar = Calendar.getInstance()
+                calendar.timeInMillis = dishAlarm.alarmTime
+                val dateFormatter = SimpleDateFormat("HH:mm | dd.MM.yyyy", Locale.getDefault())
+                val alarm = dateFormatter.format(calendar.time)
+                binding.dishAlarmTime.text = alarm
+                if (dishAlarm.alarmTime < System.currentTimeMillis()) {
+                    darkRed?.let {
+                        binding.dishAlarmTime.setTextColor(it)
+                        binding.alarmIcon.setColorFilter(it)
+                    }
+                }
+            }
+        } else super.onBindViewHolder(holder, position, payloads)
+    }
+
     override fun getItemCount() = items.size
 
     fun getDishAlarm(position: Int) = items[position]
 
     fun updateData(newList: List<DishAlarm>) {
-        val sortedList = newList.sortedWith(compareBy { it.alarmTime })
-        val diffResult = DiffUtil.calculateDiff(DishAlarmDiff(items, sortedList))
-        items = sortedList
+        val diffResult = DiffUtil.calculateDiff(DishAlarmDiff(items, newList))
+        items = newList.sortedWith(compareBy { it.alarmTime })
         diffResult.dispatchUpdatesTo(this)
     }
 

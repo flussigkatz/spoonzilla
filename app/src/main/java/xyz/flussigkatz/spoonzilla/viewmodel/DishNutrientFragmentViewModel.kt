@@ -14,4 +14,11 @@ class DishNutrientFragmentViewModel : ViewModel() {
     }
 
     fun getNutrientByIdFromDb(dishId: Int) = interactor.getNutrientByIdFromDb(dishId)
+
+    fun getNutrientByIdFromApi(dishId: Int) {
+        interactor.getNutrientByIdFromApi(dishId)
+    }
+
+    fun getNutrientToListByIdFromDb(dishId: Int) =
+        interactor.getNutrientToListByIdFromDb(dishId)
 }

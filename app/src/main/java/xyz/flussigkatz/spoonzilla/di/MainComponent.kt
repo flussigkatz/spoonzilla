@@ -27,6 +27,8 @@ interface MainComponent {
 
     fun inject(advancedSearchFragmentViewModel: AdvancedSearchFragmentViewModel)
 
+    fun inject(detailsFragmentViewModel: DetailsFragmentViewModel)
+
     fun inject(dishOverviewFragmentViewModel: DishOverviewFragmentViewModel)
 
     fun inject(dishIngredientsFragmentViewModel: DishIngredientsFragmentViewModel)

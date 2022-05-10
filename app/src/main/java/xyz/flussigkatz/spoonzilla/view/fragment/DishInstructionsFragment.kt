@@ -8,15 +8,21 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.launch
 import timber.log.Timber
+import xyz.flussigkatz.core_api.entity.DishAdvancedInfo
 import xyz.flussigkatz.spoonzilla.databinding.FragmentDishInstructionsBinding
-import xyz.flussigkatz.spoonzilla.util.AppConst.KEY_DISH_ID
+import xyz.flussigkatz.spoonzilla.util.AppConst
 import xyz.flussigkatz.spoonzilla.view.rv_adapter.InstructionsItemRecyclerAdapter
 import xyz.flussigkatz.spoonzilla.viewmodel.DishInstructionsFragmentViewModel
 
 class DishInstructionsFragment : Fragment() {
     private lateinit var binding: FragmentDishInstructionsBinding
     private lateinit var instructionsAdapter: InstructionsItemRecyclerAdapter
+    private val instructionsFragmentCoroutineScope = CoroutineScope(Dispatchers.IO)
     private val viewModel: DishInstructionsFragmentViewModel by activityViewModels()
 
     override fun onCreateView(
@@ -29,19 +35,24 @@ class DishInstructionsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initInstructionsItemAdapter()
         getInstructions()
     }
 
     private fun getInstructions() {
-        arguments?.let { bundle ->
-            val dishId = bundle.getInt(KEY_DISH_ID)
-            viewModel.getInstructionsByIdFromDb(dishId)
+        arguments?.getParcelable<DishAdvancedInfo?>(AppConst.KEY_DISH)?.let { dishAdvancedInfo ->
+            viewModel.getInstructionsByIdFromDb(dishAdvancedInfo.id)
                 .observeOn(AndroidSchedulers.mainThread())
+                .doOnSubscribe { initInstructionsItemAdapter() }
                 .subscribe(
                     { instructionsAdapter.addItems(it) },
                     { Timber.d(it, "getInstructions onError") }
                 )
+            instructionsFragmentCoroutineScope.launch {
+                val ingredientsIsEmpty =
+                    viewModel.getInstructionsToListByIdFromDb(dishAdvancedInfo.id).isEmpty()
+                if (ingredientsIsEmpty) viewModel.getInstructionsByIdFromApi(dishAdvancedInfo.id)
+                return@launch
+            }
         }
     }
 
@@ -51,5 +62,10 @@ class DishInstructionsFragment : Fragment() {
             adapter = instructionsAdapter
             layoutManager = LinearLayoutManager(context)
         }
+    }
+
+    override fun onDestroy() {
+        instructionsFragmentCoroutineScope.cancel()
+        super.onDestroy()
     }
 }

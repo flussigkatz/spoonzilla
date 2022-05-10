@@ -20,6 +20,7 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 import xyz.flussigkatz.core_api.entity.Dish
 import xyz.flussigkatz.spoonzilla.databinding.FragmentHomeBinding
+import xyz.flussigkatz.spoonzilla.util.AppConst.IS_SCROLL_FLAG
 import xyz.flussigkatz.spoonzilla.util.AppConst.KEY_DISH_ID
 import xyz.flussigkatz.spoonzilla.util.AppConst.NAVIGATE_TO_DETAILS
 import xyz.flussigkatz.spoonzilla.util.AppConst.PADDING_DP
@@ -167,9 +168,4 @@ class HomeFragment : Fragment() {
             }
         }
     }
-
-    companion object {
-        private const val IS_SCROLL_FLAG = 0
-    }
-
 }

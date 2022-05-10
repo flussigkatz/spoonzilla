@@ -19,6 +19,7 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 import xyz.flussigkatz.core_api.entity.Dish
 import xyz.flussigkatz.spoonzilla.databinding.FragmentAdvancedSearchBinding
+import xyz.flussigkatz.spoonzilla.util.AppConst.IS_SCROLL_FLAG
 import xyz.flussigkatz.spoonzilla.util.AppConst.KEY_CUISINE
 import xyz.flussigkatz.spoonzilla.util.AppConst.KEY_DIET
 import xyz.flussigkatz.spoonzilla.util.AppConst.KEY_DISH_ID
@@ -205,8 +206,6 @@ class AdvancedSearchFragment : Fragment() {
 
     companion object {
         private const val FIRST_POSITION = 0
-        private const val IS_SCROLL_FLAG = 0
-
     }
 
 }

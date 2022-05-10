@@ -91,12 +91,16 @@ class MainRepository(private val dishDao: DishDao) {
     //    Ingredients
     fun getIngredients(dishId: Int) = dishDao.getIngredients(dishId)
 
+    fun getIngredientsToList(dishId: Int) = dishDao.getIngredientsToList(dishId)
+
     fun putIngredients(ingredients: Ingredients) {
         dishDao.insertIngredients(ingredients)
     }
 
     //    Equipments
     fun getEquipments(dishId: Int) = dishDao.getEquipments(dishId)
+
+    fun getEquipmentsToList(dishId: Int) = dishDao.getEquipmentsToList(dishId)
 
     fun putEquipments(equipments: Equipments) {
         dishDao.insertEquipments(equipments)
@@ -105,12 +109,16 @@ class MainRepository(private val dishDao: DishDao) {
     //    Instructions
     fun getInstructions(dishId: Int) = dishDao.getInstructions(dishId)
 
+    fun getInstructionsToList(dishId: Int) = dishDao.getInstructionsToList(dishId)
+
     fun putInstructions(instructions: Instructions) {
         dishDao.insertInstructions(instructions)
     }
 
     //    Nutrients
     fun getNutrients(dishId: Int) = dishDao.getNutrients(dishId)
+
+    fun getNutrientsToList(dishId: Int) = dishDao.getNutrientsToList(dishId)
 
     fun putNutrients(nutrients: Nutrients) {
         dishDao.insertNutrients(nutrients)

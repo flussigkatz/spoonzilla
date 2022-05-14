@@ -7,10 +7,12 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.google.android.material.tabs.TabLayoutMediator
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.schedulers.Schedulers
+import timber.log.Timber
 import xyz.flussigkatz.core_api.entity.DishAdvancedInfo
 import xyz.flussigkatz.spoonzilla.R
 import xyz.flussigkatz.spoonzilla.databinding.FragmentDetailsBinding
-import xyz.flussigkatz.spoonzilla.util.AppConst
 import xyz.flussigkatz.spoonzilla.util.AppConst.KEY_DISH
 import xyz.flussigkatz.spoonzilla.util.AppConst.KEY_DISH_ID
 import xyz.flussigkatz.spoonzilla.view.DishDetailsStateAdapter
@@ -20,6 +22,8 @@ import xyz.flussigkatz.spoonzilla.viewmodel.DetailsFragmentViewModel
 class DetailsFragment : Fragment() {
     private lateinit var dishDetailsStateAdapter: DishDetailsStateAdapter
     private lateinit var binding: FragmentDetailsBinding
+    private val viewModel: DetailsFragmentViewModel by activityViewModels()
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -31,20 +35,26 @@ class DetailsFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        val dish = arguments?.getParcelable<DishAdvancedInfo>(KEY_DISH)
-        val dishId = dish?.id
-        dishId?.let {
-            val bundle = Bundle().apply { putInt(KEY_DISH_ID, dishId) }
-            initStateAdapter(bundle)
-        } ?: initStateAdapter(arguments)
+        arguments?.getParcelable<DishAdvancedInfo?>(KEY_DISH)?.let { initStateAdapter(it) }
+            ?: arguments?.getInt(KEY_DISH_ID)?.let { getDishAdvancedInfo(it) }
     }
 
-    private fun initStateAdapter(bundle: Bundle?) {
-        bundle?.let {
-            dishDetailsStateAdapter = DishDetailsStateAdapter(this, it)
-            binding.recipeDetailsViewpager.adapter = dishDetailsStateAdapter
-            initTabs()
-        }
+    private fun getDishAdvancedInfo(dishId: Int) {
+        viewModel.getDishAdvancedInfoFromDb(dishId).subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(
+                {
+                    if (it.isNotEmpty()) initStateAdapter(it.first())
+                    else viewModel.getRecipeByIdFromApi(dishId)
+                },
+                { Timber.d(it, "getDishAdvancedInfo onError") }
+            )
+    }
+
+    private fun initStateAdapter(dishAdvancedInfo: DishAdvancedInfo) {
+        dishDetailsStateAdapter = DishDetailsStateAdapter(this, dishAdvancedInfo)
+        binding.recipeDetailsViewpager.adapter = dishDetailsStateAdapter
+        initTabs()
     }
 
     private fun initTabs() {

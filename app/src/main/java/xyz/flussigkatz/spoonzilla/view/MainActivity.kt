@@ -9,12 +9,14 @@ import android.view.MenuItem
 import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.widget.SearchView
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.core.view.GravityCompat
 import androidx.lifecycle.Lifecycle.State.RESUMED
 import androidx.navigation.NavController
@@ -35,9 +37,9 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 import xyz.flussigkatz.core_api.entity.Dish
 import xyz.flussigkatz.core_api.entity.DishAlarm
-import xyz.flussigkatz.spoonzilla.view.notification.NotificationHelper
 import xyz.flussigkatz.spoonzilla.R
 import xyz.flussigkatz.spoonzilla.databinding.ActivityMainBinding
+import xyz.flussigkatz.spoonzilla.util.AppConst.HIDE_KEYBOARD_FLAG
 import xyz.flussigkatz.spoonzilla.util.AppConst.KEY_ADVANCED_SEARCH_SETTINGS
 import xyz.flussigkatz.spoonzilla.util.AppConst.KEY_DISH_ID
 import xyz.flussigkatz.spoonzilla.util.AppConst.KEY_DISH_LOCAL_ID
@@ -49,6 +51,7 @@ import xyz.flussigkatz.spoonzilla.util.AppConst.REMINDER_NOTIFICATION
 import xyz.flussigkatz.spoonzilla.util.AutoDisposable
 import xyz.flussigkatz.spoonzilla.util.NavigationHelper
 import xyz.flussigkatz.spoonzilla.util.addTo
+import xyz.flussigkatz.spoonzilla.view.notification.NotificationHelper
 import xyz.flussigkatz.spoonzilla.view.rv_adapter.DishRecyclerAdapter
 import xyz.flussigkatz.spoonzilla.view.rv_adapter.rv_decoration.SpacingItemDecoration
 import xyz.flussigkatz.spoonzilla.viewmodel.MainActivityViewModel
@@ -79,8 +82,9 @@ class MainActivity : AppCompatActivity() {
         initReceiver()
         initRecentlyViewedBottomSheet()
         initRecentlyViewedAdapter()
-        initContent()
+        initRecentlyViewedItems()
         initAlarms()
+        mainSearchViewClearFocus()
     }
 
     private fun initRecentlyViewedBottomSheet() {
@@ -131,6 +135,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initQuickSearch() {
+        binding.mainQuickSearch.setOnFocusChangeListener { v, hasFocus ->
+            if (!hasFocus) hideSoftKeyboard(v)
+        }
         binding.mainQuickSearch.setOnQueryTextFocusChangeListener { _, hasFocus ->
             if (hasFocus) binding.mainAppbar.setExpanded(true)
             recentlyViewedBottomSheet.state = STATE_HIDDEN
@@ -174,6 +181,8 @@ class MainActivity : AppCompatActivity() {
         binding.mainNavigationView.setNavigationItemSelectedListener { menuItem ->
             binding.mainDrawerLayout.closeDrawers()
             binding.mainAppbar.setExpanded(true)
+            mainSearchViewClearFocus()
+            mainSearchViewDropQuery()
             val onScreenFragmentId = navController.currentDestination?.id
             if (onScreenFragmentId != menuItem.itemId) {
                 NavigationHelper.navigate(navController, menuItem.itemId, onScreenFragmentId)
@@ -182,10 +191,6 @@ class MainActivity : AppCompatActivity() {
         }
 
         navController.addOnDestinationChangedListener { _, destination, _ ->
-            binding.mainQuickSearch.apply {
-                setQuery(null, false)
-                clearFocus()
-            }
             when (destination.id) {
                 R.id.homeFragment -> {
                     binding.mainQuickSearch.queryHint = getText(R.string.home_search_hint)
@@ -291,7 +296,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun initContent() {
+    private fun initRecentlyViewedItems() {
         viewModel.getRecentlyViewedDishes().subscribeOn(io())
             .filter { !it.isNullOrEmpty() }
             .observeOn(mainThread())
@@ -300,6 +305,7 @@ class MainActivity : AppCompatActivity() {
                     recentlyViewedAdapter.updateData(it)
                     binding.recentlyViewedRecycler.smoothScrollToPosition(FIRST_POSITION)
                     adapterIsNotEmpty = it.isNotEmpty()
+                    showRecentlyViewedFab(true)
                 },
                 { Timber.d(it, "initContent onError") }
             ).addTo(autoDisposable)
@@ -336,6 +342,10 @@ class MainActivity : AppCompatActivity() {
 
     fun mainSearchViewClearFocus() {
         binding.mainQuickSearch.clearFocus()
+    }
+
+    private fun mainSearchViewDropQuery() {
+        binding.mainQuickSearch.setQuery(null, false)
     }
 
     private fun showRecentlyViewedFab(state: Boolean) {
@@ -410,6 +420,11 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
+    }
+
+    private fun hideSoftKeyboard(view: View) {
+        val inputMethodManager = getSystemService(this, InputMethodManager::class.java)
+        inputMethodManager?.hideSoftInputFromWindow(view.windowToken, HIDE_KEYBOARD_FLAG)
     }
 
     override fun onNewIntent(intent: Intent?) {

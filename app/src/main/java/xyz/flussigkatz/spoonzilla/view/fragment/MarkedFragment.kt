@@ -22,6 +22,7 @@ import xyz.flussigkatz.core_api.entity.Dish
 import xyz.flussigkatz.core_api.entity.DishMarked
 import xyz.flussigkatz.spoonzilla.databinding.FragmentMarkedBinding
 import xyz.flussigkatz.spoonzilla.util.AppConst
+import xyz.flussigkatz.spoonzilla.util.AppConst.IS_SCROLL_FLAG
 import xyz.flussigkatz.spoonzilla.util.AppConst.PADDING_DP
 import xyz.flussigkatz.spoonzilla.util.AutoDisposable
 import xyz.flussigkatz.spoonzilla.util.Converter
@@ -127,8 +128,6 @@ class MarkedFragment : Fragment() {
     }
 
     companion object {
-        private const val IS_SCROLL_FLAG = 0
         private const val FIRST_POSITION = 0
-
     }
 }

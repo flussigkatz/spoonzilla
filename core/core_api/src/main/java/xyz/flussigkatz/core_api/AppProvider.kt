@@ -1,7 +1,7 @@
 package xyz.flussigkatz.core_api
 
-import android.content.Context
+import android.app.Application
 
 interface AppProvider {
-    fun provideContext(): Context
+    fun provideApplication(): Application
 }

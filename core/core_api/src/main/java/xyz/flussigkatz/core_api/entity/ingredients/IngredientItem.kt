@@ -9,5 +9,5 @@ data class IngredientItem(
     val image: String?,
     val name: String?,
     val unit: String?,
-    val value: Double?,
+    var value: Double?,
 ) : Parcelable

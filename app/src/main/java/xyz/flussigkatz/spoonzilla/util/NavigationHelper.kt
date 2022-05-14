@@ -172,9 +172,11 @@ object NavigationHelper {
         navController: NavController,
         bundle: Bundle?,
     ) {
-        navController.navigate(
-            R.id.action_advancedSearchSettingsFragment_to_advancedSearchFragment,
-            bundle
-        )
+        if (navController.currentDestination?.id == R.id.advancedSearchSettingsFragment) {
+            navController.navigate(
+                R.id.action_advancedSearchSettingsFragment_to_advancedSearchFragment,
+                bundle
+            )
+        }
     }
 }

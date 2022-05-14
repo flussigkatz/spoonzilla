@@ -9,9 +9,13 @@ import xyz.flussigkatz.core_api.entity.Dish
 import xyz.flussigkatz.core_api.entity.DishAlarm
 import xyz.flussigkatz.core_api.entity.DishMarked
 import xyz.flussigkatz.core_api.entity.equipments.EquipmentItem
+import xyz.flussigkatz.core_api.entity.equipments.Equipments
 import xyz.flussigkatz.core_api.entity.ingredients.IngredientItem
+import xyz.flussigkatz.core_api.entity.ingredients.Ingredients
+import xyz.flussigkatz.core_api.entity.instructions.Instructions
 import xyz.flussigkatz.core_api.entity.instructions.InstructionsItem
 import xyz.flussigkatz.core_api.entity.nutrient.NutrientItem
+import xyz.flussigkatz.core_api.entity.nutrient.Nutrients
 import xyz.flussigkatz.remote.SpoonacularApi
 import xyz.flussigkatz.spoonzilla.ApiKey.API_KEY
 import xyz.flussigkatz.spoonzilla.data.db.MainRepository
@@ -52,6 +56,10 @@ class Interactor(
             .map { Converter.convertIngredientsFromDb(it) }
     }
 
+    fun getIngredientsToListByIdFromDb(id: Int): List<Ingredients> {
+        return repository.getIngredientsToList(id)
+    }
+
     fun getIngredientsByIdFromApi(id: Int) {
         val metric = preferences.getMetric()
         retrofitService.getIngredientsById(id = id, apiKey = API_KEY)
@@ -67,6 +75,10 @@ class Interactor(
         return repository.getEquipments(id)
             .subscribeOn(Schedulers.io())
             .map { Converter.convertEquipmentsByIdFromDb(it) }
+    }
+
+    fun getEquipmentsToListByIdFromDb(id: Int): List<Equipments> {
+        return repository.getEquipmentsToList(id)
     }
 
     fun getEquipmentsByIdFromApi(id: Int) {
@@ -85,6 +97,10 @@ class Interactor(
             .map { Converter.convertInstructionsByIdFromDb(it) }
     }
 
+    fun getInstructionsToListByIdFromDb(id: Int): List<Instructions> {
+        return repository.getInstructionsToList(id)
+    }
+
     fun getInstructionsByIdFromApi(id: Int) {
         retrofitService.getInstructionsById(id = id, apiKey = API_KEY)
             .subscribeOn(Schedulers.io())
@@ -100,6 +116,10 @@ class Interactor(
             .map { Converter.convertNutrientsByIdFromDb(it) }
     }
 
+    fun getNutrientToListByIdFromDb(id: Int): List<Nutrients> {
+        return repository.getNutrientsToList(id)
+    }
+
     fun getNutrientByIdFromApi(id: Int) {
         retrofitService.getNutrientById(id = id, apiKey = API_KEY)
             .subscribeOn(Schedulers.io())
@@ -107,34 +127,6 @@ class Interactor(
             .subscribe(
                 { repository.putNutrients(it) },
                 { Timber.d(it, "getNutrientByIdFromApi onError") }
-            )
-    }
-
-    fun getRandomRecipeFromApi(
-        number: Int,
-        tags: String,
-        clearDb: Boolean
-    ) {
-        retrofitService.getRandomRecipes(
-            limitLicense = false,
-            tags = tags,
-            number = number,
-            apiKey = API_KEY
-        ).subscribeOn(Schedulers.io())
-            .filter { !it.recipes.isNullOrEmpty() }
-            .map {
-                val markedIds = repository.getIdsMarkedDishesFromDbToList()
-                Converter.convertRandomRecipeFromApi(it, markedIds)
-            }
-            .doOnSubscribe { loadingState.onNext(true) }
-            .doOnComplete { loadingState.onNext(false) }
-            .doOnError { loadingState.onNext(false) }
-            .subscribe(
-                {
-                    if (clearDb) repository.clearDishTable()
-                    repository.putDishesToDb(it)
-                },
-                { Timber.d(it, "getRandomRecipeFromApi onError") }
             )
     }
 
@@ -203,21 +195,31 @@ class Interactor(
     }
 
     fun getSearchedRecipesFromApi(
-        query: String,
+        query: String?,
+        cuisine: String?,
+        diet: String?,
+        intolerances: String?,
+        type: String?,
+        sort: String?,
         offset: Int?,
         number: Int?,
-        clearDb: Boolean
+        clearDb: Boolean,
     ) {
         retrofitService.getSearchedRecipes(
             query = query,
+            cuisine = cuisine,
+            diet = diet,
+            intolerances = intolerances,
+            type = type,
+            sort = sort,
             offset = offset,
             number = number,
             limitLicense = false,
-            apiKey = API_KEY
+            apiKey = API_KEY,
         ).subscribeOn(Schedulers.io())
             .map {
                 val markedIds = repository.getIdsMarkedDishesFromDbToList()
-                Converter.convertSearchedRecipeBasicInfoFromApi(it, markedIds)
+                Converter.convertSearchedRecipeFromApi(it, markedIds)
             }
             .doOnSubscribe { loadingState.onNext(true) }
             .doOnComplete { loadingState.onNext(false) }
@@ -265,7 +267,7 @@ class Interactor(
         ).subscribeOn(Schedulers.io())
             .map {
                 val markedIds = repository.getIdsMarkedDishesFromDbToList()
-                Converter.convertSearchedRecipeBasicInfoFromApi(it, markedIds)
+                Converter.convertSearchedRecipeFromApi(it, markedIds)
             }
             .doOnSubscribe { loadingState.onNext(true) }
             .doOnComplete { loadingState.onNext(false) }
@@ -308,7 +310,8 @@ class Interactor(
         preferences.savePersonalPreferencesSwitchState(key, state)
     }
 
-    fun getPersonalPreferencesSwitchState(key: String) = preferences.getPersonalPreferencesSwitchState(key)
+    fun getPersonalPreferencesSwitchState(key: String) =
+        preferences.getPersonalPreferencesSwitchState(key)
 
     //Metric
     fun setMetric(metric: Boolean) {
@@ -324,8 +327,17 @@ class Interactor(
 
     fun getProfile() = preferences.getProfile()
 
+    //Home Page Content
+    fun setHomePageContent(flag: String) {
+        preferences.saveHomePageContent(flag)
+    }
+
+    fun getHomePageContent(): String {
+        return preferences.getHomePageContent().orEmpty()
+    }
+
     //Theme
-    fun setNightMode (mode: Int) {
+    fun setNightMode(mode: Int) {
         preferences.saveNightMode(mode)
     }
 

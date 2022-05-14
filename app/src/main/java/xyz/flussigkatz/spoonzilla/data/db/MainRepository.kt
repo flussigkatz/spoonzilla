@@ -11,7 +11,6 @@ import xyz.flussigkatz.core_api.entity.instructions.Instructions
 import xyz.flussigkatz.core_api.entity.nutrient.Nutrients
 
 class MainRepository(private val dishDao: DishDao) {
-
     //    Dish
     fun putDishesToDb(list: List<Dish>) {
         dishDao.insertAllDishes(list)
@@ -21,9 +20,9 @@ class MainRepository(private val dishDao: DishDao) {
         dishDao.updateDish(dish)
     }
 
-    fun getAllDishesFromDb() =  dishDao.getCashedDishes()
+    fun getAllDishesFromDb() = dishDao.getCashedDishes()
 
-    fun getDishFromDb(dishId: Int) =  dishDao.getCashedDish(dishId)
+    fun getDishFromDb(dishId: Int) = dishDao.getCashedDish(dishId)
 
     fun clearDishTable() {
         val dishes = dishDao.getCashedDishesToList()
@@ -78,7 +77,8 @@ class MainRepository(private val dishDao: DishDao) {
         return dishDao.getCashedObservableAdvancedInfoDishToList(dishId)
     }
 
-    fun getSingleCashedAdvancedInfoDish(dishId: Int) = dishDao.getSingleCashedAdvancedInfoDish(dishId)
+    fun getSingleCashedAdvancedInfoDish(dishId: Int) =
+        dishDao.getSingleCashedAdvancedInfoDish(dishId)
 
     fun deleteAdvancedInfoDishFromDb(dishId: Int) {
         val dishAdvancedInfo = dishDao.getSingleCashedAdvancedInfoDish(dishId)
@@ -91,12 +91,16 @@ class MainRepository(private val dishDao: DishDao) {
     //    Ingredients
     fun getIngredients(dishId: Int) = dishDao.getIngredients(dishId)
 
+    fun getIngredientsToList(dishId: Int) = dishDao.getIngredientsToList(dishId)
+
     fun putIngredients(ingredients: Ingredients) {
         dishDao.insertIngredients(ingredients)
     }
 
     //    Equipments
     fun getEquipments(dishId: Int) = dishDao.getEquipments(dishId)
+
+    fun getEquipmentsToList(dishId: Int) = dishDao.getEquipmentsToList(dishId)
 
     fun putEquipments(equipments: Equipments) {
         dishDao.insertEquipments(equipments)
@@ -105,12 +109,16 @@ class MainRepository(private val dishDao: DishDao) {
     //    Instructions
     fun getInstructions(dishId: Int) = dishDao.getInstructions(dishId)
 
+    fun getInstructionsToList(dishId: Int) = dishDao.getInstructionsToList(dishId)
+
     fun putInstructions(instructions: Instructions) {
         dishDao.insertInstructions(instructions)
     }
 
     //    Nutrients
     fun getNutrients(dishId: Int) = dishDao.getNutrients(dishId)
+
+    fun getNutrientsToList(dishId: Int) = dishDao.getNutrientsToList(dishId)
 
     fun putNutrients(nutrients: Nutrients) {
         dishDao.insertNutrients(nutrients)

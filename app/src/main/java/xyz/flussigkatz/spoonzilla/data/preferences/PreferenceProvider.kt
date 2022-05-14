@@ -1,5 +1,6 @@
 package xyz.flussigkatz.spoonzilla.data.preferences
 
+import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
@@ -8,8 +9,10 @@ import xyz.flussigkatz.spoonzilla.util.AppConst.KEY_CUISINE_FROM_PROFILE
 import xyz.flussigkatz.spoonzilla.util.AppConst.KEY_DIET_FROM_PROFILE
 import xyz.flussigkatz.spoonzilla.util.AppConst.KEY_INTOLERANCE_FROM_PROFILE
 import xyz.flussigkatz.spoonzilla.util.AppConst.KEY_MEAL_TYPE_FROM_PROFILE
+import xyz.flussigkatz.spoonzilla.util.AppConst.SORT_FLAG_POPULAR
 
-class PreferenceProvider(context: Context) {
+class PreferenceProvider(application: Application) {
+    private var context: Context = application.applicationContext
     private val preferences: SharedPreferences = context.getSharedPreferences(
         SETTINGS_FILE_NAME,
         Context.MODE_PRIVATE
@@ -20,6 +23,12 @@ class PreferenceProvider(context: Context) {
     }
 
     fun getNightMode() = preferences.getInt(KEY_NIGHT_MODE, MODE_NIGHT_FOLLOW_SYSTEM)
+
+    fun saveHomePageContent(flag: String) {
+        preferences.edit() { putString(KEY_HOME_PAGE_CONTENT_KEY, flag) }
+    }
+
+    fun getHomePageContent() = preferences.getString(KEY_HOME_PAGE_CONTENT_KEY, SORT_FLAG_POPULAR)
 
     fun putDialogItems(key: String, set: Set<String>?) {
         preferences.edit() { putStringSet(key, set) }
@@ -58,6 +67,7 @@ class PreferenceProvider(context: Context) {
     fun getPersonalPreferencesSwitchState(key: String) = preferences.getBoolean(key, true)
 
     companion object {
+        private const val KEY_HOME_PAGE_CONTENT_KEY = "key_home_page_content_key"
         private const val KEY_NIGHT_MODE = "key_app_theme"
         private const val KEY_PROFILE = "key_profile"
         private const val KEY_METRIC = "key_metric"

@@ -1,5 +1,6 @@
 package xyz.flussigkatz.spoonzilla.di.module
 
+import android.app.Application
 import android.content.Context
 import dagger.Module
 import dagger.Provides
@@ -17,7 +18,7 @@ class DomainModule {
 
     @Singleton
     @Provides
-    fun providePreferences(context: Context) = PreferenceProvider(context)
+    fun providePreferences(application: Application) = PreferenceProvider(application)
 
     @Singleton
     @Provides

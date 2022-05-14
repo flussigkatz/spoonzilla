@@ -4,10 +4,7 @@
     <!--    dish_overview-->
     <dimen name="dish_overview_margin">5dp</dimen>
     <dimen name="dish_overview_dish_image_height">300dp</dimen>
-    <dimen name="dish_overview_dish_link_margin">10dp</dimen>
     <dimen name="dish_overview_icon_size">40dp</dimen>
-    <dimen name="dish_overview_mark_check_box_margin">10dp</dimen>
-    <dimen name="dish_overview_mark_check_box_size">30dp</dimen>
     <dimen name="overview_fab_margin">10dp</dimen>
 
     <!--    dialog_item-->
@@ -34,9 +31,6 @@
     <dimen name="dish_mark_check_box_size">30dp</dimen>
     <dimen name="dish_name_padding">5dp</dimen>
     <dimen name="root_dish_item_height">200dp</dimen>
-    <dimen name="root_dish_item_advanced_height">150dp</dimen>
-    <dimen name="image_dish_item_image_advanced_info">150dp</dimen>
-    <dimen name="image_dish_item_icon_size">50dp</dimen>
 
     <!--    fragment_profile-->
     <dimen name="profile_create_new_width">150dp</dimen>
@@ -50,7 +44,6 @@
     <dimen name="settings_menu_item_subtitle_margin">10dp</dimen>
 
     <!--    ingredient_item-->
-    <dimen name="ingredient_item_root_height">100dp</dimen>
     <dimen name="ingredient_item_image_size">100dp</dimen>
     <dimen name="ingredient_item_margin_start">5dp</dimen>
 
@@ -59,7 +52,6 @@
     <dimen name="nutrient_item_padding_start">15dp</dimen>
 
     <!--    equipment_item-->
-    <dimen name="equipment_item_root_height">100dp</dimen>
     <dimen name="equipment_item_image_size">100dp</dimen>
     <dimen name="equipment_item_margin_start">5dp</dimen>
 
@@ -68,7 +60,5 @@
 
     <!--    instructions_item-->
     <dimen name="instructions_item_margin">5dp</dimen>
-    <dimen name="list_item_spacing">16dp</dimen>
-    <dimen name="list_item_spacing_half">8dp</dimen>
 
 </resources>

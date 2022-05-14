@@ -8,20 +8,12 @@ import xyz.flussigkatz.remote.entity.ingredients_by_id.IngredientsByIdDto
 import xyz.flussigkatz.remote.entity.equipment_by_id.EquipmentByIdDto
 import xyz.flussigkatz.remote.entity.instructions_by_id.InstructionsByIdDto
 import xyz.flussigkatz.remote.entity.nutrient_by_id.NutrientByIdDto
-import xyz.flussigkatz.remote.entity.random.RandomRecipesDto
 import xyz.flussigkatz.remote.entity.seached.SearchedRecipesDto
 import xyz.flussigkatz.remote.entity.searched_by_id.SearchedRecipeByIdDto
 import xyz.flussigkatz.remote.entity.similar.SimilarRecipesDto
 import xyz.flussigkatz.remote.entity.taste.TasteByIdDto
 
 interface SpoonacularApi {
-    @GET("/recipes/random")
-    fun getRandomRecipes(
-        @Query("limitLicense") limitLicense: Boolean,
-        @Query("tags") tags: String?,
-        @Query("number") number: Int,
-        @Query("apiKey") apiKey: String
-    ): Observable<RandomRecipesDto>
 
     @GET("/recipes/{id}/information")
     fun getRecipeById(
@@ -71,7 +63,12 @@ interface SpoonacularApi {
 
     @GET("/recipes/complexSearch")
     fun getSearchedRecipes(
-        @Query("query") query: String,
+        @Query("query") query: String?,
+        @Query("cuisine") cuisine: String?,
+        @Query("diet") diet: String?,
+        @Query("intolerances") intolerances: String?,
+        @Query("type") type: String?,
+        @Query("sort") sort: String?,
         @Query("offset") offset: Int?,
         @Query("number") number: Int?,
         @Query("limitLicense") limitLicense: Boolean,

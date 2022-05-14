@@ -1,5 +1,6 @@
 package xyz.flussigkatz.core_impl
 
+import android.app.Application
 import android.content.Context
 import androidx.room.Room
 import dagger.Module
@@ -11,9 +12,9 @@ import javax.inject.Singleton
 class DatabaseModule {
     @Singleton
     @Provides
-    fun provideDishDatabase(context: Context): DatabaseContract =
+    fun provideDishDatabase(application: Application): DatabaseContract =
         Room.databaseBuilder(
-            context,
+            application.applicationContext,
             AppDatabase::class.java,
             DATABASE_NAME
         ).build()

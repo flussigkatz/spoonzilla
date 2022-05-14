@@ -101,11 +101,7 @@ class AdvancedSearchSettingsFragment : Fragment() {
             if (!dest.isNullOrBlank()) {
                 val formatSource = if (source.isDigitsOnly()) source else ""
                 val intValue = (dest.toString() + formatSource.toString()).toInt()
-                if (intValue in 0..999) {
-                    source
-                } else {
-                    ""
-                }
+                if (intValue in 0..999) source else ""
             } else source
         }
         binding.timeCook.filters = arrayOf(inputFilter)
@@ -236,6 +232,5 @@ class AdvancedSearchSettingsFragment : Fragment() {
         private const val KEY_DIETS_SWITCH = "key_diets_switch"
         private const val KEY_INTOLERANCES_SWITCH = "key_intolerances_switch"
         private const val KEY_MEAL_TYPES_SWITCH = "key_meal_types_switch"
-
     }
 }

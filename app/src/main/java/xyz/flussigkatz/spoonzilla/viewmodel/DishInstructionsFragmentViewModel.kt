@@ -15,4 +15,10 @@ class DishInstructionsFragmentViewModel : ViewModel() {
 
     fun getInstructionsByIdFromDb(id: Int) = interactor.getInstructionsByIdFromDb(id)
 
+    fun getInstructionsByIdFromApi(dishId: Int) {
+        interactor.getInstructionsByIdFromApi(dishId)
+    }
+
+    fun getInstructionsToListByIdFromDb(dishId: Int) =
+        interactor.getInstructionsToListByIdFromDb(dishId)
 }

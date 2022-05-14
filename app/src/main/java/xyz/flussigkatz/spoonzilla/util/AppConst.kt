@@ -23,7 +23,6 @@ object AppConst {
     const val KEY_DIET_FROM_PROFILE = "key_diet_from_profile"
     const val KEY_INTOLERANCE_FROM_PROFILE = "key_intolerances_from_profile"
     const val KEY_MEAL_TYPE_FROM_PROFILE = "key_meal_type_from_profile"
-    const val TOTAL_NUMBER_ELEMENTS = 10
     const val PAGINATION_NUMBER_ELEMENTS = 3
     const val KEY_INSTRUCTIONS_SWITCH = "key_instructions_switch"
     const val PADDING_DP = 2
@@ -31,6 +30,13 @@ object AppConst {
     const val SEARCH_DEBOUNCE_TIME_MILLISECONDS = 1000L
     const val NOTIFICATION_CHANNEL_NAME = "DISH_REMINDER"
     const val KEY_DISH = "key_dish"
-    const val NOTIFICATION_CHANNEL_ID = "notification_channel_1"
     const val KEY_REMINDER_NOTIFICATION_DISH = "key_reminder_notification_dish"
+    const val DEF_TYPE = "string"
+    const val DEF_PACKAGE = "xyz.flussigkatz.spoonzilla"
+    const val INGREDIENT_VALUE_KEY = "INGREDIENT_VALUE_KEY"
+    const val ALARM_TIME_VALUE_KEY = "ALARM_TIME_VALUE_KEY"
+    const val IS_SCROLL_FLAG = 0
+    const val HIDE_KEYBOARD_FLAG = 0
+    const val SORT_FLAG_POPULAR = "popularity"
+    const val SORT_FLAG_RANDOM = "random"
 }

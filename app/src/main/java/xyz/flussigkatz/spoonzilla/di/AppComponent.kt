@@ -16,7 +16,7 @@ interface AppComponent : AppProvider {
         fun create(application: Application): AppProvider {
             return appComponent ?: DaggerAppComponent
                 .builder()
-                .application(application.applicationContext)
+                .application(application)
                 .build().also {
                     appComponent = it
                 }
@@ -26,7 +26,7 @@ interface AppComponent : AppProvider {
     @Component.Builder
     interface Builder {
         @BindsInstance
-        fun application(context: Context): Builder
+        fun application(application: Application): Builder
         fun build(): AppComponent
     }
 }

@@ -2,7 +2,6 @@ package xyz.flussigkatz.spoonzilla.util
 
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import xyz.flussigkatz.remote.entity.random.RandomRecipesDto
 import xyz.flussigkatz.remote.entity.seached.SearchedRecipesDto
 import xyz.flussigkatz.core_api.entity.Dish
 import xyz.flussigkatz.core_api.entity.DishAdvancedInfo
@@ -29,21 +28,7 @@ object Converter {
     private const val DOLLAR_RATIO = 100
     private val gson = Gson()
 
-    fun convertRandomRecipeFromApi(
-        randomRecipesDto: RandomRecipesDto,
-        ids: List<Int>
-    ): List<Dish> {
-        return randomRecipesDto.recipes.map {
-            Dish(
-                id = it.id,
-                title = it.title,
-                image = it.image,
-                mark = ids.contains(it.id)
-            )
-        }
-    }
-
-    fun convertSearchedRecipeBasicInfoFromApi(
+    fun convertSearchedRecipeFromApi(
         searchedRecipesDto: SearchedRecipesDto,
         ids: List<Int>
     ): List<Dish> {

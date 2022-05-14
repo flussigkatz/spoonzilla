@@ -22,8 +22,6 @@ import xyz.flussigkatz.remote.entity.equipment_by_id.EquipmentByIdDto
 import xyz.flussigkatz.remote.entity.ingredients_by_id.IngredientsByIdDto
 import xyz.flussigkatz.remote.entity.instructions_by_id.InstructionsByIdDto
 import xyz.flussigkatz.remote.entity.nutrient_by_id.NutrientByIdDto
-import xyz.flussigkatz.remote.entity.random.RandomRecipesDto
-import xyz.flussigkatz.remote.entity.random.Recipe
 import xyz.flussigkatz.remote.entity.seached.Result
 import xyz.flussigkatz.remote.entity.seached.SearchedRecipesDto
 import xyz.flussigkatz.remote.entity.searched_by_id.SearchedRecipeByIdDto
@@ -34,22 +32,12 @@ class ConverterTest {
     private val id = 0
 
     @Test
-    fun checkReturnedObjectIsDish1() {
-        val recipe = mock<Recipe>()
-        Mockito.`when`(recipe.title).thenReturn("title")
-        val randomRecipesDto = mock<RandomRecipesDto>()
-        Mockito.`when`(randomRecipesDto.recipes).thenReturn(listOf(recipe))
-        val res = Converter.convertRandomRecipeFromApi(randomRecipesDto, ids)
-        assertThat(res.first(), instanceOf(Dish::class.java))
-    }
-
-    @Test
     fun checkReturnedObjectIsDish2() {
         val result = mock<Result>()
         Mockito.`when`(result.title).thenReturn("title")
         val searchedRecipesDto = mock<SearchedRecipesDto>()
         Mockito.`when`(searchedRecipesDto.results).thenReturn(listOf(result))
-        val res = Converter.convertSearchedRecipeBasicInfoFromApi(searchedRecipesDto, ids)
+        val res = Converter.convertSearchedRecipeFromApi(searchedRecipesDto, ids)
         assertThat(res.first(), instanceOf(Dish::class.java))
     }
 

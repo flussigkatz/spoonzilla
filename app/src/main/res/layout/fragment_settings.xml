@@ -49,6 +49,15 @@
         android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
         android:textColor="@color/app_color_1" />
 
+    <Spinner
+        android:id="@+id/settings_home_page_content_spinner"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/settings_menu_item_height"
+        android:layout_marginEnd="@dimen/settings_menu_item_margin"
+        android:background="@drawable/ic_spinner"
+        android:backgroundTint="@color/black"
+        android:prompt="@color/app_color_1" />
+
     <TextView
         android:id="@+id/settings_cuisine"
         android:layout_width="match_parent"

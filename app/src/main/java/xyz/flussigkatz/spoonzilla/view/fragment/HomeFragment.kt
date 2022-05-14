@@ -74,8 +74,11 @@ class HomeFragment : Fragment() {
 
     private fun initRefreshLayout() {
         binding.homeRefreshLayout.setOnRefreshListener {
-            (requireActivity() as MainActivity).mainSearchViewClearFocus()
-            viewModel.getRandomRecipe()
+            (requireActivity() as MainActivity).apply {
+                mainSearchViewClearFocus()
+                if (getSearchQuery().isNullOrBlank()) viewModel.getPopularRecipe()
+                else binding.homeRefreshLayout.isRefreshing = false
+            }
         }
     }
 
@@ -84,7 +87,10 @@ class HomeFragment : Fragment() {
             .debounce(SEARCH_DEBOUNCE_TIME_MILLISECONDS, TimeUnit.MILLISECONDS)
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
-                { getSearchedRecipes(it) },
+                {
+                    if (it.isNotEmpty()) getSearchedRecipes(it)
+                    else viewModel.getPopularRecipe()
+                },
                 { Timber.d(it, "initQuickSearch onError") }
             ).addTo(autoDisposable)
     }
@@ -151,7 +157,7 @@ class HomeFragment : Fragment() {
         if (lifecycle.currentState == RESUMED) {
             if (!query.isNullOrBlank())
                 viewModel.getSearchedRecipes(query)
-            else viewModel.getRandomRecipe()
+            else viewModel.getPopularRecipe()
         }
     }
 
@@ -163,7 +169,7 @@ class HomeFragment : Fragment() {
     fun paginationCheck(visibleItemCount: Int, totalItemCount: Int, pastVisibleItems: Int) {
         if (totalItemCount - (visibleItemCount + pastVisibleItems) <= REMAINDER_OF_ELEMENTS) {
             (activity as MainActivity).getSearchQuery().let {
-                if (it.isNullOrBlank()) viewModel.doRandomRecipePagination()
+                if (it.isNullOrBlank()) viewModel.doPopularRecipePagination(totalItemCount)
                 else viewModel.doSearchedRecipesPagination(it.toString(), totalItemCount)
             }
         }

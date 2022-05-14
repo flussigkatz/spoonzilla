@@ -10,9 +10,9 @@ import xyz.flussigkatz.spoonzilla.domain.Interactor
 import xyz.flussigkatz.spoonzilla.util.AppConst.KEY_CUISINE_FROM_PROFILE
 import xyz.flussigkatz.spoonzilla.util.AppConst.KEY_DIET_FROM_PROFILE
 import xyz.flussigkatz.spoonzilla.util.AppConst.KEY_INTOLERANCE_FROM_PROFILE
+import xyz.flussigkatz.spoonzilla.util.AppConst.KEY_MEAL_TYPE_FROM_PROFILE
 import xyz.flussigkatz.spoonzilla.util.AppConst.KEY_PERSONAL_PREFERENCES
 import xyz.flussigkatz.spoonzilla.util.AppConst.PAGINATION_NUMBER_ELEMENTS
-import java.util.*
 import javax.inject.Inject
 
 class HomeFragmentViewModel : ViewModel() {
@@ -24,7 +24,7 @@ class HomeFragmentViewModel : ViewModel() {
 
     init {
         App.instance.dagger.inject(this)
-        getRandomRecipe()
+        getPopularRecipe()
         dishList = interactor.getDishesFromDb()
         loadingState = interactor.getRefreshState()
         searchPublishSubject = interactor.getSearchPublishSubject()
@@ -33,62 +33,98 @@ class HomeFragmentViewModel : ViewModel() {
     fun getSearchedRecipes(query: String) {
         interactor.getSearchedRecipesFromApi(
             query = query,
+            cuisine = null,
+            diet = null,
+            intolerances = null,
+            type = null,
+            sort = null,
             offset = null,
-            number = null,
-            true
+            number = PAGINATION_NUMBER_ELEMENTS,
+            clearDb = true
         )
     }
 
     fun doSearchedRecipesPagination(query: String, offset: Int) {
         interactor.getSearchedRecipesFromApi(
             query = query,
+            cuisine = null,
+            diet = null,
+            intolerances = null,
+            type = null,
+            sort = null,
             offset = offset,
             number = PAGINATION_NUMBER_ELEMENTS,
-            false
+            clearDb = false
         )
     }
 
-    fun getRandomRecipe() {
-        val cuisine =
-            interactor.getSearchSettings(KEY_CUISINE_FROM_PROFILE)
-                ?.joinToString(separator = STRING_SEPARATOR)
-                .orEmpty()
-        val diet =
-            interactor.getSearchSettings(KEY_DIET_FROM_PROFILE)
-                ?.joinToString(separator = STRING_SEPARATOR)
-                .orEmpty()
-        val intolerances =
-            interactor.getSearchSettings(KEY_INTOLERANCE_FROM_PROFILE)
-                ?.joinToString(separator = STRING_SEPARATOR).orEmpty()
-        val tags = if (interactor.getPersonalPreferencesSwitchState(KEY_PERSONAL_PREFERENCES)) {
-            "${cuisine.trim()} ${diet.trim()} ${intolerances.trim()}"
-        } else String()
-        interactor.getRandomRecipeFromApi(
-            TOTAL_NUMBER_ELEMENTS,
-            tags.lowercase(Locale.getDefault()).trim(),
-            true
+    fun getPopularRecipe() {
+        var cuisineKey = KEY_EMPTY
+        var dietKey = KEY_EMPTY
+        var intolerancesKey = KEY_EMPTY
+        var typeKey = KEY_EMPTY
+        interactor.getPersonalPreferencesSwitchState(KEY_PERSONAL_PREFERENCES).apply {
+            if (this) {
+                cuisineKey = KEY_CUISINE_FROM_PROFILE
+                dietKey = KEY_DIET_FROM_PROFILE
+                intolerancesKey = KEY_INTOLERANCE_FROM_PROFILE
+                typeKey = KEY_MEAL_TYPE_FROM_PROFILE
+            }
+        }
+        val cuisine = interactor.getSearchSettings(cuisineKey)
+            ?.joinToString(separator = STRING_SEPARATOR)
+        val diet = interactor.getSearchSettings(dietKey)
+            ?.joinToString(separator = STRING_SEPARATOR)
+        val intolerances = interactor.getSearchSettings(intolerancesKey)
+            ?.joinToString(separator = STRING_SEPARATOR)
+        val type = interactor.getSearchSettings(typeKey)
+            ?.joinToString(separator = STRING_SEPARATOR)
+        val sort = interactor.getHomePageContent()
+        interactor.getSearchedRecipesFromApi(
+            query = null,
+            cuisine = cuisine,
+            diet = diet,
+            intolerances = intolerances,
+            type = type,
+            sort = sort,
+            offset = null,
+            number = TOTAL_NUMBER_ELEMENTS,
+            clearDb = true
         )
     }
 
-    fun doRandomRecipePagination() {
-        val cuisine =
-            interactor.getSearchSettings(KEY_CUISINE_FROM_PROFILE)
-                ?.joinToString(separator = STRING_SEPARATOR)
-                .orEmpty()
-        val diet =
-            interactor.getSearchSettings(KEY_DIET_FROM_PROFILE)
-                ?.joinToString(separator = STRING_SEPARATOR)
-                .orEmpty()
-        val intolerances =
-            interactor.getSearchSettings(KEY_INTOLERANCE_FROM_PROFILE)
-                ?.joinToString(separator = STRING_SEPARATOR).orEmpty()
-        val tags = if (interactor.getPersonalPreferencesSwitchState(KEY_PERSONAL_PREFERENCES)) {
-            "${cuisine.trim()} ${diet.trim()} ${intolerances.trim()}"
-        } else String()
-        interactor.getRandomRecipeFromApi(
-            PAGINATION_NUMBER_ELEMENTS,
-            tags.lowercase(Locale.getDefault()).trim(),
-            false
+    fun doPopularRecipePagination(offset: Int) {
+        var cuisineKey = KEY_EMPTY
+        var dietKey = KEY_EMPTY
+        var intolerancesKey = KEY_EMPTY
+        var typeKey = KEY_EMPTY
+        interactor.getPersonalPreferencesSwitchState(KEY_PERSONAL_PREFERENCES).apply {
+            if (this) {
+                cuisineKey = KEY_CUISINE_FROM_PROFILE
+                dietKey = KEY_DIET_FROM_PROFILE
+                intolerancesKey = KEY_INTOLERANCE_FROM_PROFILE
+                typeKey = KEY_MEAL_TYPE_FROM_PROFILE
+            }
+        }
+        val cuisine = interactor.getSearchSettings(cuisineKey)
+            ?.joinToString(separator = STRING_SEPARATOR)
+        val diet = interactor.getSearchSettings(dietKey)
+            ?.joinToString(separator = STRING_SEPARATOR)
+        val intolerances = interactor.getSearchSettings(intolerancesKey)
+            ?.joinToString(separator = STRING_SEPARATOR)
+        val type = interactor.getSearchSettings(typeKey)
+            ?.joinToString(separator = STRING_SEPARATOR)
+        val sort = interactor.getHomePageContent()
+        interactor.getSearchedRecipesFromApi(
+            query = null,
+            cuisine = cuisine,
+            diet = diet,
+            intolerances = intolerances,
+            type = type,
+            sort = sort,
+            offset = offset,
+            number = PAGINATION_NUMBER_ELEMENTS,
+            clearDb = false
         )
     }
 
@@ -99,6 +135,7 @@ class HomeFragmentViewModel : ViewModel() {
     companion object {
         private const val TOTAL_NUMBER_ELEMENTS = 10
         private const val STRING_SEPARATOR = " "
+        private const val KEY_EMPTY = ""
     }
 
 }

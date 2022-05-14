@@ -10,21 +10,32 @@ class SettingsFragmentViewModel : ViewModel() {
     @Inject
     lateinit var interactor: Interactor
     var nightMode: Int
+    var homePageContent: String
 
     init {
         App.instance.dagger.inject(this)
         nightMode = getNightModeFromPreferences()
+        homePageContent = getHomePageContentFromPreferences()
     }
 
     fun setNightMode(mode: Int, activity: Activity) {
-        nightMode = getNightModeFromPreferences()
         if (nightMode != mode) {
             interactor.setNightMode(mode)
+            nightMode = mode
             activity.recreate()
         }
     }
 
+    fun setHomePageContentFlag(flag: String) {
+        if (homePageContent != flag){
+            interactor.setHomePageContent(flag)
+            homePageContent = flag
+        }
+    }
+
     private fun getNightModeFromPreferences() = interactor.getNightModeFromPreferences()
+
+    private fun getHomePageContentFromPreferences() = interactor.getHomePageContent()
 
     fun putDialogItemsToPreference(key: String, list: ArrayList<String>) {
         interactor.putDialogItemsToPreference(key, list.toSet())

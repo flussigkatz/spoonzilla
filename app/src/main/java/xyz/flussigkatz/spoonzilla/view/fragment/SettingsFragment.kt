@@ -26,6 +26,8 @@ import xyz.flussigkatz.spoonzilla.util.AppConst.KEY_MEAL_TYPES_DIALOG
 import xyz.flussigkatz.spoonzilla.util.AppConst.KEY_MEAL_TYPE_FROM_PROFILE
 import xyz.flussigkatz.spoonzilla.util.AppConst.KEY_MEAl_TYPE
 import xyz.flussigkatz.spoonzilla.util.AppConst.KEY_PERSONAL_PREFERENCES
+import xyz.flussigkatz.spoonzilla.util.AppConst.SORT_FLAG_POPULAR
+import xyz.flussigkatz.spoonzilla.util.AppConst.SORT_FLAG_RANDOM
 import xyz.flussigkatz.spoonzilla.view.dialog.CuisineDialogFragment
 import xyz.flussigkatz.spoonzilla.view.dialog.DietsDialogFragment
 import xyz.flussigkatz.spoonzilla.view.dialog.IntolerancesDialogFragment
@@ -49,6 +51,7 @@ class SettingsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         initFragmentResultListener()
         initNightModeSpinner()
+        initHomePageContentSpinner()
         initCuisines()
         initDiets()
         initIntolerances()
@@ -120,6 +123,45 @@ class SettingsFragment : Fragment() {
         }
     }
 
+    private fun initHomePageContentSpinner() {
+        val items = arrayOf(
+            resources.getText(R.string.home_page_content_popular),
+            resources.getText(R.string.home_page_content_random),
+        )
+        val mAdapter = ArrayAdapter(requireContext(), R.layout.spinner_item, items)
+        val itemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
+                parent?.let {
+                    val flag = when (position) {
+                        POPULAR_INDEX -> SORT_FLAG_POPULAR
+                        RANDOM_INDEX -> SORT_FLAG_RANDOM
+                        else -> throw IllegalArgumentException("Wrong argument for home page content")
+                    }
+                    viewModel.setHomePageContentFlag(flag)
+                }
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+            }
+
+        }
+        binding.settingsHomePageContentSpinner.apply {
+            adapter = mAdapter
+            val flag = when (viewModel.homePageContent) {
+                SORT_FLAG_POPULAR -> POPULAR_INDEX
+                SORT_FLAG_RANDOM -> RANDOM_INDEX
+                else -> throw IllegalArgumentException("Wrong argument for home page content")
+            }
+            setSelection(flag)
+            onItemSelectedListener = itemSelectedListener
+        }
+    }
+
     private fun initCuisines() {
         binding.settingsCuisine.setOnClickListener {
             val markedItems = viewModel.getDialogItemsFromPreference(KEY_CUISINE_FROM_PROFILE)
@@ -174,5 +216,7 @@ class SettingsFragment : Fragment() {
         private const val MODE_NIGHT_YES_INDEX = 1
         private const val MODE_NIGHT_SYSTEM_FOLLOW_INDEX = 2
         private const val MODE_NIGHT_AUTO_BATTERY_INDEX = 3
+        private const val POPULAR_INDEX = 0
+        private const val RANDOM_INDEX = 1
     }
 }

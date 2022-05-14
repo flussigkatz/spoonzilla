@@ -2,8 +2,8 @@ package xyz.flussigkatz.remote.entity.instructions_by_id
 
 
 import com.google.gson.annotations.SerializedName
-import xyz.flussigkatz.remote.entity.random.Equipment
-import xyz.flussigkatz.remote.entity.random.Ingredient
+import xyz.flussigkatz.remote.entity.equipment_by_id.Equipment
+import xyz.flussigkatz.remote.entity.ingredients_by_id.Ingredient
 
 data class Step(
     @SerializedName("equipment")

@@ -82,7 +82,7 @@ class MainActivity : AppCompatActivity() {
         initReceiver()
         initRecentlyViewedBottomSheet()
         initRecentlyViewedAdapter()
-        initContent()
+        initRecentlyViewedItems()
         initAlarms()
         mainSearchViewClearFocus()
     }
@@ -135,6 +135,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initQuickSearch() {
+        binding.mainQuickSearch.setOnFocusChangeListener { v, hasFocus ->
+            if (!hasFocus) hideSoftKeyboard(v)
+        }
         binding.mainQuickSearch.setOnQueryTextFocusChangeListener { _, hasFocus ->
             if (hasFocus) binding.mainAppbar.setExpanded(true)
             recentlyViewedBottomSheet.state = STATE_HIDDEN
@@ -155,9 +158,6 @@ class MainActivity : AppCompatActivity() {
                     return false
                 }
             })
-        binding.mainQuickSearch.apply {
-            if (!this.hasFocus()) hideSoftKeyboard(this)
-        }
     }
 
     private fun initNavigation() {
@@ -296,7 +296,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun initContent() {
+    private fun initRecentlyViewedItems() {
         viewModel.getRecentlyViewedDishes().subscribeOn(io())
             .filter { !it.isNullOrEmpty() }
             .observeOn(mainThread())
@@ -305,6 +305,7 @@ class MainActivity : AppCompatActivity() {
                     recentlyViewedAdapter.updateData(it)
                     binding.recentlyViewedRecycler.smoothScrollToPosition(FIRST_POSITION)
                     adapterIsNotEmpty = it.isNotEmpty()
+                    showRecentlyViewedFab(true)
                 },
                 { Timber.d(it, "initContent onError") }
             ).addTo(autoDisposable)

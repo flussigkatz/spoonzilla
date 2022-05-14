@@ -44,12 +44,12 @@ class AdvancedSearchFragment : Fragment() {
     private lateinit var binding: FragmentAdvancedSearchBinding
     private val autoDisposable = AutoDisposable()
     private var isLoadingFromApi = false
-    private var mQuery: String? = null
+    private var mSearchQuery: String? = null
     private val advancedSearchFragmentScope = CoroutineScope(Dispatchers.IO)
-    private lateinit var keyCuisine: String
-    private lateinit var keyDiet: String
-    private lateinit var keyIntolerance: String
-    private lateinit var keyMeatType: String
+    private var keyCuisine = KEY_CUISINE
+    private var keyDiet = KEY_DIET
+    private var keyIntolerance = KEY_INTOLERANCE
+    private var keyMeatType = KEY_MEAl_TYPE
     private var maxReadyTime: Int? = null
 
     override fun onCreateView(
@@ -98,7 +98,7 @@ class AdvancedSearchFragment : Fragment() {
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
                 {
-                    mQuery = it
+                    mSearchQuery = it
                     getSearchedRecipes()
                 },
                 { Timber.d(it, "initSearch onError") }
@@ -166,7 +166,7 @@ class AdvancedSearchFragment : Fragment() {
     fun paginationCheck(visibleItemCount: Int, totalItemCount: Int, pastVisibleItems: Int) {
         if (totalItemCount - (visibleItemCount + pastVisibleItems) <= REMAINDER_OF_ELEMENTS) {
             viewModel.doSearchedRecipesPagination(
-                query = mQuery,
+                query = mSearchQuery,
                 maxReadyTime = maxReadyTime,
                 offset = totalItemCount,
                 keyCuisine = keyCuisine,
@@ -179,17 +179,19 @@ class AdvancedSearchFragment : Fragment() {
 
     private fun initSearchSettings() {
         arguments?.apply {
-            keyCuisine = getString(KEY_CUISINE) ?: KEY_CUISINE
-            keyDiet = getString(KEY_DIET) ?: KEY_DIET
-            keyIntolerance = getString(KEY_INTOLERANCE) ?: KEY_INTOLERANCE
-            keyMeatType = getString(KEY_MEAl_TYPE) ?: KEY_MEAl_TYPE
+            getString(KEY_CUISINE)?.let { keyCuisine = it }
+            getString(KEY_DIET)?.let { keyDiet = it }
+            getString(KEY_INTOLERANCE)?.let { keyIntolerance = it }
+            getString(KEY_MEAl_TYPE)?.let { keyMeatType = it }
             getInt(KEY_MAX_READY_TIME).let { maxReadyTime = if (it != 0) it else null }
         }
+        mSearchQuery = (requireActivity() as MainActivity).getSearchQuery().toString()
+        mSearchQuery?.let { getSearchedRecipes() }
     }
 
     private fun getSearchedRecipes() {
         viewModel.getAdvancedSearchedRecipes(
-            query = mQuery,
+            query = mSearchQuery,
             maxReadyTime = maxReadyTime,
             keyCuisine = keyCuisine,
             keyDiet = keyDiet,

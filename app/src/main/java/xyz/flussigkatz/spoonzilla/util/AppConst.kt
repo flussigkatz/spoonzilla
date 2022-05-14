@@ -37,4 +37,6 @@ object AppConst {
     const val ALARM_TIME_VALUE_KEY = "ALARM_TIME_VALUE_KEY"
     const val IS_SCROLL_FLAG = 0
     const val HIDE_KEYBOARD_FLAG = 0
+    const val SORT_FLAG_POPULAR = "popularity"
+    const val SORT_FLAG_RANDOM = "random"
 }

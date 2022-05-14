@@ -130,34 +130,6 @@ class Interactor(
             )
     }
 
-    fun getRandomRecipeFromApi(
-        number: Int,
-        tags: String,
-        clearDb: Boolean
-    ) {
-        retrofitService.getRandomRecipes(
-            limitLicense = false,
-            tags = tags,
-            number = number,
-            apiKey = API_KEY
-        ).subscribeOn(Schedulers.io())
-            .filter { !it.recipes.isNullOrEmpty() }
-            .map {
-                val markedIds = repository.getIdsMarkedDishesFromDbToList()
-                Converter.convertRandomRecipeFromApi(it, markedIds)
-            }
-            .doOnSubscribe { loadingState.onNext(true) }
-            .doOnComplete { loadingState.onNext(false) }
-            .doOnError { loadingState.onNext(false) }
-            .subscribe(
-                {
-                    if (clearDb) repository.clearDishTable()
-                    repository.putDishesToDb(it)
-                },
-                { Timber.d(it, "getRandomRecipeFromApi onError") }
-            )
-    }
-
     fun getDishesFromDb() = repository.getAllDishesFromDb()
 
     //    DishAlarm
@@ -223,21 +195,31 @@ class Interactor(
     }
 
     fun getSearchedRecipesFromApi(
-        query: String,
+        query: String?,
+        cuisine: String?,
+        diet: String?,
+        intolerances: String?,
+        type: String?,
+        sort: String?,
         offset: Int?,
         number: Int?,
-        clearDb: Boolean
+        clearDb: Boolean,
     ) {
         retrofitService.getSearchedRecipes(
             query = query,
+            cuisine = cuisine,
+            diet = diet,
+            intolerances = intolerances,
+            type = type,
+            sort = sort,
             offset = offset,
             number = number,
             limitLicense = false,
-            apiKey = API_KEY
+            apiKey = API_KEY,
         ).subscribeOn(Schedulers.io())
             .map {
                 val markedIds = repository.getIdsMarkedDishesFromDbToList()
-                Converter.convertSearchedRecipeBasicInfoFromApi(it, markedIds)
+                Converter.convertSearchedRecipeFromApi(it, markedIds)
             }
             .doOnSubscribe { loadingState.onNext(true) }
             .doOnComplete { loadingState.onNext(false) }
@@ -285,7 +267,7 @@ class Interactor(
         ).subscribeOn(Schedulers.io())
             .map {
                 val markedIds = repository.getIdsMarkedDishesFromDbToList()
-                Converter.convertSearchedRecipeBasicInfoFromApi(it, markedIds)
+                Converter.convertSearchedRecipeFromApi(it, markedIds)
             }
             .doOnSubscribe { loadingState.onNext(true) }
             .doOnComplete { loadingState.onNext(false) }
@@ -344,6 +326,15 @@ class Interactor(
     }
 
     fun getProfile() = preferences.getProfile()
+
+    //Home Page Content
+    fun setHomePageContent(flag: String) {
+        preferences.saveHomePageContent(flag)
+    }
+
+    fun getHomePageContent(): String {
+        return preferences.getHomePageContent().orEmpty()
+    }
 
     //Theme
     fun setNightMode(mode: Int) {
